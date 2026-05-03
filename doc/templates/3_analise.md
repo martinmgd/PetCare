@@ -1,57 +1,197 @@
 # REQUIRIMENTOS DO SISTEMA
-Este documento describe os requirimentos para \[nome do proxecto\] especificando que funcionalidade ofrecerá e de que xeito.
 
-## Descrición Xeral
+Neste documento preséntanse os aspectos principais do sistema da aplicación móbil **PetCare**, incluíndo as funcionalidades previstas e o seu funcionamento xeral.
 
-Descrición Xeral do proxecto
+---
+
+## Descrición xeral
+
+PetCare é unha aplicación móbil orientada á xestión do coidado de mascotas. O seu obxectivo principal é facilitar aos usuarios o rexistro e consulta da información relevante dos seus animais, permitindo un seguimento máis organizado do seu estado e das tarefas diarias.
+
+A aplicación está deseñada para un uso sinxelo e accesible desde dispositivos móbiles, integrando nun único sistema aspectos como a alimentación, a actividade diaria, as citas veterinarias ou o control do peso.
+
+Como característica destacada, o sistema permitirá a xestión compartida das mascotas, posibilitando que diferentes usuarios poidan participar no seu coidado e manter información actualizada dentro da aplicación.
+
+---
 
 ## Funcionalidades
-Describir que servizos ou operacións se van poder realizar por medio do noso proxecto, indicando que actores interveñen en cada caso.
-Enumeralas (cunha breve descripción se aplica), de maneira que na fase de deseño poidamos definir o diagrama ou configuración correspondente a cada funcionalidade.
 
-Exemplo:
- 1. Xestión de clientes na BD
- 2. Xestión de pedidos
- ...
- 3. Configuración do directorio activo
- 4. Configuración do DNS
- 
-## Requerimentos non funcionais
-Requerimentos relativos a rendemento, seguridade, etc. se procede
+### Xestión de usuarios
+
+* Rexistro de usuarios mediante correo electrónico e contrasinal
+* Inicio de sesión
+* Modificación dos datos persoais
+
+### Xestión de mascotas
+
+* Alta, modificación e eliminación de mascotas
+* Rexistro de información básica (nome, idade, tipo ou raza)
+* Asociación dunha mascota a un ou varios usuarios
+
+### Xestión compartida
+
+* Participación de varios usuarios na xestión dunha mesma mascota
+* Rexistro de accións asociadas a un usuario e a unha data/hora
+* Posibilidade de consultar quen realizou cada rexistro
+* Consulta da información actualizada dentro da aplicación
+
+### Xestión de eventos e citas
+
+* Rexistro de citas veterinarias
+* Control de vacinas, revisións e desparasitacións
+* Creación de recordatorios
+
+### Seguimento da actividade
+
+* Rexistro da actividade diaria da mascota
+* Control do tempo de paseo
+* Consulta do historial de actividade ao longo do tempo
+
+### Control de alimentación
+
+* Rexistro das comidas diarias (mañá, mediodía e noite)
+* Sistema de aviso entre usuarios para evitar duplicidade nas tarefas
+
+### Control de saúde
+
+* Rexistro do peso da mascota
+* Seguimento da evolución física
+* Rexistro de tratamentos ou medicacións
+
+### Sistema de recomendación básica
+
+* Análise de datos rexistrados (actividade, alimentación e peso)
+* Xeración de recomendacións simples orientadas ao benestar da mascota
+* Recomendacións baseadas nos datos introducidos polo usuario
+* Suxestión de actividade ou paseos en función de condicións externas, como a climatoloxía
+
+### Resumos de información
+
+* Xeración de resumos da información da mascota (actividade, peso, historial, etc.)
+
+---
+
+## Requirimentos non funcionais
+
+### Rendemento
+
+* A aplicación deberá funcionar de forma fluída en dispositivos Android actuais
+* Os tempos de resposta serán reducidos nas operacións principais
+
+### Seguridade
+
+* Protección dos datos persoais dos usuarios
+* Validación da información introducida
+* Acceso controlado mediante autenticación
+
+### Usabilidade
+
+* Interface clara e intuitiva
+* Navegación sinxela entre pantallas
+* Deseño adaptado ao uso en dispositivos móbiles
+
+### Fiabilidade
+
+* Persistencia dos datos mediante un sistema de almacenamento da información
+* Funcionamento estable sen perda de información
+* Posibilidade de realizar copias de seguridade dos datos e restauralos en caso necesario
+
+### Compatibilidade
+
+* Compatible con versións recentes do sistema operativo Android
+
+---
 
 ## Tipos de usuarios
-Tipos de usuario que poderán acceder ó noso sistema. Poderán diferenciarse polos permisos sobre os datos, pantallas que se lles amosan, operacións que poden levar a cabo, etc.
 
-Exemplo:
-  * Usuario xerente, que terá acceso a ...
-  * Usuario técnico, que poderá...
+### Usuario principal
 
+* Pode xestionar mascotas
+* Pode rexistrar e consultar información
+
+### Usuario compartido
+
+* Pode participar na xestión da mascota
+* Pode introducir información
+* Colabora no coidado diario
+
+---
 
 ## Avaliación da viabilidade técnica do proxecto
 
 ### Hardware requerido
-Analizar as opcións hardware existentes e xustificar a idoneidade dos compoñentes seleccionados.
+
+* Dispositivo móbil (smartphone Android) para o uso da aplicación
+* Ordenador persoal para o desenvolvemento
 
 ### Software
-Analizar as opcións software existentes e xustificar a idoneidade dos compoñentes seleccionados.
+
+* Android Studio como contorno de desenvolvemento
+* Linguaxe de programación Java
+* Sistema de almacenamento de datos para a xestión da información da aplicación
+
+---
 
 ## Interfaces externos
-En caso dun proxecto orientado ao desenvolvemento de software, indicar (se procede) como se comunicará o noso software co exterior. É posible que só teña interfaces de usuario, que normalmente son as pantallas. Un exemplo de interface hardware sería un lector de código de barras. As interfaces software son aquelas que se comunican con outro software, como por exemplo un servicio web ao que se conectan aplicacións cliente.
 
 ### Interfaces de usuario
 
+* Aplicación móbil composta por diferentes pantallas segundo a funcionalidade
+* Navegación estruturada e accesible
 
 ### Interfaces hardware
 
+* Uso de notificacións do dispositivo
+* Posible uso de servizos de localización (GPS)
 
 ### Interfaces software
 
+* Sistema de almacenamento que permite o acceso e xestión da información da aplicación
+* Posible integración con servizos externos para a obtención de información (como datos meteorolóxicos)
+* Posible uso dun sistema de asistencia intelixente para recomendacións básicas
+
+---
 
 ## Análise de riscos e interesados
-Determinar todas aquelas persoas, entidades ou cousas que poden ter un impacto (positivo ou negativo) no proxecto ou na idea de negocio, e indicar as medidas a levar a cabo para tratar de potenciar os impactos positivos e evitar ou mitigar os posibles impactos negativos.
+
+### Interesados
+
+* Usuarios propietarios de mascotas
+* Persoas que comparten o coidado dos animais
+
+### Riscos
+
+* Complexidade na implementación da xestión compartida
+* Posibles erros durante o desenvolvemento
+* Limitación de tempo para completar todas as funcionalidades
+* Posible dificultade na usabilidade se o deseño non é adecuado
+* Posible perda de datos en caso de erros na aplicación
+
+### Medidas
+
+* Priorización das funcionalidades principais
+* Desenvolvemento progresivo
+* Realización de probas continuas
+* Deseño centrado no usuario
+
+---
 
 ## Actividades
-Definir, de forma xeral, os pasos que se han seguir para levar a cabo o proxecto, de forma que na fase de planificación nos sirvan como referencia para detallar as tarefas, recursos e temporalización necesaria para cada fase.
+
+* Análise de requisitos do sistema
+* Deseño da estrutura da aplicación
+* Implementación do sistema de almacenamento
+* Desenvolvemento das funcionalidades
+* Realización de probas
+* Elaboración da documentación
+
+---
 
 ## Melloras futuras
-É posible que o noso proxecto se centre en resolver un problema concreto que se poderá ampliar no futuro con novas funcionalidades, novas interfaces, etc.
+
+* Integración con profesionais veterinarios
+* Sistema máis avanzado de recomendación baseado en múltiples factores
+* Integración de información sobre riscos para as mascotas en función da zona
+* Posibilidade de exportar os datos rexistrados
+* Notificacións intelixentes baseadas en hábitos de uso
+* Incorporación de novas funcionalidades orientadas a mellorar o coidado e seguimento das mascotas
