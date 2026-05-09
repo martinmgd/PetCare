@@ -1,116 +1,472 @@
+Aquí tienes el `4_planificacion.md` ya corregido y ajustado al calendario real de entregas, con horas y presupuesto más coherentes para PetCare.
+
 # FASE DE PLANIFICACIÓN DO PROXECTO
 
 ## Obxectivos do proxecto
 
+O obxectivo principal do proxecto é desenvolver unha aplicación móbil Android chamada **PetCare**, orientada á xestión e seguimento do coidado de mascotas.
+
+A aplicación permitirá rexistrar información relacionada coa alimentación, actividade, peso, citas, medicación e eventos importantes da mascota. Ademais, contemplará a xestión compartida entre varios usuarios, empregando **Supabase** como base de datos principal na nube e **SQLite/Room** como sistema de apoio local.
+
+---
+
 ## Guía de planificación do proxecto
 
-### Metodoloxía
-Indica a metodoloxía que se utilizará para a elaboración do proxecto: ciclo en cascada, incremental, espiral... Xustifica a elección.
+O proxecto dividirase nas seguintes fases:
 
-### Fases planificadas
+1. [Análise de requisitos](#fase-1-análise-de-requisitos)
+2. [Deseño da aplicación](#fase-2-deseño-da-aplicación)
+3. [Deseño e configuración da base de datos](#fase-3-deseño-e-configuración-da-base-de-datos)
+4. [Desenvolvemento da aplicación móbil](#fase-4-desenvolvemento-da-aplicación-móbil)
+5. [Integración e sincronización](#fase-5-integración-e-sincronización)
+6. [Probas e corrección de erros](#fase-6-probas-e-corrección-de-erros)
+7. [Documentación final e presentación](#fase-7-documentación-final-e-presentación)
 
-Descríbense as fases en que se divide o proxecto e as tarefas que se han levar a cabo en cada unha destas fases.
-Pódense indicar os recursos materiais e humanos asociados a cada tarefa ou, se son os mesmos, de maneira máis xeral.
+---
 
-#### Fase 1: Estudo de necesidades e modelo de negocio
+## Metodoloxía
 
-##### Tarefa 1: xxxxxxxx
+Empregarase unha metodoloxía incremental, xa que permite desenvolver primeiro unha versión básica funcional da aplicación e, posteriormente, engadir novas funcionalidades de forma progresiva.
 
-Descrición: 
+Esta metodoloxía resulta adecuada para o proxecto porque permite validar cada parte do sistema antes de continuar coa seguinte, reducindo riscos e facilitando a corrección de erros durante o desenvolvemento.
 
-Recursos hardware/software: 
+---
 
-Recursos humanos: Persoas que se encargarán de realizar esta tarefa
+## Fases planificadas
 
-Duración: 
+## Fase 1: Análise de requisitos
 
-#### Tarefa 2
-...
+### Tarefa 1: Definición das funcionalidades principais
 
-#### Fase 2: xxxxx
+**Descrición:**
+Identificación das funcionalidades necesarias para a aplicación, como xestión de mascotas, alimentación, actividade, medicación, citas e usuarios compartidos.
 
-##### Tarefa 1: xxxxxxxx
+**Recursos hardware/software:**
+Ordenador persoal, navegador web, Visual Studio Code.
 
-Descrición: 
+**Recursos humanos:**
+Desenvolvedor do proxecto.
 
-Recursos hardware/software: 
+**Duración:**
+20 horas.
 
-Recursos humanos: 
+---
 
-Duración: 
+### Tarefa 2: Revisión da documentación inicial
 
-#### Tarefa 2
-...
+**Descrición:**
+Revisión dos documentos de idea, necesidades e análise para asegurar a coherencia do proxecto.
 
-### Diagrama de Gantt
-Un diagrama de Gantt é unha representación gráfica da secuenciación que tes que seguir para realizar as tarefas planificadas. Pódese usar o software "Gantt project" ou calquera outro que permita representar nun cronograma a información relativa á planificación de tarefas. Neste diagrama plasmarás de forma gráfica e manexable as fases e tarefas anteriores.
+**Recursos hardware/software:**
+Visual Studio Code, GitLab.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+15 horas.
+
+---
+
+## Fase 2: Deseño da aplicación
+
+### Tarefa 1: Deseño das pantallas
+
+**Descrición:**
+Deseño das pantallas principais da aplicación: inicio de sesión, rexistro, listado de mascotas, detalle da mascota, alimentación, actividade, citas e medicación.
+
+**Recursos hardware/software:**
+Figma, Draw.io ou ferramenta similar.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+25 horas.
+
+---
+
+### Tarefa 2: Deseño da navegación
+
+**Descrición:**
+Definición do fluxo de navegación entre as distintas pantallas da aplicación.
+
+**Recursos hardware/software:**
+Figma, Draw.io.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+20 horas.
+
+---
+
+## Fase 3: Deseño e configuración da base de datos
+
+### Tarefa 1: Deseño do modelo de datos
+
+**Descrición:**
+Definición da estrutura de datos para usuarios, mascotas, usuarios asociados, alimentación, actividade, eventos, medicación e pautas.
+
+**Recursos hardware/software:**
+DBDiagram.io, Supabase.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+35 horas.
+
+---
+
+### Tarefa 2: Configuración de Supabase
+
+**Descrición:**
+Creación do proxecto en Supabase, configuración inicial da base de datos e autenticación.
+
+**Recursos hardware/software:**
+Supabase, navegador web.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+20 horas.
+
+---
+
+### Tarefa 3: Configuración de SQLite/Room
+
+**Descrición:**
+Preparación do almacenamento local de apoio mediante SQLite/Room para mellorar a dispoñibilidade da aplicación.
+
+**Recursos hardware/software:**
+Android Studio, Java, Room/SQLite.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+25 horas.
+
+---
+
+## Fase 4: Desenvolvemento da aplicación móbil
+
+### Tarefa 1: Creación do proxecto Android
+
+**Descrición:**
+Creación da estrutura inicial do proxecto en Android Studio.
+
+**Recursos hardware/software:**
+Android Studio, Java.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+10 horas.
+
+---
+
+### Tarefa 2: Implementación de rexistro e inicio de sesión
+
+**Descrición:**
+Desenvolvemento do sistema de autenticación de usuarios.
+
+**Recursos hardware/software:**
+Android Studio, Java, Supabase Auth.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+35 horas.
+
+---
+
+### Tarefa 3: Implementación da xestión de mascotas
+
+**Descrición:**
+Creación das funcionalidades para engadir, modificar, eliminar e consultar mascotas.
+
+**Recursos hardware/software:**
+Android Studio, Java, Supabase.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+60 horas.
+
+---
+
+### Tarefa 4: Implementación da alimentación e actividade
+
+**Descrición:**
+Desenvolvemento das pantallas e funcionalidades relacionadas co rexistro de comidas, paseos e actividade diaria.
+
+**Recursos hardware/software:**
+Android Studio, Java, Supabase.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+70 horas.
+
+---
+
+### Tarefa 5: Implementación de citas, eventos e medicación
+
+**Descrición:**
+Creación das funcionalidades para rexistrar citas veterinarias, vacinas, medicacións e pautas.
+
+**Recursos hardware/software:**
+Android Studio, Java, Supabase.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+80 horas.
+
+---
+
+### Tarefa 6: Xestión compartida de mascotas
+
+**Descrición:**
+Implementación dun sistema para asociar varios usuarios a unha mesma mascota mediante un código de invitación.
+
+**Recursos hardware/software:**
+Android Studio, Java, Supabase.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+50 horas.
+
+---
+
+## Fase 5: Integración e sincronización
+
+### Tarefa 1: Integración da aplicación con Supabase
+
+**Descrición:**
+Conexión das funcionalidades da aplicación coa base de datos na nube.
+
+**Recursos hardware/software:**
+Android Studio, Java, Supabase.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+35 horas.
+
+---
+
+### Tarefa 2: Integración con SQLite/Room
+
+**Descrición:**
+Uso de SQLite/Room como apoio local para gardar datos de forma auxiliar e mellorar a experiencia de uso.
+
+**Recursos hardware/software:**
+Android Studio, Java, Room/SQLite.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+25 horas.
+
+---
+
+### Tarefa 3: Copias de seguridade
+
+**Descrición:**
+Deseño dun sistema básico para conservar e recuperar información relevante.
+
+**Recursos hardware/software:**
+Supabase, Android Studio.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+20 horas.
+
+---
+
+## Fase 6: Probas e corrección de erros
+
+### Tarefa 1: Probas funcionais
+
+**Descrición:**
+Comprobación do funcionamento das funcionalidades principais da aplicación.
+
+**Recursos hardware/software:**
+Android Studio, dispositivo Android.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+30 horas.
+
+---
+
+### Tarefa 2: Probas de integración
+
+**Descrición:**
+Verificación da comunicación entre a aplicación, Supabase e o almacenamento local.
+
+**Recursos hardware/software:**
+Android Studio, Supabase, dispositivo Android.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+25 horas.
+
+---
+
+### Tarefa 3: Corrección de erros
+
+**Descrición:**
+Corrección dos erros detectados durante as probas.
+
+**Recursos hardware/software:**
+Android Studio, GitLab.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+35 horas.
+
+---
+
+## Fase 7: Documentación final e presentación
+
+### Tarefa 1: Elaboración da documentación final
+
+**Descrición:**
+Redacción e revisión da documentación técnica do proxecto.
+
+**Recursos hardware/software:**
+Visual Studio Code, GitLab.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+20 horas.
+
+---
+
+### Tarefa 2: Preparación da presentación
+
+**Descrición:**
+Preparación da defensa do proxecto e demostración da aplicación.
+
+**Recursos hardware/software:**
+LibreOffice Impress, PowerPoint ou ferramenta similar.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+15 horas.
+
+---
+
+## Diagrama de Gantt
+
+O seguinte diagrama representa a planificación temporal estimada das diferentes fases do proxecto.
+
+```mermaid
+gantt
+    title Planificación do proxecto PetCare
+    dateFormat YYYY-MM-DD
+
+    section Abril
+    Idea do proxecto                     :done, a1, 2025-04-12, 7d
+    Documento de necesidades             :done, a2, 2025-04-19, 14d
+
+    section Maio
+    Análise do sistema                   :done, b1, 2025-05-03, 7d
+    Planificación do proxecto            :active, b2, 2025-05-08, 10d
+    Deseño da aplicación                 :b3, 2025-05-14, 18d
+    Deseño base de datos                 :b4, 2025-05-18, 10d
+
+    section Xuño
+    Implementación inicial               :c1, 2025-05-24, 25d
+    Integración Supabase                 :c2, 2025-05-30, 15d
+    Probas e correccións                 :c3, 2025-06-08, 10d
+    Documentación final                  :c4, 2025-06-05, 10d
+    Preparación da presentación          :c5, 2025-06-12, 3d
+
+    section Entrega
+    Entrega final                        :milestone, c6, 2025-06-14, 1d
+    Defensa do proxecto                  :milestone, c7, 2025-06-15, 1d
+```
+
+---
 
 ## Orzamento
-O orzamento do proxecto será a suma do importe dos materiais que necesites para realizar o proxecto máis o importe que corresponde ao traballo realizado. 
-O importe relacionado co traballo no proxecto é relativamente fácil de obter se se elaboraron ben as etapas anteriores: definir as actividades necesarias e os recursos propios de cada actividade. Neste caso disporase dun custo por cada actividade e a suma do custo de todas as actividades será o custo total do traballo do proxecto. 
-Para establecer os custos do proxecto debes ter en conta diferentes conceptos: 
-- Materiais que se utilizan: material funxible, materias primas, materiais didácticos, roupa de traballo… 
-- Custo horario das persoas que participan directamente na actividade. 
-- Aluguer/compra de ferramentas, maquinaria, equipos informáticos e/ou audiovisuais… 
-- Aluguer/compra de locais 
-- Contratos de subministracións: auga, luz, electricidade, gas… Subcontrataciones 
-- Gastos de publicidade… 
-- Seguros ... 
 
-O maior custo no proxecto case sempre corresponde ás persoas, polo que é importante controlar o número de horas que se invisten en cada actividade para que non se nos desequilibre o orzamento. Tamén hai que coidar as subcontratacións; convén que traballen cun orzamento establecido.
- A continuación preséntanse dúas opción de táboa para facilitar a creación do orzamento do proxecto:
+Para o cálculo do orzamento considérase un custo estimado de **15 €/hora** para o traballo de desenvolvemento.
 
 ### Orzamento por actividade
 
-| ACTIVIDADE | DURACIÓN | CUSTO (EUROS) | | CUSTO TOTAL ACTIVIDADE |
-|--|--|--|--|--|
-|            |          | PERSOAS|RECURSOS MATERIAIS|
-|||||
-|||||
-|||||
-|||||
+| ACTIVIDADE                              |  DURACIÓN | CUSTO PERSOAS | RECURSOS MATERIAIS | CUSTO TOTAL |
+| --------------------------------------- | --------: | ------------: | -----------------: | ----------: |
+| Análise de requisitos                   |      35 h |         525 € |                0 € |       525 € |
+| Deseño da aplicación                    |      45 h |         675 € |                0 € |       675 € |
+| Deseño e configuración da base de datos |      80 h |        1200 € |                0 € |      1200 € |
+| Desenvolvemento da aplicación móbil     |     305 h |        4575 € |                0 € |      4575 € |
+| Integración e sincronización            |      80 h |        1200 € |              150 € |      1350 € |
+| Probas e corrección de erros            |      90 h |        1350 € |                0 € |      1350 € |
+| Documentación final e presentación      |      35 h |         525 € |                0 € |       525 € |
+| **TOTAL**                               | **670 h** |   **10050 €** |          **150 €** | **10200 €** |
 
-| TOTAL | PROXECTO | 
-| -- | -- |
+---
 
-### Orzamento por partidas de inversión / gasto:
+O orzamento por actividade recolle o custo asociado ao traballo directo do proxecto, mentres que o orzamento por partidas inclúe tamén investimentos e outros gastos asociados.
 
-| CONCEPTO | IMPORTE|
-|--|--|
-|**A) INVERSIONS**
-|Gastos de establecemento e gastos de constitución
-|Total inmobilizacións inmateriais
-|Terreos
-|Construcións
-|Instalacións técnicas
-|Maquinaria
-|Ferramentas
-|Mobiliario e instalacións
-|Equipos informáticos
-|Elementos de transporte
-|Outro inmobilizado material
-|Total inmobilizacións materiais
-|Outros gastos a distribuír en varios exercicios
-|**TOTAL INVERSIÓNS:**
-|**B) GASTOS**
-|Compras de materiais
-|Arrendamentos
-|Publicidade, propaganda e relacións públicas
-|Persoal
-|Reparacións e conservación
-|Servizos de profesionais independentes
-|Outros gastos xerais
-|Gastos financeiros
-|Amortizacións
-|Gastos de xestión e administración
-|**TOTAL GASTOS:**
+### Orzamento por partidas de investimento / gasto
 
-|TOTAL ORZAMENTO:
-|--|
+| CONCEPTO                        |     IMPORTE |
+| ------------------------------- | ----------: |
+| Equipos informáticos            |      1900 € |
+| Dispositivo Android para probas |       350 € |
+| Electricidade e internet        |       300 € |
+| Servizos na nube / Supabase     |       150 € |
+| Persoal de desenvolvemento      |     10050 € |
+| **TOTAL ORZAMENTO**             | **12750 €** |
 
-### WEBGRAFÍA
-Guía para a elaboración de proyectos. Gobierno Vasco.
-https://www.pluralismoyconvivencia.es/upload/19/71/guia_elaboracion_proyectos_c.pdf  (páxina 49 e seguintes)
+---
 
+### Distribución do orzamento
 
+```mermaid
+pie title Distribución do orzamento PetCare
+    "Equipos informáticos" : 1900
+    "Dispositivo Android" : 350
+    "Electricidade e internet" : 300
+    "Servizos na nube" : 150
+    "Persoal de desenvolvemento" : 10050
+```
 
+---
+
+## WEBGRAFÍA
+
+* [https://supabase.com/docs](https://supabase.com/docs)
+* [https://developer.android.com](https://developer.android.com)
+* [https://developer.android.com/training/data-storage/room](https://developer.android.com/training/data-storage/room)
+* [https://mermaid.js.org](https://mermaid.js.org)
