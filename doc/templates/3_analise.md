@@ -10,7 +10,7 @@ PetCare é unha aplicación móbil orientada á xestión do coidado de mascotas.
 
 A aplicación está deseñada para un uso sinxelo e accesible desde dispositivos móbiles, integrando nun único sistema aspectos como a alimentación, a actividade diaria, as citas veterinarias ou o control do peso.
 
-Como característica destacada, o sistema permitirá a xestión compartida das mascotas, posibilitando que diferentes usuarios poidan participar no seu coidado e manter información actualizada dentro da aplicación.
+Como característica destacada, o sistema permitirá a xestión compartida das mascotas, posibilitando que diferentes usuarios poidan participar no seu coidado e manter información sincronizada dentro da aplicación.
 
 ---
 
@@ -92,8 +92,9 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 
 ### Fiabilidade
 
-* Persistencia dos datos mediante un sistema de almacenamento da información
+* Persistencia dos datos mediante almacenamento local e sincronización coa nube
 * Funcionamento estable sen perda de información
+* Sincronización da información entre usuarios asociados a unha mesma mascota
 * Posibilidade de realizar copias de seguridade dos datos e restauralos en caso necesario
 
 ### Compatibilidade
@@ -128,7 +129,8 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 
 * Android Studio como contorno de desenvolvemento
 * Linguaxe de programación Java
-* Sistema de almacenamento de datos para a xestión da información da aplicación
+* Supabase como sistema principal de almacenamento e sincronización de datos
+* SQLite/Room para persistencia local da información no dispositivo
 
 ---
 
@@ -146,7 +148,8 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 
 ### Interfaces software
 
-* Sistema de almacenamento que permite o acceso e xestión da información da aplicación
+* Comunicación cun sistema de almacenamento e sincronización de datos mediante Supabase
+* Persistencia local da información mediante SQLite/Room
 * Posible integración con servizos externos para a obtención de información (como datos meteorolóxicos)
 * Posible uso dun sistema de asistencia intelixente para recomendacións básicas
 
@@ -180,7 +183,7 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 
 * Análise de requisitos do sistema
 * Deseño da estrutura da aplicación
-* Implementación do sistema de almacenamento
+* Implementación do sistema de almacenamento e sincronización de datos
 * Desenvolvemento das funcionalidades
 * Realización de probas
 * Elaboración da documentación
