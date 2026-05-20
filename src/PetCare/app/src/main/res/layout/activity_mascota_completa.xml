@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/ivMascotaCompleta"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtNombreCompleto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Nombre"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivMascotaCompleta" />
+
+    <TextView
+        android:id="@+id/txtEspecie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Especie:"
+        app:layout_constraintEnd_toEndOf="@+id/txtNombreCompleto"
+        app:layout_constraintStart_toStartOf="@+id/txtNombreCompleto"
+        app:layout_constraintTop_toBottomOf="@id/txtNombreCompleto" />
+
+    <TextView
+        android:id="@+id/txtRaza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Raza:"
+        app:layout_constraintEnd_toEndOf="@+id/txtEspecie"
+        app:layout_constraintStart_toStartOf="@+id/txtEspecie"
+        app:layout_constraintTop_toBottomOf="@id/txtEspecie" />
+
+    <TextView
+        android:id="@+id/txtEdad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Edad:"
+        app:layout_constraintEnd_toEndOf="@+id/txtRaza"
+        app:layout_constraintStart_toStartOf="@+id/txtRaza"
+        app:layout_constraintTop_toBottomOf="@id/txtRaza" />
+
+    <TextView
+        android:id="@+id/txtPeso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Peso actual:"
+        app:layout_constraintEnd_toEndOf="@+id/txtEdad"
+        app:layout_constraintStart_toStartOf="@+id/txtEdad"
+        app:layout_constraintTop_toBottomOf="@id/txtEdad" />
+
+    <TextView
+        android:id="@+id/txtNacimiento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Fecha nacimiento:"
+        app:layout_constraintEnd_toEndOf="@+id/txtPeso"
+        app:layout_constraintStart_toStartOf="@+id/txtPeso"
+        app:layout_constraintTop_toBottomOf="@id/txtPeso" />
+
+    <TextView
+        android:id="@+id/txtSexo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Sexo:"
+        app:layout_constraintEnd_toEndOf="@+id/txtNacimiento"
+        app:layout_constraintStart_toStartOf="@+id/txtNacimiento"
+        app:layout_constraintTop_toBottomOf="@id/txtNacimiento" />
+
+    <TextView
+        android:id="@+id/txtFavorito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Favorito:"
+        app:layout_constraintEnd_toEndOf="@+id/txtSexo"
+        app:layout_constraintStart_toStartOf="@+id/txtSexo"
+        app:layout_constraintTop_toBottomOf="@id/txtSexo" />
+
+    <Button
+        android:id="@+id/btnEditarMascota"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Editar"
+        app:layout_constraintBottom_toTopOf="@id/btnRegistrarPeso"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/btnRegistrarPeso"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Registrar peso"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
