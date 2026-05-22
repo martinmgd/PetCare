@@ -11,9 +11,14 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.petcare.dao.MascotaDAO;
 import com.example.petcare.dto.MascotaDTO;
+
+import android.widget.EditText;
+import android.widget.Toast;
+import android.app.AlertDialog;
 
 public class MascotaCompletaActivity extends AppCompatActivity {
 
@@ -36,6 +41,10 @@ public class MascotaCompletaActivity extends AppCompatActivity {
     Uri imagenSeleccionada;
 
     int posicion;
+
+    Toolbar toolbarMascota;
+
+    Button btnRegistrarPeso;
 
     ActivityResultLauncher<String> selectorImagen =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
@@ -78,6 +87,8 @@ public class MascotaCompletaActivity extends AppCompatActivity {
         dao = new MascotaDAO();
 
         // Referencias
+        toolbarMascota = findViewById(R.id.toolbarMascota);
+
         ivMascotaCompleta = findViewById(R.id.ivMascotaCompleta);
 
         txtNombreCompleto = findViewById(R.id.txtNombreCompleto);
@@ -91,21 +102,46 @@ public class MascotaCompletaActivity extends AppCompatActivity {
 
         btnEditarMascota = findViewById(R.id.btnEditarMascota);
 
+        btnRegistrarPeso = findViewById(R.id.btnRegistrarPeso);
+
         // Recibir mascota
         mascota = (MascotaDTO) getIntent().getSerializableExtra("mascota");
         posicion = getIntent().getIntExtra("posicion", -1);
+
+        // Toolbar
+        setSupportActionBar(toolbarMascota);
+
+        if(getSupportActionBar() != null){
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            if(mascota != null){
+                getSupportActionBar().setTitle(mascota.getNombre());
+            }else{
+                getSupportActionBar().setTitle("Mascota");
+            }
+        }
+
+        toolbarMascota.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                finish();
+            }
+        });
 
         // Mostrar datos
         mostrarDatos();
 
         // Cambiar imagen
+
         ivMascotaCompleta.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
                 selectorImagen.launch("image/*");
-
             }
         });
 
@@ -122,6 +158,48 @@ public class MascotaCompletaActivity extends AppCompatActivity {
                 intent.putExtra("editar", true);
 
                 launcherEditar.launch(intent);
+            }
+        });
+
+        // Registrar peso
+
+        btnRegistrarPeso.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                EditText txtPesoNuevo = new EditText(MascotaCompletaActivity.this);
+
+                txtPesoNuevo.setHint("Peso actual");
+                txtPesoNuevo.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+                AlertDialog.Builder dialogo = new AlertDialog.Builder(MascotaCompletaActivity.this);
+
+                dialogo.setTitle("Registrar peso");
+                dialogo.setMessage("Introduce el peso actual de la mascota:");
+                dialogo.setView(txtPesoNuevo);
+
+                dialogo.setPositiveButton("Guardar", (dialogInterface, i) -> {
+
+                    String pesoTexto = txtPesoNuevo.getText().toString();
+
+                    if(!pesoTexto.isEmpty()){
+
+                        double peso = Double.parseDouble(pesoTexto);
+
+                        mascota.setPesoActual(peso);
+
+                        dao.actualizar(posicion, mascota);
+
+                        mostrarDatos();
+
+                        Toast.makeText(MascotaCompletaActivity.this, "Peso registrado", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                dialogo.setNegativeButton("Cancelar", null);
+
+                dialogo.show();
             }
         });
     }
@@ -147,6 +225,10 @@ public class MascotaCompletaActivity extends AppCompatActivity {
             txtNacimiento.setText("Fecha nacimiento: " + mascota.getFechaNacimiento());
             txtSexo.setText("Sexo: " + mascota.getSexo());
             txtFavorito.setText("Favorito: " + (mascota.isFavorito() ? "Sí" : "No"));
+
+            if(getSupportActionBar() != null){
+                getSupportActionBar().setTitle(mascota.getNombre());
+            }
         }
     }
 }

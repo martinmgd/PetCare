@@ -8,15 +8,25 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarMascota"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#6A50B5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@android:color/white" />
+
     <ImageView
         android:id="@+id/ivMascotaCompleta"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/ic_launcher_foreground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbarMascota" />
 
     <TextView
         android:id="@+id/txtNombreCompleto"
