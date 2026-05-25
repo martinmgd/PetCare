@@ -41,7 +41,7 @@ PA[Pautas]
 I[Invitacións]
 end
 
-Usuario <-->|colabora| Mascota
+Usuario <-->|xestiona| Mascota
 
 Mascota --> A
 Mascota --> AL

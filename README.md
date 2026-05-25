@@ -1,51 +1,178 @@
-# Proyecto fin de ciclo
+# PetCare 
 
-> *TODO*: Este documento será la "*página de aterrizaje*" de tu proyecto. Será lo primero que vean los que se interesen por él. Cuida su redacción con todo tu mimo. Elimina posteriormente todas las líneas "*TODO*" cuando creas finalizada su redacción.
-> Puedes acompañar a la redacción de este fichero con imágenes o gifs, pero no abuses de ellos.
+<p align="center">
+  <img src="doc/img/logo_rectangular.png">
+</p>
 
-## Descripción
+<h3 align="center">
+Aplicación móbil orientada á organización e seguimento integral do coidado diario das mascotas.
+</h3>
 
-> *TODO*: Realiza una breve descripción del proyecto. No menos de 100 palabras y no más de 300. Resalta lo fundamental **con tus propias palabras**. Utiliza un lenguaje correcto, **pero natural**, que lo entienda todo el mundo, incluso y en especial, las personas que no tengan un conocimiento técnico avanzado. Puede ser un extracto o resumen de apartados que ya contemples en otros ficheros.
+<p align="center"> ──────────────────────────────────────────────────────────────── </p>
 
-## Instalación / Puesta en marcha
+---
 
-> *TODO*: En este apartado describe con toda precisión y a poder ser con la mayor simplicidad/facilidad posible, cómo poner en marcha tu aplicación para probarla (en un ambiente local). Se valorará muy positivamente que este proceso sea lo más fácil posible, con una simple instrucción (p. e. un script de instalación).
-> Si tu proyecto es documental, realiza una especificación de cómo va a ser este proceso. En otras palabras, realiza este apartado independientemente que no haya implementación.
+## Descrición
+
+PetCare é unha aplicación móbil desenvolvida co obxectivo de centralizar nun único lugar toda a información relacionada co coidado dunha mascota. A aplicación permite rexistrar mascotas e realizar un seguimento organizado de datos importantes como o peso, eventos relevantes, información sanitaria, alimentación ou outros aspectos relacionados co seu benestar.
+
+Na práctica diaria, moita desta información adoita quedar repartida entre notas, recordatorios, mensaxes ou documentos en papel, dificultando o seu acceso e aumentando a probabilidade de esquecementos. PetCare busca resolver este problema ofrecendo unha ferramenta intuitiva, accesible e pensada para o uso real.
+
+A aplicación está deseñada para funcionar tanto con almacenamento local como mediante sincronización na nube, permitindo manter a información dispoñible mesmo en situacións sen conexión e sincronizando os cambios posteriormente.
+
+Ademais, o proxecto nace tamén dunha motivación persoal relacionada coa importancia de realizar un seguimento máis organizado do estado e necesidades dunha mascota.
+
+---
+
+## Instalación / Posta en marcha
+
+PetCare poderá utilizarse mediante instalación directa do ficheiro APK no dispositivo Android. Ademais, durante o desenvolvemento tamén poderá executarse localmente desde Android Studio.
+
+### Instalación mediante APK
+
+Descargar:
+
+```text
+APK dispoñible proximamente
+```
+
+Pasos:
+
+- Descargar o ficheiro APK
+- Activar a instalación desde fontes externas no dispositivo
+- Executar o ficheiro descargado
+- Completar a instalación
+
+Unha vez instalada, a aplicación estará lista para o seu uso.
+
+### Execución en ambiente local
+
+Requisitos:
+
+- Android Studio
+- Java JDK 17 ou superior
+- Android SDK actualizado
+- Emulador Android ou dispositivo Android físico
+- Conexión a internet
+
+Clonar o repositorio:
+
+```bash
+git clone https://gitlab.com/iesleliadoura/DAM2/martin-miguens.git
+```
+
+Abrir o proxecto mediante Android Studio.
+
+Executar:
+
+```bash
+Run > Run app
+```
+
+ou:
+
+```bash
+Shift + F10
+```
+
+---
 
 ## Uso
 
-> *TODO*: Es este apartado describe brevemente cómo se usará el software que proyectas. Si tiene una interfaz de terminal, describe aquí su sintaxis. Si tiene una interfaz gráfica de usuario, describe aquí **sólo el uso** (a modo de sumario) **de los aspectos más relevantes de su funcionamiento** (máxima brevedad, como si fuese un anuncio reclamo o comercial).
-> Si tu proyecto es documental, realiza una especificación de cómo planteas estas interfaces, con ejemplos incluso o esquemas de diseño. En otras palabras, realiza este apartado independientemente que no haya implementación.
+PetCare foi deseñado para ofrecer unha experiencia simple e intuitiva.
 
-## Sobre el autor
+Fluxo principal actual:
 
-> *TODO*: Realiza una breve descripción de quién eres (perfil profesional), tus puntos fuertes, o tecnologías que más dominas... y porqué te has decantado por este proyecto. **No más de 200 palabras**. Indica la forma fiable de contactar contigo en el presente y en el futuro.
+```text
+Pantalla inicial
+      ↓
+Inicio de sesión
+      ↓
+Listado de mascotas
+      ↓
+Información detallada
+```
 
-## Licencia
+Funcionalidades implementadas e previstas:
 
-> *TODO*: Es requisito INDISPENSABLE el licenciar explícitamente el proyecto software. Se recomienda licenciar con *GNU Free Documentation License Version 1.3*. Crear un fichero `LICENSE` en la raíz del repo, con tu fichero de licencia. Recuerda que si empleas una licencia de software libre estás autorizando la derivación de tu obra bajo la misma licencia que elijas, pudiendo dar continuidad, p. e. otro alumno, para continuar tu proyecto en otro curso.
-> Si tu proyecto es documental, recomendamos los términos de *GNU Free Documentation License Version 1.3*, crea igualmente el fichero `LICENSE`. Será especialmente valorado en este caso, la claridad de la especificación para que el proyecto pueda ser ejecutado partiendo de lo proyectado.
+- Rexistro de mascotas
+- Xestión de información asociada
+- Seguimento de peso
+- Rexistro de eventos importantes
+- Sistema de autenticación
+- Sincronización local e nube
+- Xestión compartida entre usuarios
 
+![Captura aplicación](doc/img/pantalla_movil_login.png)
+
+---
+
+## Sobre o autor
+
+Son estudante do ciclo superior de Desenvolvemento de Aplicacións Multiplataforma (DAM), interesado especialmente no desenvolvemento de aplicacións móbiles e no deseño de interfaces intuitivas.
+
+Ao longo da formación traballei con tecnoloxías como Java, Android Studio, XML, SQL, Git e ferramentas de modelado.
+
+Escollín PetCare porque combina unha necesidade real cunha motivación persoal. O obxectivo é desenvolver unha ferramenta útil, práctica e adaptable ao día a día dos propietarios de mascotas.
+
+Contacto:
+
+- GitHub: martinmgd
+- GitLab: martinmgd
+- Correo: martin_mgd@hotmail.com
+
+---
+
+## Licenza
+
+PetCare distribúese baixo a licenza MIT.
+
+Esta licenza permite o uso, copia, modificación e distribución do software mantendo o aviso de copyright orixinal.
+
+Para máis información consultar o arquivo [LICENSE](LICENSE).
+
+---
 
 ## Índice
 
-> *TODO*: Simplemente indexa ordenadamente todo tu proyecto.
+1. Anteproxecto
+   * 1.1 [Idea](doc/templates/1_idea.md)
+   * 1.2 [Necesidades](doc/templates/2_necesidades.md)
 
-1. Anteproyecto
-    * 1.1. [Idea](doc/templates/1_idea.md)
-    * 1.2. [Necesidades](doc/templates/2_necesidades.md)
-2. [Análisis](doc/templates/3_analise.md)
+2. [Análise](doc/templates/3_analise.md)
+
 3. [Planificación](doc/templates/4_planificacion.md)
-4. [Diseño](doc/templates/5_deseño.md)
-5. Implantación
-    * 5.1 [Implementación](doc/templates/6_implementacion.md)
-    * 5.2 [Producción](doc/templates/7_producion.md)
 
+4. [Deseño](doc/templates/5_deseño.md)
+
+5. Implantación
+   * 5.1 [Implementación](doc/templates/6_implementacion.md)
+   * 5.2 [Produción](doc/templates/7_producion.md)
+
+---
 
 ## Guía de contribución
 
-> *TODO*: Tratándose de un proyecto de software libre, es muy importante que expongas cómo se puede contribuir con tu proyecto. Algunos ejemplos de esto son realizar nuevas funcionalidades, corrección y/u optimización del código, realización de test automatizados, nuevas interfaces de integración, desarrollo de plugins, etc. etc. Sé lo más conciso que puedas.
+PetCare é un proxecto aberto á mellora continua.
+
+Pódese colaborar mediante:
+
+- Corrección de erros
+- Optimización do código
+- Melloras de interface
+- Novas funcionalidades
+- Probas automatizadas
+- Actualización da documentación
+
+As modificacións realizaranse mediante ramas específicas e integración posterior mediante Pull Requests.
+
+---
 
 ## Links
 
-> *TODO*: Enlaces externos y descripciones de estos enlaces que creas conveniente indicar aquí. Generalmente ya van a estar integrados con tu documentación, pero si requieres realizar un listado de ellos, este es el lugar.
+- [Android Studio](https://developer.android.com/studio)
+- [SQLite](https://www.sqlite.org)
+- [Room](https://developer.android.com/training/data-storage/room)
+- [Supabase](https://supabase.com)
+- [DBDiagram](https://dbdiagram.io)
+- [GitLab](https://gitlab.com)
