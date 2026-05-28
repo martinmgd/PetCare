@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetCare">
         <activity
+            android:name=".AddEventoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EventosActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
             android:exported="false" />
         <activity

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F8FC">
+
+    <TextView
+        android:id="@+id/tvTituloEventos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="52dp"
+        android:text="Eventos"
+        android:textColor="#222222"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddEvento"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="#8F61FF"
+        android:gravity="center"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="+"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:cornerRadius="26dp"
+        app:layout_constraintBottom_toBottomOf="@id/tvTituloEventos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvTituloEventos" />
+
+    <TextView
+        android:id="@+id/tvMesEventos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Maio 2026"
+        android:textColor="#555555"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tvTituloEventos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <GridLayout
+        android:id="@+id/gridCalendarioEventos"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="24dp"
+        android:columnCount="7"
+        android:rowCount="6"
+        app:layout_constraintTop_toBottomOf="@id/tvMesEventos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView android:text="L" style="@style/TextoCalendarioDiaSemana"/>
+        <TextView android:text="M" style="@style/TextoCalendarioDiaSemana"/>
+        <TextView android:text="M" style="@style/TextoCalendarioDiaSemana"/>
+        <TextView android:text="X" style="@style/TextoCalendarioDiaSemana"/>
+        <TextView android:text="V" style="@style/TextoCalendarioDiaSemana"/>
+        <TextView android:text="S" style="@style/TextoCalendarioDiaSemana"/>
+        <TextView android:text="D" style="@style/TextoCalendarioDiaSemana"/>
+
+        <TextView android:text="1" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="2" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="3" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="4" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="5" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="6" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="7" style="@style/TextoCalendarioDia"/>
+
+        <TextView android:text="8" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="9" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="10" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="11" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="12" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="13" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="14" style="@style/TextoCalendarioDia"/>
+
+        <TextView android:text="15" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="16" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="17" style="@style/TextoCalendarioDiaSeleccionado"/>
+        <TextView android:text="18" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="19" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="20" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="21" style="@style/TextoCalendarioDia"/>
+
+        <TextView android:text="22" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="23" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="24" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="25" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="26" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="27" style="@style/TextoCalendarioDia"/>
+        <TextView android:text="28" style="@style/TextoCalendarioDia"/>
+
+    </GridLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvEventos"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="20dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        tools:listitem="@layout/celda_evento"
+        app:layout_constraintTop_toBottomOf="@id/gridCalendarioEventos"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:itemIconTint="#673FAD"
+        app:itemTextColor="#673FAD"
+        app:menu="@menu/menu_home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
