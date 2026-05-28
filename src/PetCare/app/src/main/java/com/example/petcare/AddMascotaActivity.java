@@ -61,7 +61,7 @@ public class AddMascotaActivity extends AppCompatActivity {
             if(editar){
                 getSupportActionBar().setTitle("Editar mascota");
             }else{
-                getSupportActionBar().setTitle("Nueva mascota");
+                getSupportActionBar().setTitle("Nova mascota");
             }
         }
 
@@ -103,7 +103,7 @@ public class AddMascotaActivity extends AppCompatActivity {
                         || edadTexto.isEmpty() || fechaNacimiento.isEmpty()
                         || sexo.isEmpty()){
 
-                    Toast.makeText(AddMascotaActivity.this, "Cubre todos los campos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddMascotaActivity.this, "Cubre todos os campos", Toast.LENGTH_SHORT).show();
 
                     return;
                 }

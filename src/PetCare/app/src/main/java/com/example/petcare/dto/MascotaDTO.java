@@ -24,7 +24,6 @@ public class MascotaDTO implements Serializable {
         favorito = false;
 
         // Valores iniciales
-
         pesoActual = 0;
         fechaNacimiento = "";
         sexo = "";

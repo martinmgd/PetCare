@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_inicio"
+        android:icon="@drawable/ic_casa"
+        android:title="Inicio" />
+
+    <item
+        android:id="@+id/nav_mascotas"
+        android:icon="@drawable/ic_huellas"
+        android:title="Mascotas"/>
+
+    <item
+        android:id="@+id/nav_eventos"
+        android:icon="@drawable/ic_eventos"
+        android:title="Eventos"/>
+
+    <item
+        android:id="@+id/nav_saude"
+        android:icon="@drawable/ic_corazon"
+        android:title="Saúde"/>
+
+    <item
+        android:id="@+id/nav_perfil"
+        android:icon="@drawable/ic_usuario"
+        android:title="Perfil"/>
+
+</menu>

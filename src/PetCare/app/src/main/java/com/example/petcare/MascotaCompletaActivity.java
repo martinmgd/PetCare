@@ -176,10 +176,10 @@ public class MascotaCompletaActivity extends AppCompatActivity {
                 AlertDialog.Builder dialogo = new AlertDialog.Builder(MascotaCompletaActivity.this);
 
                 dialogo.setTitle("Registrar peso");
-                dialogo.setMessage("Introduce el peso actual de la mascota:");
+                dialogo.setMessage("Introduce o peso actual da mascota:");
                 dialogo.setView(txtPesoNuevo);
 
-                dialogo.setPositiveButton("Guardar", (dialogInterface, i) -> {
+                dialogo.setPositiveButton("Gardar", (dialogInterface, i) -> {
 
                     String pesoTexto = txtPesoNuevo.getText().toString();
 
@@ -193,7 +193,7 @@ public class MascotaCompletaActivity extends AppCompatActivity {
 
                         mostrarDatos();
 
-                        Toast.makeText(MascotaCompletaActivity.this, "Peso registrado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MascotaCompletaActivity.this, "Peso rexistrado", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -214,17 +214,17 @@ public class MascotaCompletaActivity extends AppCompatActivity {
             txtNombreCompleto.setText(mascota.getNombre());
             txtEspecie.setText("Especie: " + mascota.getEspecie());
             txtRaza.setText("Raza: " + mascota.getRaza());
-            txtEdad.setText("Edad: " + mascota.getEdad() + " años");
+            txtEdad.setText("Idade: " + mascota.getEdad() + " anos");
 
             if(mascota.getPesoActual() == 0){
-                txtPeso.setText("Peso actual: Sin registrar");
+                txtPeso.setText("Peso actual: Sen rexistrar");
             }else{
                 txtPeso.setText("Peso actual: " + mascota.getPesoActual() + " kg");
             }
 
-            txtNacimiento.setText("Fecha nacimiento: " + mascota.getFechaNacimiento());
+            txtNacimiento.setText("Fecha nacemento: " + mascota.getFechaNacimiento());
             txtSexo.setText("Sexo: " + mascota.getSexo());
-            txtFavorito.setText("Favorito: " + (mascota.isFavorito() ? "Sí" : "No"));
+            txtFavorito.setText("Favorito: " + (mascota.isFavorito() ? "Sí" : "Non"));
 
             if(getSupportActionBar() != null){
                 getSupportActionBar().setTitle(mascota.getNombre());

@@ -42,7 +42,7 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
 
         holder.ivMascota.setImageResource(R.drawable.ic_launcher_foreground);
         holder.txtNombreMascota.setText(mascota.getNombre());
-        holder.txtDatosMascota.setText(mascota.getEspecie() + " - " + mascota.getRaza() + " - " + mascota.getEdad() + " años");
+        holder.txtDatosMascota.setText(mascota.getEspecie() + " - " + mascota.getRaza() + " - " + mascota.getEdad() + " anos");
     }
 
     // Número de elementos
@@ -95,7 +95,7 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
                         AlertDialog.Builder dialogo = new AlertDialog.Builder(view.getContext());
 
                         dialogo.setTitle("Eliminar mascota");
-                        dialogo.setMessage("¿Deseas eliminar esta mascota?");
+                        dialogo.setMessage("¿Desexas eliminar esta mascota?");
 
                         dialogo.setPositiveButton("Sí", (dialogInterface, i) -> {
 
@@ -104,7 +104,7 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
 
                             Toast.makeText(view.getContext(), "Mascota eliminada", Toast.LENGTH_SHORT).show();
                         });
-                        dialogo.setNegativeButton("No", null);
+                        dialogo.setNegativeButton("Non", null);
                         dialogo.show();
                     }
                     return true;

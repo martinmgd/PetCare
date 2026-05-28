@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,9 +15,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText etEmail;
     private TextInputEditText etPassword;
-
     private MaterialButton btnLogin;
-
     private TextView tvRegister;
     private TextView tvForgotPassword;
 
@@ -39,16 +38,17 @@ public class LoginActivity extends AppCompatActivity {
         // Botón iniciar sesión
         btnLogin.setOnClickListener(v -> iniciarSesion());
 
-        // Registro (por ahora pendiente)
-        tvRegister.setOnClickListener(v ->
+        // Abrir registro
+        tvRegister.setOnClickListener(new View.OnClickListener() {
 
-                Toast.makeText(
-                        LoginActivity.this,
-                        "Pantalla de rexistro pendente",
-                        Toast.LENGTH_SHORT
-                ).show()
-        );
+            @Override
+            public void onClick(View view) {
 
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+
+                startActivity(intent);
+            }
+        });
 
         // Recuperar contraseña (por ahora pendiente)
         tvForgotPassword.setOnClickListener(v ->
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent =
                 new Intent(
                         LoginActivity.this,
-                        ListadoMascotasActivity.class
+                        HomeActivity.class
                 );
 
         startActivity(intent);
