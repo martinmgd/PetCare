@@ -3,10 +3,15 @@ package com.example.petcare;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.petcare.adapter.EventoAdapter;
+import com.example.petcare.dao.EventoDAO;
+import com.example.petcare.dto.EventoDTO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
@@ -16,6 +21,28 @@ public class EventosActivity extends AppCompatActivity {
     private MaterialButton btnAddEvento;
     private BottomNavigationView bottomNavigation;
 
+    private EventoDAO dao;
+    private EventoAdapter miAdaptador;
+
+    ActivityResultLauncher<Intent> launcher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+
+                if(result.getResultCode() == RESULT_OK && result.getData() != null){
+
+                    EventoDTO evento =
+                            (EventoDTO) result.getData().getSerializableExtra("evento");
+
+                    if(evento != null){
+
+                        dao.insertar(evento);
+                        miAdaptador.notifyDataSetChanged();
+
+                    }
+
+                }
+
+            });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -23,20 +50,29 @@ public class EventosActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_eventos);
 
+        dao = new EventoDAO();
+
         // Referencias XML
         rvEventos = findViewById(R.id.rvEventos);
         btnAddEvento = findViewById(R.id.btnAddEvento);
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
         // RecyclerView vertical
+        miAdaptador = new EventoAdapter(dao.listar());
+
         rvEventos.setLayoutManager(new LinearLayoutManager(this));
+        rvEventos.setAdapter(miAdaptador);
 
         // Botón añadir evento
         btnAddEvento.setOnClickListener(v -> {
 
-            // Aquí abriremos AddEventoActivity más adelante
-            // Intent intent = new Intent(EventosActivity.this, AddEventoActivity.class);
-            // startActivity(intent);
+            Intent intent =
+                    new Intent(
+                            EventosActivity.this,
+                            AddEventoActivity.class
+                    );
+
+            launcher.launch(intent);
 
         });
 
@@ -92,5 +128,17 @@ public class EventosActivity extends AppCompatActivity {
 
             return false;
         });
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        if(miAdaptador != null){
+
+            miAdaptador.notifyDataSetChanged();
+
+        }
     }
 }

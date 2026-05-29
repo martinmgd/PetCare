@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.petcare.adapter.EventoAdapter;
+import com.example.petcare.dao.EventoDAO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -15,6 +17,9 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView rvEventosHome;
 
     private BottomNavigationView bottomNavigation;
+
+    private EventoDAO eventoDAO;
+    private EventoAdapter eventoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +31,10 @@ public class HomeActivity extends AppCompatActivity {
         // Referencias XML
         rvMascotasHome = findViewById(R.id.rvMascotasHome);
         rvEventosHome = findViewById(R.id.rvEventosHome);
-
         bottomNavigation = findViewById(R.id.bottomNavigation);
-
 
         // Mascotas → scroll horizontal
         rvMascotasHome.setLayoutManager(
-
                 new LinearLayoutManager(
                         this,
                         LinearLayoutManager.HORIZONTAL,
@@ -40,13 +42,12 @@ public class HomeActivity extends AppCompatActivity {
                 )
         );
 
-
         // Eventos → vertical
-        rvEventosHome.setLayoutManager(
+        eventoDAO = new EventoDAO();
+        eventoAdapter = new EventoAdapter(eventoDAO.listar());
 
-                new LinearLayoutManager(this)
-        );
-
+        rvEventosHome.setLayoutManager(new LinearLayoutManager(this));
+        rvEventosHome.setAdapter(eventoAdapter);
 
         // Bottom Navigation
         bottomNavigation.setSelectedItemId(R.id.nav_inicio);
@@ -55,13 +56,10 @@ public class HomeActivity extends AppCompatActivity {
 
             int id = item.getItemId();
 
-            // Inicio
             if(id == R.id.nav_inicio){
-
                 return true;
             }
 
-            // Mascotas
             if(id == R.id.nav_mascotas){
 
                 Intent intent =
@@ -76,52 +74,39 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
 
-            // Eventos
             if(id == R.id.nav_eventos){
 
-//                Intent intent =
-//                        new Intent(
-//                                HomeActivity.this,
-//                                EventosActivity.class
-//                        );
-//
-//                startActivity(intent);
-//                finish();
+                Intent intent =
+                        new Intent(
+                                HomeActivity.this,
+                                EventosActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
 
                 return true;
             }
 
-            // Saúde
             if(id == R.id.nav_saude){
-
-//                Intent intent =
-//                        new Intent(
-//                                HomeActivity.this,
-//                                SaudeActivity.class
-//                        );
-//
-//                startActivity(intent);
-//                finish();
-
                 return true;
             }
 
-            // Perfil
             if(id == R.id.nav_perfil){
-
-//                Intent intent =
-//                        new Intent(
-//                                HomeActivity.this,
-//                                PerfilActivity.class
-//                        );
-//
-//                startActivity(intent);
-//                finish();
-
                 return true;
             }
 
             return false;
         });
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        if(eventoAdapter != null){
+            eventoAdapter.notifyDataSetChanged();
+        }
     }
 }

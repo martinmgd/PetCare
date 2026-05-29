@@ -13,12 +13,12 @@ import com.example.petcare.adapter.MascotaAdapter;
 import com.example.petcare.dao.MascotaDAO;
 import com.example.petcare.dto.MascotaDTO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.button.MaterialButton;
+import android.widget.ImageButton;
 
 public class ListadoMascotasActivity extends AppCompatActivity {
 
     private RecyclerView rvMascotas;
-    private MaterialButton btnAddMascota;
+    private ImageButton btnAddMascota;
     private BottomNavigationView bottomNavigation;
 
     private MascotaAdapter miAdaptador;
@@ -103,14 +103,14 @@ public class ListadoMascotasActivity extends AppCompatActivity {
             // Eventos
             if(id == R.id.nav_eventos){
 
-//                Intent intent =
-//                        new Intent(
-//                                ListadoMascotasActivity.this,
-//                                EventosActivity.class
-//                        );
-//
-//                startActivity(intent);
-//                finish();
+                Intent intent =
+                        new Intent(
+                                ListadoMascotasActivity.this,
+                                EventosActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
 
                 return true;
             }

@@ -21,12 +21,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="50dp"
-        android:layout_height="53dp"
+        android:id="@+id/btnAddMascota"
+        android:layout_width="42dp"
+        android:layout_height="34dp"
         android:layout_marginEnd="48dp"
         android:backgroundTint="#8F61FF"
-
         app:layout_constraintBottom_toBottomOf="@id/tvTitulo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvTitulo"
