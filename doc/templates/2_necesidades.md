@@ -30,15 +30,23 @@ O proxecto está pensado para ser desenvolvido por unha única persoa dentro do 
 
 ## Viabilidade
 
+### Viabilidade técnica
+
 Desde o punto de vista técnico, o proxecto é totalmente viable, xa que se empregan tecnoloxías accesibles e coñecementos adquiridos durante a formación. O uso de tecnoloxías como Supabase e SQLite/Room facilita tanto a sincronización de datos na nube como a persistencia local da información.
 
-A nivel económico, o custo de desenvolvemento é reducido, o que facilita a súa posta en marcha. Isto permite que o proxecto teña potencial para evolucionar cara a un produto comercial sen unha inversión inicial elevada.
+Ademais, o desenvolvemento realizarase mediante ferramentas amplamente utilizadas no ámbito profesional, como Android Studio, Java e sistemas de control de versións, o que garante a dispoñibilidade de documentación, recursos e soporte técnico durante todo o ciclo de vida do proxecto.
+
+### Viabilidade económica
+
+A nivel económico, o custo de desenvolvemento é reducido, xa que a maior parte das ferramentas empregadas son gratuítas ou dispoñen de plans suficientes para as necesidades do proxecto. Isto facilita a súa posta en marcha sen requirir un investimento inicial elevado.
+
+Así mesmo, o proxecto presenta potencial para evolucionar cara a un produto comercial, permitindo incorporar no futuro funcionalidades premium, publicidade especializada ou servizos complementarios relacionados co ámbito do coidado das mascotas.
 
 ---
 
 ## Contorno competitivo
 
-No mercado existen aplicacións que abordan parcialmente esta problemática, como 11Pets ou PetDesk, que permiten xestionar determinados aspectos do coidado das mascotas. Porén, moitas destas solucións presentan limitacións, xa sexa pola súa complexidade, pola súa orientación a entornos profesionais ou pola falta de integración de todas as funcionalidades nun único sistema.
+No mercado existen aplicacións que abordan parcialmente esta problemática, como [11Pets](https://www.11pets.com/en/home) ou [PetDesk](https://petdesk.com), que permiten xestionar determinados aspectos do coidado das mascotas. Porén, moitas destas solucións presentan limitacións, xa sexa pola súa complexidade, pola súa orientación a entornos profesionais ou pola falta de integración de todas as funcionalidades nun único sistema.
 
 Ademais, continúan empregándose métodos alternativos como notas no móbil, recordatorios xenéricos ou incluso o uso de documentos en papel ou a memoria persoal, que non están deseñados especificamente para este tipo de seguimento.
 

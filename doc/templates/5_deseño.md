@@ -385,7 +385,10 @@ Co obxectivo de garantir un funcionamento correcto da aplicación PetCare establ
 
 ---
 
-## WEBGRAFÍA
+## Ferramentas empregadas para os diagramas
 
-* DBDiagram — ferramenta empregada para o deseño e xeración do modelo de base de datos:
-  https://dbdiagram.io/
+A maior parte dos diagramas incluídos na documentación foron elaborados mediante [Mermaid](https://mermaid.js.org), empregando o editor [Mermaid Live Editor](https://mermaid.live) para a súa creación e validación.
+
+Para o deseño do modelo de base de datos empregouse [DBDiagram](https://dbdiagram.io), ferramenta especializada na definición visual de estruturas relacionais e na representación das relacións entre entidades.
+
+Ambas ferramentas permitiron xerar diagramas facilmente modificables e integrables na documentación do proxecto en formato Markdown.

@@ -1,7 +1,7 @@
 # PetCare 
 
 <p align="center">
-  <img src="doc/img/logo_rectangular.png">
+  <img src="doc/img/vandPetCare.png">
 </p>
 
 <h3 align="center">

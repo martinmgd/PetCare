@@ -1,5 +1,3 @@
-Aquí tienes el `4_planificacion.md` ya corregido y ajustado al calendario real de entregas, con horas y presupuesto más coherentes para PetCare.
-
 # FASE DE PLANIFICACIÓN DO PROXECTO
 
 ## Obxectivos do proxecto
