@@ -1,14 +1,14 @@
 # PetCare 
 
-<p align="center">
-  <img src="doc/img/vandPetCare.png">
-</p>
-
 <h3 align="center">
 Aplicación móbil orientada á organización e seguimento integral do coidado diario das mascotas.
 </h3>
 
 <p align="center"> ──────────────────────────────────────────────────────────────── </p>
+
+<p align="center">
+  <img src="doc/img/banner_galego.png" width="1100">
+</p>
 
 ---
 

@@ -1,9 +1,5 @@
 # REQUIRIMENTOS DO SISTEMA
 
-Neste documento preséntanse os aspectos principais do sistema da aplicación móbil **PetCare**, incluíndo as funcionalidades previstas e o seu funcionamento xeral.
-
----
-
 ## Descrición xeral
 
 PetCare é unha aplicación móbil orientada á xestión do coidado de mascotas. O seu obxectivo principal é facilitar aos usuarios o rexistro e consulta da información relevante dos seus animais, permitindo un seguimento máis organizado do seu estado e das tarefas diarias.

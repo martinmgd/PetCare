@@ -421,16 +421,16 @@ Para o cálculo do orzamento considérase un custo estimado de **15 €/hora** p
 
 ### Orzamento por actividade
 
-| ACTIVIDADE                              |  DURACIÓN | CUSTO PERSOAS | RECURSOS MATERIAIS | CUSTO TOTAL |
-| --------------------------------------- | --------: | ------------: | -----------------: | ----------: |
-| Análise de requisitos                   |      35 h |         525 € |                0 € |       525 € |
-| Deseño da aplicación                    |      45 h |         675 € |                0 € |       675 € |
-| Deseño e configuración da base de datos |      80 h |        1200 € |                0 € |      1200 € |
-| Desenvolvemento da aplicación móbil     |     305 h |        4575 € |                0 € |      4575 € |
-| Integración e sincronización            |      80 h |        1200 € |              150 € |      1350 € |
-| Probas e corrección de erros            |      90 h |        1350 € |                0 € |      1350 € |
-| Documentación final e presentación      |      35 h |         525 € |                0 € |       525 € |
-| **TOTAL**                               | **670 h** |   **10050 €** |          **150 €** | **10200 €** |
+| ACTIVIDADE                              | DURACIÓN | CUSTO PERSOAS | RECURSOS MATERIAIS | CUSTO TOTAL |
+| --------------------------------------- | -------: | ------------: | -----------------: | ----------: |
+| Análise de requisitos                   |     25 h |         375 € |                0 € |       375 € |
+| Deseño da aplicación                    |     35 h |         525 € |                0 € |       525 € |
+| Deseño e configuración da base de datos |     50 h |         750 € |                0 € |       750 € |
+| Desenvolvemento da aplicación móbil     |    220 h |        3300 € |                0 € |      3300 € |
+| Integración e sincronización            |     50 h |         750 € |              150 € |       900 € |
+| Probas e corrección de erros            |     50 h |         750 € |                0 € |       750 € |
+| Documentación final e presentación      |     30 h |         450 € |                0 € |       450 € |
+| **TOTAL**                               | **460 h** |   **6900 €** |          **150 €** | **7050 €** |
 
 ---
 
@@ -438,14 +438,14 @@ O orzamento por actividade recolle o custo asociado ao traballo directo do proxe
 
 ### Orzamento por partidas de investimento / gasto
 
-| CONCEPTO                        |     IMPORTE |
-| ------------------------------- | ----------: |
-| Equipos informáticos            |      1900 € |
-| Dispositivo Android para probas |       350 € |
-| Electricidade e internet        |       300 € |
-| Servizos na nube / Supabase     |       150 € |
-| Persoal de desenvolvemento      |     10050 € |
-| **TOTAL ORZAMENTO**             | **12750 €** |
+| CONCEPTO                        | IMPORTE |
+| ------------------------------- | ------: |
+| Equipos informáticos            |   600 € |
+| Dispositivo Android para probas |   150 € |
+| Electricidade e internet        |   300 € |
+| Servizos na nube / Supabase     |   150 € |
+| Persoal de desenvolvemento      |  6900 € |
+| **TOTAL ORZAMENTO**             | **8100 €** |
 
 ---
 
@@ -453,11 +453,11 @@ O orzamento por actividade recolle o custo asociado ao traballo directo do proxe
 
 ```mermaid
 pie title Distribución do orzamento PetCare
-    "Equipos informáticos" : 1900
-    "Dispositivo Android" : 350
+    "Equipos informáticos" : 600
+    "Dispositivo Android" : 150
     "Electricidade e internet" : 300
     "Servizos na nube" : 150
-    "Persoal de desenvolvemento" : 10050
+    "Persoal de desenvolvemento" : 6900
 ```
 
 ---

@@ -66,19 +66,31 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:hint="Fecha nacimiento"
+        android:focusable="false"
+        android:clickable="true"
+        android:cursorVisible="false"
         app:layout_constraintTop_toBottomOf="@id/txtEdad"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <EditText
-        android:id="@+id/txtSexo"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSexo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:hint="Sexo"
+        app:endIconMode="dropdown_menu"
         app:layout_constraintTop_toBottomOf="@id/txtFechaNacimiento"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/txtSexo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnGuardarMascota"
