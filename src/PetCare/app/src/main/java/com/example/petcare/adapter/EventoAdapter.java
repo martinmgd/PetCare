@@ -1,6 +1,7 @@
 package com.example.petcare.adapter;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.petcare.EventoCompletoActivity;
 import com.example.petcare.R;
+import com.example.petcare.dao.EventoDAO;
 import com.example.petcare.dto.EventoDTO;
 
 import java.util.ArrayList;
@@ -18,10 +21,22 @@ import java.util.ArrayList;
 public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoViewHolder> {
 
     private ArrayList<EventoDTO> eventos;
+    private ArrayList<Integer> posicionesReais;
+
+    private EventoDAO dao;
 
     public EventoAdapter(ArrayList<EventoDTO> eventos) {
 
         this.eventos = eventos;
+        this.posicionesReais = null;
+        this.dao = new EventoDAO();
+    }
+
+    public EventoAdapter(ArrayList<EventoDTO> eventos, ArrayList<Integer> posicionesReais) {
+
+        this.eventos = eventos;
+        this.posicionesReais = posicionesReais;
+        this.dao = new EventoDAO();
     }
 
     @NonNull
@@ -31,7 +46,11 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
         View elemento =
                 LayoutInflater
                         .from(parent.getContext())
-                        .inflate(R.layout.celda_evento, parent, false);
+                        .inflate(
+                                R.layout.celda_evento,
+                                parent,
+                                false
+                        );
 
         return new EventoViewHolder(elemento);
     }
@@ -75,20 +94,29 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
             txtHoraEvento = itemView.findViewById(R.id.txtHoraEvento);
             txtFlechaEvento = itemView.findViewById(R.id.txtFlechaEvento);
 
+            // Abre a pantalla co detalle completo do evento
             itemView.setOnClickListener(view -> {
 
                 int posicion = getBindingAdapterPosition();
 
                 if(posicion != RecyclerView.NO_POSITION){
 
-                    Toast.makeText(
-                            view.getContext(),
-                            eventos.get(posicion).getTitulo(),
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    int posicionReal = obtenerPosicionReal(posicion);
+
+                    Intent intent =
+                            new Intent(
+                                    view.getContext(),
+                                    EventoCompletoActivity.class
+                            );
+
+                    intent.putExtra("evento", eventos.get(posicion));
+                    intent.putExtra("posicion", posicionReal);
+
+                    view.getContext().startActivity(intent);
                 }
             });
 
+            // Elimina o evento mantendo pulsada a tarxeta
             itemView.setOnLongClickListener(view -> {
 
                 int posicion = getBindingAdapterPosition();
@@ -103,7 +131,19 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
 
                     dialogo.setPositiveButton("Si", (dialogInterface, i) -> {
 
+                        int posicionReal = obtenerPosicionReal(posicion);
+
+                        if(posicionReal != -1){
+
+                            dao.eliminar(posicionReal);
+                        }
+
                         eventos.remove(posicion);
+
+                        if(posicionesReais != null){
+
+                            posicionesReais.remove(posicion);
+                        }
 
                         notifyItemRemoved(posicion);
 
@@ -124,12 +164,22 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
         }
     }
 
+    // Obtén a posición real do evento na lista principal
+    private int obtenerPosicionReal(int posicion) {
+
+        if(posicionesReais != null){
+
+            return posicionesReais.get(posicion);
+        }
+
+        return posicion;
+    }
+
     private String obtenerDia(String fecha) {
 
         if(fecha != null && fecha.length() >= 2){
 
             return fecha.substring(0, 2);
-
         }
 
         return "--";
@@ -144,21 +194,21 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
 
         if(fecha.contains("/")){
 
-            String[] partes = fecha.split("/");
+            String[] datosFecha = fecha.split("/");
 
-            if(partes.length >= 2){
+            if(datosFecha.length >= 2){
 
-                return convertirMes(partes[1]);
+                return convertirMes(datosFecha[1]);
             }
         }
 
         if(fecha.contains("-")){
 
-            String[] partes = fecha.split("-");
+            String[] datosFecha = fecha.split("-");
 
-            if(partes.length >= 2){
+            if(datosFecha.length >= 2){
 
-                return convertirMes(partes[1]);
+                return convertirMes(datosFecha[1]);
             }
         }
 

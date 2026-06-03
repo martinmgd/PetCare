@@ -1,12 +1,13 @@
 package com.example.petcare;
 
-import android.app.DatePickerDialog;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,6 @@ public class AddMascotaActivity extends AppCompatActivity {
     EditText txtNombre;
     EditText txtEspecie;
     EditText txtRaza;
-    EditText txtEdad;
     EditText txtFechaNacimiento;
 
     MaterialAutoCompleteTextView txtSexo;
@@ -48,7 +48,6 @@ public class AddMascotaActivity extends AppCompatActivity {
         txtNombre = findViewById(R.id.txtNombre);
         txtEspecie = findViewById(R.id.txtEspecie);
         txtRaza = findViewById(R.id.txtRaza);
-        txtEdad = findViewById(R.id.txtEdad);
         txtFechaNacimiento = findViewById(R.id.txtFechaNacimiento);
         txtSexo = findViewById(R.id.txtSexo);
 
@@ -59,30 +58,16 @@ public class AddMascotaActivity extends AppCompatActivity {
         posicion = getIntent().getIntExtra("posicion", -1);
         mascotaEditar = (MascotaDTO) getIntent().getSerializableExtra("mascota");
 
-        // Toolbar
-        setSupportActionBar(toolbarAddMascota);
-
-        if (getSupportActionBar() != null) {
-
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-            if (editar) {
-                getSupportActionBar().setTitle("Editar mascota");
-            } else {
-                getSupportActionBar().setTitle("Nova mascota");
-            }
+        if (editar) {
+            toolbarAddMascota.setTitle("Editar mascota");
+        } else {
+            toolbarAddMascota.setTitle("Nova mascota");
         }
 
-        toolbarAddMascota.setNavigationOnClickListener(new View.OnClickListener() {
+        // Botón de volver da barra superior
+        toolbarAddMascota.setNavigationOnClickListener(v -> finish());
 
-            @Override
-            public void onClick(View view) {
-
-                finish();
-            }
-        });
-
-        // Configuración do calendario e do despregable de sexo
+        // Configuración da data de nacemento e do despregable de sexo
         configurarSelectorFechaNacimiento();
         configurarSelectorSexo();
 
@@ -92,69 +77,154 @@ public class AddMascotaActivity extends AppCompatActivity {
             txtNombre.setText(mascotaEditar.getNombre());
             txtEspecie.setText(mascotaEditar.getEspecie());
             txtRaza.setText(mascotaEditar.getRaza());
-            txtEdad.setText(String.valueOf(mascotaEditar.getEdad()));
             txtFechaNacimiento.setText(mascotaEditar.getFechaNacimiento());
             txtSexo.setText(mascotaEditar.getSexo(), false);
         }
 
         // Guardar mascota
-        btnGuardarMascota.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                guardarMascota();
-            }
-        });
+        btnGuardarMascota.setOnClickListener(view -> guardarMascota());
     }
 
-    // Configura o campo de data de nacemento para abrir un calendario
+    // Configura o campo de data de nacemento para abrir un selector personalizado
     private void configurarSelectorFechaNacimiento() {
 
         txtFechaNacimiento.setFocusable(false);
         txtFechaNacimiento.setClickable(true);
         txtFechaNacimiento.setCursorVisible(false);
 
-        txtFechaNacimiento.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                mostrarCalendarioNacimiento();
-            }
-        });
+        txtFechaNacimiento.setOnClickListener(view -> mostrarSelectorFechaNacimiento());
     }
 
-    // Mostra un calendario para seleccionar a data de nacemento
-    private void mostrarCalendarioNacimiento() {
+    // Mostra un selector de ano, mes e día para evitar navegar mes a mes
+    private void mostrarSelectorFechaNacimiento() {
+
+        Calendar fechaActual = Calendar.getInstance();
+
+        int anoActual = fechaActual.get(Calendar.YEAR);
+        int mesActual = fechaActual.get(Calendar.MONTH) + 1;
+        int diaActual = fechaActual.get(Calendar.DAY_OF_MONTH);
+
+        LinearLayout layout = new LinearLayout(this);
+
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        layout.setPadding(30, 20, 30, 10);
+
+        NumberPicker pickerDia = new NumberPicker(this);
+        NumberPicker pickerMes = new NumberPicker(this);
+        NumberPicker pickerAno = new NumberPicker(this);
+
+        pickerAno.setMinValue(anoActual - 30);
+        pickerAno.setMaxValue(anoActual);
+        pickerAno.setValue(anoActual);
+
+        String[] nomesMeses = {
+                "Xan", "Feb", "Mar", "Abr",
+                "Mai", "Xuñ", "Xul", "Ago",
+                "Set", "Out", "Nov", "Dec"
+        };
+
+        pickerMes.setMinValue(1);
+        pickerMes.setMaxValue(12);
+        pickerMes.setDisplayedValues(nomesMeses);
+        pickerMes.setValue(mesActual);
+
+        pickerDia.setMinValue(1);
+        pickerDia.setMaxValue(obterDiasDoMes(anoActual, mesActual));
+        pickerDia.setValue(diaActual);
+
+        NumberPicker.OnValueChangeListener actualizarDias =
+                (numberPicker, oldValue, newValue) -> {
+
+                    int anoSeleccionado = pickerAno.getValue();
+                    int mesSeleccionado = pickerMes.getValue();
+                    int maxDias = obterDiasDoMes(anoSeleccionado, mesSeleccionado);
+
+                    pickerDia.setMaxValue(maxDias);
+
+                    if (pickerDia.getValue() > maxDias) {
+                        pickerDia.setValue(maxDias);
+                    }
+                };
+
+        pickerAno.setOnValueChangedListener(actualizarDias);
+        pickerMes.setOnValueChangedListener(actualizarDias);
+
+        layout.addView(pickerDia);
+        layout.addView(pickerMes);
+        layout.addView(pickerAno);
+
+        AlertDialog.Builder dialogo =
+                new AlertDialog.Builder(this);
+
+        dialogo.setTitle("Selecciona a data de nacemento");
+        dialogo.setView(layout);
+
+        dialogo.setPositiveButton("Aceptar", (dialogInterface, i) -> {
+
+            int dia = pickerDia.getValue();
+            int mes = pickerMes.getValue();
+            int ano = pickerAno.getValue();
+
+            if (dataPosteriorActual(dia, mes, ano)) {
+
+                Toast.makeText(
+                        AddMascotaActivity.this,
+                        "A data non pode ser futura",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                return;
+            }
+
+            String fecha =
+                    String.format(
+                            "%02d/%02d/%04d",
+                            dia,
+                            mes,
+                            ano
+                    );
+
+            txtFechaNacimiento.setText(fecha);
+        });
+
+        dialogo.setNegativeButton("Cancelar", null);
+
+        dialogo.show();
+    }
+
+    // Obtén o número de días dun mes concreto tendo en conta os anos bisestos
+    private int obterDiasDoMes(int ano, int mes) {
 
         Calendar calendario = Calendar.getInstance();
 
-        int ano = calendario.get(Calendar.YEAR);
-        int mes = calendario.get(Calendar.MONTH);
-        int dia = calendario.get(Calendar.DAY_OF_MONTH);
+        calendario.set(Calendar.YEAR, ano);
+        calendario.set(Calendar.MONTH, mes - 1);
+        calendario.set(Calendar.DAY_OF_MONTH, 1);
 
-        DatePickerDialog dialogoFecha =
-                new DatePickerDialog(
-                        AddMascotaActivity.this,
-                        (view, year, month, dayOfMonth) -> {
+        return calendario.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
 
-                            String fecha =
-                                    String.format(
-                                            "%02d/%02d/%04d",
-                                            dayOfMonth,
-                                            month + 1,
-                                            year
-                                    );
+    // Comproba se a data seleccionada é posterior á data actual
+    private boolean dataPosteriorActual(int dia, int mes, int ano) {
 
-                            txtFechaNacimiento.setText(fecha);
-                        },
-                        ano,
-                        mes,
-                        dia
-                );
+        Calendar fechaSeleccionada = Calendar.getInstance();
 
-        dialogoFecha.show();
+        fechaSeleccionada.set(Calendar.YEAR, ano);
+        fechaSeleccionada.set(Calendar.MONTH, mes - 1);
+        fechaSeleccionada.set(Calendar.DAY_OF_MONTH, dia);
+        fechaSeleccionada.set(Calendar.HOUR_OF_DAY, 0);
+        fechaSeleccionada.set(Calendar.MINUTE, 0);
+        fechaSeleccionada.set(Calendar.SECOND, 0);
+        fechaSeleccionada.set(Calendar.MILLISECOND, 0);
+
+        Calendar fechaActual = Calendar.getInstance();
+
+        fechaActual.set(Calendar.HOUR_OF_DAY, 0);
+        fechaActual.set(Calendar.MINUTE, 0);
+        fechaActual.set(Calendar.SECOND, 0);
+        fechaActual.set(Calendar.MILLISECOND, 0);
+
+        return fechaSeleccionada.after(fechaActual);
     }
 
     // Configura o despregable de sexo da mascota
@@ -179,61 +249,61 @@ public class AddMascotaActivity extends AppCompatActivity {
         txtSexo.setCursorVisible(false);
     }
 
+    // Calcula a idade da mascota a partir da data de nacemento
+    private int calcularEdad(String fechaNacimiento) {
+
+        String[] datosFecha = fechaNacimiento.split("/");
+
+        int dia = Integer.parseInt(datosFecha[0]);
+        int mes = Integer.parseInt(datosFecha[1]);
+        int ano = Integer.parseInt(datosFecha[2]);
+
+        Calendar fechaActual = Calendar.getInstance();
+
+        int edad = fechaActual.get(Calendar.YEAR) - ano;
+
+        int mesActual = fechaActual.get(Calendar.MONTH) + 1;
+        int diaActual = fechaActual.get(Calendar.DAY_OF_MONTH);
+
+        if (mesActual < mes || (mesActual == mes && diaActual < dia)) {
+
+            edad--;
+        }
+
+        return edad;
+    }
+
     // Recolle os datos, valida o formulario e devolve a mascota creada ou editada
     private void guardarMascota() {
 
-        String nombre;
+        String nombre =
+                txtNombre.getText() != null
+                        ? txtNombre.getText().toString().trim()
+                        : "";
 
-        if (txtNombre.getText() != null) {
-            nombre = txtNombre.getText().toString().trim();
-        } else {
-            nombre = "";
-        }
+        String especie =
+                txtEspecie.getText() != null
+                        ? txtEspecie.getText().toString().trim()
+                        : "";
 
-        String especie;
+        String raza =
+                txtRaza.getText() != null
+                        ? txtRaza.getText().toString().trim()
+                        : "";
 
-        if (txtEspecie.getText() != null) {
-            especie = txtEspecie.getText().toString().trim();
-        } else {
-            especie = "";
-        }
+        String fechaNacimiento =
+                txtFechaNacimiento.getText() != null
+                        ? txtFechaNacimiento.getText().toString().trim()
+                        : "";
 
-        String raza;
-
-        if (txtRaza.getText() != null) {
-            raza = txtRaza.getText().toString().trim();
-        } else {
-            raza = "";
-        }
-
-        String edadTexto;
-
-        if (txtEdad.getText() != null) {
-            edadTexto = txtEdad.getText().toString().trim();
-        } else {
-            edadTexto = "";
-        }
-
-        String fechaNacimiento;
-
-        if (txtFechaNacimiento.getText() != null) {
-            fechaNacimiento = txtFechaNacimiento.getText().toString().trim();
-        } else {
-            fechaNacimiento = "";
-        }
-
-        String sexo;
-
-        if (txtSexo.getText() != null) {
-            sexo = txtSexo.getText().toString().trim();
-        } else {
-            sexo = "";
-        }
+        String sexo =
+                txtSexo.getText() != null
+                        ? txtSexo.getText().toString().trim()
+                        : "";
 
         // Validar datos
         if (nombre.isEmpty() || especie.isEmpty() || raza.isEmpty()
-                || edadTexto.isEmpty() || fechaNacimiento.isEmpty()
-                || sexo.isEmpty()) {
+                || fechaNacimiento.isEmpty() || sexo.isEmpty()) {
 
             Toast.makeText(
                     AddMascotaActivity.this,
@@ -247,19 +317,19 @@ public class AddMascotaActivity extends AppCompatActivity {
         int edad;
 
         try {
-            edad = Integer.parseInt(edadTexto);
-        } catch (NumberFormatException e) {
+            edad = calcularEdad(fechaNacimiento);
+        } catch (Exception e) {
 
             Toast.makeText(
                     AddMascotaActivity.this,
-                    "Introduce unha idade válida",
+                    "Introduce unha data de nacemento válida",
                     Toast.LENGTH_SHORT
             ).show();
 
             return;
         }
 
-        // Crear mascota
+        // Crear mascota coa idade calculada automaticamente
         MascotaDTO mascota = new MascotaDTO(nombre, especie, raza, edad);
 
         mascota.setFechaNacimiento(fechaNacimiento);

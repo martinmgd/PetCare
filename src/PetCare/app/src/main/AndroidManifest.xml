@@ -12,19 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetCare">
         <activity
-            android:name=".AddEventoActivity"
+            android:name=".SaudeActivity"
             android:exported="false" />
         <activity
-            android:name=".EventosActivity"
+            android:name=".EventoCompletoActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivityLogo"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +27,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivityLogo"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
             android:exported="false" />
         <activity
             android:name=".ListadoMascotasActivity"
@@ -43,6 +43,12 @@
             android:exported="false" />
         <activity
             android:name=".MascotaCompletaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EventosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddEventoActivity"
             android:exported="false" />
     </application>
 

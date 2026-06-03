@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Nombre"
+        android:text="Nome"
         android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Edad:"
+        android:text="Idade:"
         app:layout_constraintEnd_toEndOf="@+id/txtRaza"
         app:layout_constraintStart_toStartOf="@+id/txtRaza"
         app:layout_constraintTop_toBottomOf="@id/txtRaza" />
@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Fecha nacimiento:"
+        android:text="Fecha nacemento:"
         app:layout_constraintEnd_toEndOf="@+id/txtPeso"
         app:layout_constraintStart_toStartOf="@+id/txtPeso"
         app:layout_constraintTop_toBottomOf="@id/txtPeso" />
@@ -123,7 +123,7 @@
         android:id="@+id/btnRegistrarPeso"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Registrar peso"
+        android:text="Rexistrar peso"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

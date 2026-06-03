@@ -38,4 +38,10 @@ public class EventoDAO {
 
         listaEventos.set(posicion, evento);
     }
+
+    // Buscar posición dun evento dentro da lista principal
+    public int buscarPosicion(EventoDTO evento) {
+
+        return listaEventos.indexOf(evento);
+    }
 }

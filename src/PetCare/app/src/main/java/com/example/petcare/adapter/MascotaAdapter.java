@@ -24,6 +24,7 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
     private ArrayList<MascotaDTO> mascotas;
 
     public MascotaAdapter(ArrayList<MascotaDTO> mascotas) {
+
         this.mascotas = mascotas;
     }
 
@@ -31,23 +32,43 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
     @NonNull
     @Override
     public MascotaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View elemento = LayoutInflater.from(parent.getContext()).inflate(R.layout.celda_mascota, parent, false);
+
+        View elemento =
+                LayoutInflater
+                        .from(parent.getContext())
+                        .inflate(
+                                R.layout.celda_mascota,
+                                parent,
+                                false
+                        );
+
         return new MascotaViewHolder(elemento);
     }
 
     // Asigna datos a la celda
     @Override
     public void onBindViewHolder(@NonNull MascotaViewHolder holder, int position) {
+
         MascotaDTO mascota = mascotas.get(position);
 
         holder.ivMascota.setImageResource(R.drawable.ic_launcher_foreground);
+
         holder.txtNombreMascota.setText(mascota.getNombre());
-        holder.txtDatosMascota.setText(mascota.getEspecie() + " - " + mascota.getRaza() + " - " + mascota.getEdad() + " anos");
+
+        holder.txtDatosMascota.setText(
+                mascota.getEspecie()
+                        + " - "
+                        + mascota.getRaza()
+                        + " - "
+                        + mascota.getEdad()
+                        + " anos"
+        );
     }
 
     // Número de elementos
     @Override
     public int getItemCount() {
+
         return mascotas.size();
     }
 
@@ -56,13 +77,16 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
         ImageView ivMascota;
         TextView txtNombreMascota;
         TextView txtDatosMascota;
+        TextView txtFlechaMascota;
 
         public MascotaViewHolder(@NonNull View itemView) {
+
             super(itemView);
 
             ivMascota = itemView.findViewById(R.id.ivMascota);
             txtNombreMascota = itemView.findViewById(R.id.txtNombreMascota);
             txtDatosMascota = itemView.findViewById(R.id.txtDatosMascota);
+            txtFlechaMascota = itemView.findViewById(R.id.txtFlechaMascota);
 
             // Abrir ficha completa
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -72,9 +96,14 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
 
                     int posicion = getBindingAdapterPosition();
 
-                    if(posicion != RecyclerView.NO_POSITION){
+                    if (posicion != RecyclerView.NO_POSITION) {
 
-                        Intent intent = new Intent(view.getContext(), MascotaCompletaActivity.class);
+                        Intent intent =
+                                new Intent(
+                                        view.getContext(),
+                                        MascotaCompletaActivity.class
+                                );
+
                         intent.putExtra("mascota", mascotas.get(posicion));
                         intent.putExtra("posicion", posicion);
 
@@ -83,30 +112,38 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
                 }
             });
 
-            // Borrar mascota
+            // Borrar mascota mantendo pulsado sobre a tarxeta
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
+
                 @Override
                 public boolean onLongClick(View view) {
 
                     int posicion = getBindingAdapterPosition();
 
-                    if(posicion != RecyclerView.NO_POSITION){
+                    if (posicion != RecyclerView.NO_POSITION) {
 
-                        AlertDialog.Builder dialogo = new AlertDialog.Builder(view.getContext());
+                        AlertDialog.Builder dialogo =
+                                new AlertDialog.Builder(view.getContext());
 
                         dialogo.setTitle("Eliminar mascota");
-                        dialogo.setMessage("¿Desexas eliminar esta mascota?");
+                        dialogo.setMessage("Desexas eliminar esta mascota?");
 
-                        dialogo.setPositiveButton("Sí", (dialogInterface, i) -> {
+                        dialogo.setPositiveButton("Si", (dialogInterface, i) -> {
 
                             mascotas.remove(posicion);
                             notifyItemRemoved(posicion);
 
-                            Toast.makeText(view.getContext(), "Mascota eliminada", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(
+                                    view.getContext(),
+                                    "Mascota eliminada",
+                                    Toast.LENGTH_SHORT
+                            ).show();
                         });
+
                         dialogo.setNegativeButton("Non", null);
                         dialogo.show();
                     }
+
                     return true;
                 }
             });

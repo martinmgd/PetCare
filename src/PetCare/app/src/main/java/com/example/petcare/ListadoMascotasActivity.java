@@ -118,14 +118,14 @@ public class ListadoMascotasActivity extends AppCompatActivity {
             // Saúde
             if(id == R.id.nav_saude){
 
-//                Intent intent =
-//                        new Intent(
-//                                ListadoMascotasActivity.this,
-//                                SaudeActivity.class
-//                        );
-//
-//                startActivity(intent);
-//                finish();
+                Intent intent =
+                        new Intent(
+                                ListadoMascotasActivity.this,
+                                SaudeActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
 
                 return true;
             }

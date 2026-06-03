@@ -21,23 +21,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
+    <ImageButton
         android:id="@+id/btnAddEvento"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="42dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="48dp"
         android:backgroundTint="#8F61FF"
-        android:gravity="center"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:text="+"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:cornerRadius="26dp"
         app:layout_constraintBottom_toBottomOf="@id/tvTituloEventos"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvTituloEventos" />
+        app:layout_constraintTop_toTopOf="@id/tvTituloEventos"
+        app:layout_constraintVertical_bias="0.388"
+        app:srcCompat="@drawable/ic_btn_mas"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/tvMesEventos"
@@ -55,57 +50,15 @@
     <GridLayout
         android:id="@+id/gridCalendarioEventos"
         android:layout_width="0dp"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="24dp"
         android:columnCount="7"
-        android:rowCount="6"
+        android:rowCount="7"
         app:layout_constraintTop_toBottomOf="@id/tvMesEventos"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView android:text="L" style="@style/TextoCalendarioDiaSemana"/>
-        <TextView android:text="M" style="@style/TextoCalendarioDiaSemana"/>
-        <TextView android:text="M" style="@style/TextoCalendarioDiaSemana"/>
-        <TextView android:text="X" style="@style/TextoCalendarioDiaSemana"/>
-        <TextView android:text="V" style="@style/TextoCalendarioDiaSemana"/>
-        <TextView android:text="S" style="@style/TextoCalendarioDiaSemana"/>
-        <TextView android:text="D" style="@style/TextoCalendarioDiaSemana"/>
-
-        <TextView android:text="1" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="2" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="3" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="4" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="5" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="6" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="7" style="@style/TextoCalendarioDia"/>
-
-        <TextView android:text="8" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="9" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="10" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="11" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="12" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="13" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="14" style="@style/TextoCalendarioDia"/>
-
-        <TextView android:text="15" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="16" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="17" style="@style/TextoCalendarioDiaSeleccionado"/>
-        <TextView android:text="18" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="19" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="20" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="21" style="@style/TextoCalendarioDia"/>
-
-        <TextView android:text="22" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="23" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="24" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="25" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="26" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="27" style="@style/TextoCalendarioDia"/>
-        <TextView android:text="28" style="@style/TextoCalendarioDia"/>
-
-    </GridLayout>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvEventos"

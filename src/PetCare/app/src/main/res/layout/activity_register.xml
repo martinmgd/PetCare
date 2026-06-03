@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Crear cuenta"
+            android:text="Crear conta"
             android:textColor="#222222"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="28dp"
-            android:text="Regístrate para empezar"
+            android:text="Rexístrate para empezar"
             android:textColor="#8A8A8A"
             android:textSize="15sp" />
 
@@ -130,7 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="¿Xa tes conta? Inicia sesión"
+            android:text="Xa tes conta? Inicia sesión"
             android:textColor="#666666" />
 
     </LinearLayout>

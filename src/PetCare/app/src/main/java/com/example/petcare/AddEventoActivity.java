@@ -38,6 +38,10 @@ public class AddEventoActivity extends AppCompatActivity {
     private EventoDAO dao;
     private MascotaDAO mascotaDAO;
 
+    private boolean editar;
+    private int posicion;
+    private EventoDTO eventoEditar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -59,6 +63,10 @@ public class AddEventoActivity extends AppCompatActivity {
         txtMascotaEvento = findViewById(R.id.txtMascotaEvento);
 
         btnGuardarEvento = findViewById(R.id.btnGuardarEvento);
+
+        editar = getIntent().getBooleanExtra("editar", false);
+        posicion = getIntent().getIntExtra("posicion", -1);
+        eventoEditar = (EventoDTO) getIntent().getSerializableExtra("evento");
 
         // Botón de volver da barra superior
         toolbarAddEvento.setNavigationOnClickListener(v -> finish());
@@ -204,6 +212,18 @@ public class AddEventoActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT
             ).show();
         }
+
+        if (editar && eventoEditar != null) {
+
+            txtTituloEvento.setText(eventoEditar.getTitulo());
+            txtDescripcionEvento.setText(eventoEditar.getDescripcion());
+            txtFechaEvento.setText(eventoEditar.getFecha());
+            txtHoraEvento.setText(eventoEditar.getHora());
+            txtTipoEvento.setText(eventoEditar.getTipo());
+            txtMascotaEvento.setText(eventoEditar.getMascota(), false);
+
+            btnGuardarEvento.setText("Gardar cambios");
+        }
     }
 
     // Recolle os datos do formulario, valida os campos obrigatorios e devolve o evento creado
@@ -306,6 +326,8 @@ public class AddEventoActivity extends AppCompatActivity {
         Intent intent = new Intent();
 
         intent.putExtra("evento", evento);
+        intent.putExtra("posicion", posicion);
+        intent.putExtra("editar", editar);
 
         setResult(RESULT_OK, intent);
 

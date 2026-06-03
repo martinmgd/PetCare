@@ -85,10 +85,10 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Aquí irá Supabase más adelante
+        // Validación temporal ata integrar Supabase
         Toast.makeText(
                 this,
-                "Inicio de sesión correcto",
+                "Acceso correcto",
                 Toast.LENGTH_SHORT
         ).show();
 

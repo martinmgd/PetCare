@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="#F8F8FC"
-            app:navigationIcon="@android:drawable/ic_media_previous"
+            app:navigationIcon="@drawable/flecha_atras"
             app:title="Novo evento"
             app:titleTextColor="#222222"
             app:layout_constraintTop_toTopOf="parent"
