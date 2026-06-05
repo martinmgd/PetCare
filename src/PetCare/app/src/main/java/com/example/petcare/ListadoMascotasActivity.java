@@ -72,7 +72,7 @@ public class ListadoMascotasActivity extends AppCompatActivity {
             launcher.launch(intent);
         });
 
-// Bottom Navigation
+        // Bottom Navigation
         bottomNavigation.setSelectedItemId(R.id.nav_mascotas);
 
         bottomNavigation.setOnItemSelectedListener(item -> {
@@ -133,14 +133,14 @@ public class ListadoMascotasActivity extends AppCompatActivity {
             // Perfil
             if(id == R.id.nav_perfil){
 
-//                Intent intent =
-//                        new Intent(
-//                                ListadoMascotasActivity.this,
-//                                PerfilActivity.class
-//                        );
-//
-//                startActivity(intent);
-//                finish();
+                Intent intent =
+                        new Intent(
+                                ListadoMascotasActivity.this,
+                                PerfilActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
 
                 return true;
             }

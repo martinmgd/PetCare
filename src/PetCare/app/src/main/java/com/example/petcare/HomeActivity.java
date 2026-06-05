@@ -144,8 +144,18 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
 
-            // Perfil (pendente de implementar)
+            // Perfil
             if(id == R.id.nav_perfil){
+
+                Intent intent =
+                        new Intent(
+                                HomeActivity.this,
+                                PerfilActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
+
                 return true;
             }
 

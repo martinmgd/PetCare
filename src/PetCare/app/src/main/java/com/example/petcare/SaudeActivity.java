@@ -26,6 +26,7 @@ public class SaudeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_saude);
 
+        // Referencias XML
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
         cardActividade = findViewById(R.id.cardActividade);
@@ -34,48 +35,107 @@ public class SaudeActivity extends AppCompatActivity {
         cardMedicacion = findViewById(R.id.cardMedicacion);
         cardHistorial = findViewById(R.id.cardHistorial);
 
-        cardActividade.setOnClickListener(v -> mostrarPendente("Actividade"));
-        cardPeso.setOnClickListener(v -> mostrarPendente("Peso"));
-        cardVacinas.setOnClickListener(v -> mostrarPendente("Vacinas"));
-        cardMedicacion.setOnClickListener(v -> mostrarPendente("Medicación"));
-        cardHistorial.setOnClickListener(v -> mostrarPendente("Historial"));
+        // Actividade
+        cardActividade.setOnClickListener(v ->
+                mostrarPendente("Actividade")
+        );
 
+        // Peso
+        cardPeso.setOnClickListener(v -> {
+
+            Intent intent =
+                    new Intent(
+                            SaudeActivity.this,
+                            PesoActivity.class
+                    );
+
+            startActivity(intent);
+        });
+
+        // Vacinas
+        cardVacinas.setOnClickListener(v ->
+                mostrarPendente("Vacinas")
+        );
+
+        // Medicación
+        cardMedicacion.setOnClickListener(v ->
+                mostrarPendente("Medicación")
+        );
+
+        // Historial
+        cardHistorial.setOnClickListener(v ->
+                mostrarPendente("Historial")
+        );
+
+        // Bottom Navigation
         bottomNavigation.setSelectedItemId(R.id.nav_saude);
 
         bottomNavigation.setOnItemSelectedListener(item -> {
 
             int id = item.getItemId();
 
+            // Inicio
             if(id == R.id.nav_inicio){
 
-                startActivity(new Intent(SaudeActivity.this, HomeActivity.class));
+                Intent intent =
+                        new Intent(
+                                SaudeActivity.this,
+                                HomeActivity.class
+                        );
+
+                startActivity(intent);
                 finish();
 
                 return true;
             }
 
+            // Mascotas
             if(id == R.id.nav_mascotas){
 
-                startActivity(new Intent(SaudeActivity.this, ListadoMascotasActivity.class));
+                Intent intent =
+                        new Intent(
+                                SaudeActivity.this,
+                                ListadoMascotasActivity.class
+                        );
+
+                startActivity(intent);
                 finish();
 
                 return true;
             }
 
+            // Eventos
             if(id == R.id.nav_eventos){
 
-                startActivity(new Intent(SaudeActivity.this, EventosActivity.class));
+                Intent intent =
+                        new Intent(
+                                SaudeActivity.this,
+                                EventosActivity.class
+                        );
+
+                startActivity(intent);
                 finish();
 
                 return true;
             }
 
+            // Saúde
             if(id == R.id.nav_saude){
 
                 return true;
             }
 
+            // Perfil
             if(id == R.id.nav_perfil){
+
+                Intent intent =
+                        new Intent(
+                                SaudeActivity.this,
+                                PerfilActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
 
                 return true;
             }
@@ -84,6 +144,7 @@ public class SaudeActivity extends AppCompatActivity {
         });
     }
 
+    // Mostra unha mensaxe para os apartados aínda non implementados
     private void mostrarPendente(String apartado) {
 
         Toast.makeText(

@@ -158,7 +158,16 @@ public class EventosActivity extends AppCompatActivity {
             }
 
             // Perfil
-            if (id == R.id.nav_perfil) {
+            if(id == R.id.nav_perfil){
+
+                Intent intent =
+                        new Intent(
+                                EventosActivity.this,
+                                PerfilActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
 
                 return true;
             }
