@@ -16,7 +16,6 @@ public class SaudeActivity extends AppCompatActivity {
     private MaterialCardView cardActividade;
     private MaterialCardView cardPeso;
     private MaterialCardView cardVacinas;
-    private MaterialCardView cardCitas;
     private MaterialCardView cardMedicacion;
     private MaterialCardView cardHistorial;
 
@@ -32,14 +31,12 @@ public class SaudeActivity extends AppCompatActivity {
         cardActividade = findViewById(R.id.cardActividade);
         cardPeso = findViewById(R.id.cardPeso);
         cardVacinas = findViewById(R.id.cardVacinas);
-        cardCitas = findViewById(R.id.cardCitas);
         cardMedicacion = findViewById(R.id.cardMedicacion);
         cardHistorial = findViewById(R.id.cardHistorial);
 
         cardActividade.setOnClickListener(v -> mostrarPendente("Actividade"));
         cardPeso.setOnClickListener(v -> mostrarPendente("Peso"));
         cardVacinas.setOnClickListener(v -> mostrarPendente("Vacinas"));
-        cardCitas.setOnClickListener(v -> mostrarPendente("Citas veterinarias"));
         cardMedicacion.setOnClickListener(v -> mostrarPendente("Medicación"));
         cardHistorial.setOnClickListener(v -> mostrarPendente("Historial"));
 
