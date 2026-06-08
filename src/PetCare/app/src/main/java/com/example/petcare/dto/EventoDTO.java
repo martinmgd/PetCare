@@ -1,9 +1,18 @@
 package com.example.petcare.dto;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
+@Entity(tableName = "eventos")
 public class EventoDTO implements Serializable {
 
+    // Clave primaria
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    // Datos do evento
     private String titulo;
     private String descripcion;
     private String fecha;
@@ -11,9 +20,11 @@ public class EventoDTO implements Serializable {
     private String tipo;
     private String mascota;
 
+    // Constructor baleiro necesario para Room
     public EventoDTO() {
     }
 
+    // Constructor para crear eventos
     public EventoDTO(
             String titulo,
             String descripcion,
@@ -29,6 +40,16 @@ public class EventoDTO implements Serializable {
         this.hora = hora;
         this.tipo = tipo;
         this.mascota = mascota;
+    }
+
+    // Getters e Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+
+        this.id = id;
     }
 
     public String getTitulo() {

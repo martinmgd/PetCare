@@ -1,19 +1,34 @@
 package com.example.petcare.dto;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
+@Entity(tableName = "mascotas")
 public class MascotaDTO implements Serializable {
 
+    // Clave primaria
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    // Datos básicos
     private String nombre;
     private String especie;
     private String raza;
     private int edad;
     private boolean favorito;
 
+    // Datos de saúde
     private double pesoActual;
     private String fechaNacimiento;
     private String sexo;
 
+    // Constructor baleiro necesario para Room
+    public MascotaDTO() {
+    }
+
+    // Constructor para crear mascotas
     public MascotaDTO(String nombre, String especie, String raza, int edad) {
 
         this.nombre = nombre;
@@ -29,11 +44,22 @@ public class MascotaDTO implements Serializable {
         sexo = "";
     }
 
+    // Getters e Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
+
         this.nombre = nombre;
     }
 
@@ -42,6 +68,7 @@ public class MascotaDTO implements Serializable {
     }
 
     public void setEspecie(String especie) {
+
         this.especie = especie;
     }
 
@@ -50,6 +77,7 @@ public class MascotaDTO implements Serializable {
     }
 
     public void setRaza(String raza) {
+
         this.raza = raza;
     }
 
@@ -58,6 +86,7 @@ public class MascotaDTO implements Serializable {
     }
 
     public void setEdad(int edad) {
+
         this.edad = edad;
     }
 
@@ -66,6 +95,7 @@ public class MascotaDTO implements Serializable {
     }
 
     public void setFavorito(boolean favorito) {
+
         this.favorito = favorito;
     }
 
@@ -74,6 +104,7 @@ public class MascotaDTO implements Serializable {
     }
 
     public void setPesoActual(double pesoActual) {
+
         this.pesoActual = pesoActual;
     }
 
@@ -82,6 +113,7 @@ public class MascotaDTO implements Serializable {
     }
 
     public void setFechaNacimiento(String fechaNacimiento) {
+
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -90,6 +122,7 @@ public class MascotaDTO implements Serializable {
     }
 
     public void setSexo(String sexo) {
+
         this.sexo = sexo;
     }
 }

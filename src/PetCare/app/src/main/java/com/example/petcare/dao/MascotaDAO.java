@@ -10,33 +10,40 @@ public class MascotaDAO {
     private ArrayList<MascotaDTO> mascotas;
 
     public MascotaDAO() {
+
         mascotas = Datos.getInstance().getMascotas();
     }
 
     // CREATE
-    public void insertar(MascotaDTO mascota){
+    public void insertar(MascotaDTO mascota) {
+
         mascotas.add(mascota);
     }
 
     // READ
-    public ArrayList<MascotaDTO> listar(){
+    public ArrayList<MascotaDTO> listar() {
+
         return mascotas;
     }
 
     // READ individual
-    public MascotaDTO obtener(int posicion){
+    public MascotaDTO obtener(int posicion) {
+
         return mascotas.get(posicion);
     }
 
     // UPDATE
-    public void actualizar(int posicion,
-                           MascotaDTO mascota){
+    public void actualizar(
+            int posicion,
+            MascotaDTO mascota
+    ) {
 
         mascotas.set(posicion, mascota);
     }
 
     // DELETE
-    public void borrar(int posicion){
+    public void borrar(int posicion) {
+
         mascotas.remove(posicion);
     }
 }
