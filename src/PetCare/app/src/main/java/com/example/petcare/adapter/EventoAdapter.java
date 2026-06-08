@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.petcare.EventoCompletoActivity;
 import com.example.petcare.R;
 import com.example.petcare.dao.EventoDAO;
+import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.EventoDTO;
 
 import java.util.ArrayList;
@@ -21,27 +22,18 @@ import java.util.ArrayList;
 public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoViewHolder> {
 
     private ArrayList<EventoDTO> eventos;
-    private ArrayList<Integer> posicionesReais;
-
-    private EventoDAO dao;
 
     public EventoAdapter(ArrayList<EventoDTO> eventos) {
 
         this.eventos = eventos;
-        this.posicionesReais = null;
-        this.dao = new EventoDAO();
-    }
-
-    public EventoAdapter(ArrayList<EventoDTO> eventos, ArrayList<Integer> posicionesReais) {
-
-        this.eventos = eventos;
-        this.posicionesReais = posicionesReais;
-        this.dao = new EventoDAO();
     }
 
     @NonNull
     @Override
-    public EventoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public EventoViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent,
+            int viewType
+    ) {
 
         View elemento =
                 LayoutInflater
@@ -56,13 +48,16 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventoViewHolder holder, int position) {
+    public void onBindViewHolder(
+            @NonNull EventoViewHolder holder,
+            int position
+    ) {
 
         EventoDTO evento = eventos.get(position);
 
+        // Datos da tarxeta
         holder.txtDiaEvento.setText(obtenerDia(evento.getFecha()));
         holder.txtMesEvento.setText(obtenerMes(evento.getFecha()));
-
         holder.txtTituloEvento.setText(evento.getTitulo());
         holder.txtDescripcionEvento.setText(evento.getDescripcion());
         holder.txtHoraEvento.setText(evento.getHora());
@@ -87,6 +82,7 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
 
             super(itemView);
 
+            // Referencias XML
             txtDiaEvento = itemView.findViewById(R.id.txtDiaEvento);
             txtMesEvento = itemView.findViewById(R.id.txtMesEvento);
             txtTituloEvento = itemView.findViewById(R.id.txtTituloEvento);
@@ -94,14 +90,14 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
             txtHoraEvento = itemView.findViewById(R.id.txtHoraEvento);
             txtFlechaEvento = itemView.findViewById(R.id.txtFlechaEvento);
 
-            // Abre a pantalla co detalle completo do evento
+            // Abrir evento completo
             itemView.setOnClickListener(view -> {
 
                 int posicion = getBindingAdapterPosition();
 
-                if(posicion != RecyclerView.NO_POSITION){
+                if (posicion != RecyclerView.NO_POSITION) {
 
-                    int posicionReal = obtenerPosicionReal(posicion);
+                    EventoDTO evento = eventos.get(posicion);
 
                     Intent intent =
                             new Intent(
@@ -109,19 +105,19 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
                                     EventoCompletoActivity.class
                             );
 
-                    intent.putExtra("evento", eventos.get(posicion));
-                    intent.putExtra("posicion", posicionReal);
+                    // Enviamos o evento completo co seu id de Room
+                    intent.putExtra("evento", evento);
 
                     view.getContext().startActivity(intent);
                 }
             });
 
-            // Elimina o evento mantendo pulsada a tarxeta
+            // Borrar evento
             itemView.setOnLongClickListener(view -> {
 
                 int posicion = getBindingAdapterPosition();
 
-                if(posicion != RecyclerView.NO_POSITION){
+                if (posicion != RecyclerView.NO_POSITION) {
 
                     AlertDialog.Builder dialogo =
                             new AlertDialog.Builder(view.getContext());
@@ -131,20 +127,19 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
 
                     dialogo.setPositiveButton("Si", (dialogInterface, i) -> {
 
-                        int posicionReal = obtenerPosicionReal(posicion);
+                        EventoDTO evento = eventos.get(posicion);
 
-                        if(posicionReal != -1){
+                        // Base de datos
+                        EventoDAO dao =
+                                PetCareDatabase
+                                        .getInstance(view.getContext())
+                                        .eventoDAO();
 
-                            dao.eliminar(posicionReal);
-                        }
+                        // Borrar en Room usando o id do evento
+                        dao.borrar(evento);
 
+                        // Borrar da lista visible
                         eventos.remove(posicion);
-
-                        if(posicionesReais != null){
-
-                            posicionesReais.remove(posicion);
-                        }
-
                         notifyItemRemoved(posicion);
 
                         Toast.makeText(
@@ -164,20 +159,10 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
         }
     }
 
-    // Obtén a posición real do evento na lista principal
-    private int obtenerPosicionReal(int posicion) {
-
-        if(posicionesReais != null){
-
-            return posicionesReais.get(posicion);
-        }
-
-        return posicion;
-    }
-
+    // Obter día
     private String obtenerDia(String fecha) {
 
-        if(fecha != null && fecha.length() >= 2){
+        if (fecha != null && fecha.length() >= 2) {
 
             return fecha.substring(0, 2);
         }
@@ -185,28 +170,29 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
         return "--";
     }
 
+    // Obter mes
     private String obtenerMes(String fecha) {
 
-        if(fecha == null){
+        if (fecha == null) {
 
             return "---";
         }
 
-        if(fecha.contains("/")){
+        if (fecha.contains("/")) {
 
             String[] datosFecha = fecha.split("/");
 
-            if(datosFecha.length >= 2){
+            if (datosFecha.length >= 2) {
 
                 return convertirMes(datosFecha[1]);
             }
         }
 
-        if(fecha.contains("-")){
+        if (fecha.contains("-")) {
 
             String[] datosFecha = fecha.split("-");
 
-            if(datosFecha.length >= 2){
+            if (datosFecha.length >= 2) {
 
                 return convertirMes(datosFecha[1]);
             }
@@ -215,6 +201,7 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
         return "---";
     }
 
+    // Converter número de mes
     private String convertirMes(String mes) {
 
         switch (mes) {

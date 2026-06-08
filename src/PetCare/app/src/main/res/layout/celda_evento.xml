@@ -4,10 +4,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="82dp"
+    android:layout_height="95dp"
     android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="#F2EAFB"
     app:cardCornerRadius="18dp"
-    app:cardElevation="2dp">
+    app:cardElevation="2dp"
+    app:strokeColor="#E0D2F3"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,24 +22,24 @@
             android:layout_width="42dp"
             android:layout_height="wrap_content"
             android:text="17"
+            android:textAlignment="center"
             android:textColor="#222222"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:textAlignment="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txtMesEvento"
             android:layout_width="42dp"
             android:layout_height="wrap_content"
             android:text="MAI"
+            android:textAlignment="center"
             android:textColor="#777777"
             android:textSize="11sp"
             android:textStyle="bold"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/txtDiaEvento"
-            app:layout_constraintStart_toStartOf="@id/txtDiaEvento" />
+            app:layout_constraintStart_toStartOf="@id/txtDiaEvento"
+            app:layout_constraintTop_toBottomOf="@id/txtDiaEvento" />
 
         <TextView
             android:id="@+id/txtTituloEvento"
@@ -46,25 +49,25 @@
             android:layout_marginEnd="8dp"
             android:text="Veterinario"
             android:textColor="#222222"
-            android:textSize="16sp"
+            android:textSize="17sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@id/txtDiaEvento"
+            app:layout_constraintEnd_toStartOf="@id/txtHoraEvento"
             app:layout_constraintStart_toEndOf="@id/txtDiaEvento"
-            app:layout_constraintEnd_toStartOf="@id/txtHoraEvento" />
+            app:layout_constraintTop_toTopOf="@id/txtDiaEvento" />
 
         <TextView
             android:id="@+id/txtDescripcionEvento"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:layout_marginEnd="8dp"
             android:text="Revisión xeral"
             android:textColor="#777777"
             android:textSize="13sp"
-            app:layout_constraintTop_toBottomOf="@id/txtTituloEvento"
+            app:layout_constraintEnd_toStartOf="@id/txtHoraEvento"
             app:layout_constraintStart_toEndOf="@id/txtDiaEvento"
-            app:layout_constraintEnd_toStartOf="@id/txtHoraEvento" />
+            app:layout_constraintTop_toBottomOf="@id/txtTituloEvento" />
 
         <TextView
             android:id="@+id/txtHoraEvento"
@@ -73,8 +76,8 @@
             android:text="10:00"
             android:textColor="#222222"
             android:textSize="14sp"
-            app:layout_constraintTop_toTopOf="@id/txtTituloEvento"
-            app:layout_constraintEnd_toStartOf="@id/txtFlechaEvento" />
+            app:layout_constraintEnd_toStartOf="@id/txtFlechaEvento"
+            app:layout_constraintTop_toTopOf="@id/txtTituloEvento" />
 
         <TextView
             android:id="@+id/txtFlechaEvento"
@@ -83,10 +86,11 @@
             android:layout_marginStart="12dp"
             android:text="›"
             android:textColor="#777777"
-            android:textSize="30sp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="32sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

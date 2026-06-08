@@ -53,7 +53,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
-                android:text="Martín"
+                android:text="Usuario"
                 android:textColor="#222222"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="6dp"
-                android:text="martin_mgd@hotmail.com"
+                android:text="correo@exemplo.com"
                 android:textColor="#777777"
                 android:textSize="15sp"
                 app:layout_constraintTop_toBottomOf="@id/txtNomePerfil"
@@ -112,27 +112,42 @@
             android:padding="18dp">
 
             <TextView
+                android:id="@+id/txtNomeConta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nome: Martín"
+                android:text="Nome:"
                 android:textColor="#333333"
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/txtCorreoConta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Correo: martin_mgd@hotmail.com"
+                android:text="Correo:"
                 android:textColor="#333333"
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/txtUsuarioId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Teléfono: Sen rexistrar"
+                android:text="ID usuario:"
                 android:textColor="#333333"
                 android:textSize="16sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopiarId"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="14dp"
+                android:backgroundTint="#F1EAF8"
+                android:text="📋 Copiar ID"
+                android:textAllCaps="false"
+                android:textColor="#8F61FF"
+                android:textSize="15sp"
+                app:cornerRadius="24dp" />
 
         </LinearLayout>
 

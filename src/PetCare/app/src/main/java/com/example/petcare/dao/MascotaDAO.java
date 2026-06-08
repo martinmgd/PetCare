@@ -1,49 +1,47 @@
 package com.example.petcare.dao;
 
-import com.example.petcare.data.Datos;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
 import com.example.petcare.dto.MascotaDTO;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class MascotaDAO {
-
-    private ArrayList<MascotaDTO> mascotas;
-
-    public MascotaDAO() {
-
-        mascotas = Datos.getInstance().getMascotas();
-    }
+@Dao
+public interface MascotaDAO {
 
     // CREATE
-    public void insertar(MascotaDTO mascota) {
-
-        mascotas.add(mascota);
-    }
+    @Insert
+    long insertar(MascotaDTO mascota);
 
     // READ
-    public ArrayList<MascotaDTO> listar() {
+    @Query("SELECT * FROM mascotas ORDER BY id DESC")
+    List<MascotaDTO> listar();
 
-        return mascotas;
-    }
+    // READ por propietario
+    @Query("SELECT * FROM mascotas WHERE propietarioId = :propietarioId ORDER BY id DESC")
+    List<MascotaDTO> listarPorPropietario(String propietarioId);
 
     // READ individual
-    public MascotaDTO obtener(int posicion) {
+    @Query("SELECT * FROM mascotas WHERE id = :id")
+    MascotaDTO obtenerPorId(int id);
 
-        return mascotas.get(posicion);
-    }
+    // READ pendientes de sincronizar
+    @Query("SELECT * FROM mascotas WHERE pendienteSync = 1")
+    List<MascotaDTO> listarPendientesSync();
 
     // UPDATE
-    public void actualizar(
-            int posicion,
-            MascotaDTO mascota
-    ) {
-
-        mascotas.set(posicion, mascota);
-    }
+    @Update
+    void actualizar(MascotaDTO mascota);
 
     // DELETE
-    public void borrar(int posicion) {
+    @Delete
+    void borrar(MascotaDTO mascota);
 
-        mascotas.remove(posicion);
-    }
+    // DELETE por id
+    @Query("DELETE FROM mascotas WHERE id = :id")
+    void borrarPorId(int id);
 }

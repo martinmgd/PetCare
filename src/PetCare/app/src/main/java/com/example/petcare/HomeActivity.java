@@ -11,7 +11,12 @@ import com.example.petcare.adapter.EventoAdapter;
 import com.example.petcare.adapter.MascotaAdapter;
 import com.example.petcare.dao.EventoDAO;
 import com.example.petcare.dao.MascotaDAO;
+import com.example.petcare.data.PetCareDatabase;
+import com.example.petcare.dto.EventoDTO;
+import com.example.petcare.dto.MascotaDTO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -20,13 +25,14 @@ public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
 
-    // DAO e Adapter de eventos
     private EventoDAO eventoDAO;
-    private EventoAdapter eventoAdapter;
-
-    // DAO e Adapter de mascotas
     private MascotaDAO mascotaDAO;
+
+    private EventoAdapter eventoAdapter;
     private MascotaAdapter mascotaAdapter;
+
+    private ArrayList<MascotaDTO> listaMascotas;
+    private ArrayList<EventoDTO> listaEventos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,24 +41,27 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_home);
 
-        // Referencias aos compoñentes do XML
+        // Base de datos
+        PetCareDatabase db =
+                PetCareDatabase.getInstance(this);
+
+        mascotaDAO = db.mascotaDAO();
+        eventoDAO = db.eventoDAO();
+
+        // Referencias XML
         rvMascotasHome = findViewById(R.id.rvMascotasHome);
         rvEventosHome = findViewById(R.id.rvEventosHome);
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
+        // Listas
+        listaMascotas = new ArrayList<>();
+        listaEventos = new ArrayList<>();
 
-        // MASCOTAS
-
-        // Obtén a lista de mascotas gardadas
-        mascotaDAO = new MascotaDAO();
-
-        // Crea o adaptador coas mascotas
+        // Adapter mascotas
         mascotaAdapter =
-                new MascotaAdapter(
-                        mascotaDAO.listar()
-                );
+                new MascotaAdapter(listaMascotas);
 
-        // RecyclerView horizontal para mostrar as mascotas
+        // RecyclerView mascotas
         rvMascotasHome.setLayoutManager(
                 new LinearLayoutManager(
                         this,
@@ -61,46 +70,37 @@ public class HomeActivity extends AppCompatActivity {
                 )
         );
 
-        // Asigna o adaptador ao RecyclerView
         rvMascotasHome.setAdapter(mascotaAdapter);
 
-
-        // EVENTOS
-
-        // Obtén a lista de eventos gardados
-        eventoDAO = new EventoDAO();
-
-        // Crea o adaptador cos eventos
+        // Adapter eventos
         eventoAdapter =
-                new EventoAdapter(
-                        eventoDAO.listar()
-                );
+                new EventoAdapter(listaEventos);
 
-        // RecyclerView vertical para os eventos
+        // RecyclerView eventos
         rvEventosHome.setLayoutManager(
                 new LinearLayoutManager(this)
         );
 
-        // Asigna o adaptador ao RecyclerView
         rvEventosHome.setAdapter(eventoAdapter);
 
+        // Cargar datos
+        cargarDatos();
 
-        // MENÚ INFERIOR
-
-        // Marca Inicio como pantalla actual
+        // Bottom Navigation
         bottomNavigation.setSelectedItemId(R.id.nav_inicio);
 
         bottomNavigation.setOnItemSelectedListener(item -> {
 
             int id = item.getItemId();
 
-            // Xa estamos en Inicio
-            if(id == R.id.nav_inicio){
+            // Inicio
+            if (id == R.id.nav_inicio) {
+
                 return true;
             }
 
-            // Ir a Mascotas
-            if(id == R.id.nav_mascotas){
+            // Mascotas
+            if (id == R.id.nav_mascotas) {
 
                 Intent intent =
                         new Intent(
@@ -114,8 +114,8 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
 
-            // Ir a Eventos
-            if(id == R.id.nav_eventos){
+            // Eventos
+            if (id == R.id.nav_eventos) {
 
                 Intent intent =
                         new Intent(
@@ -129,8 +129,8 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
 
-            // Saúde (pendente de implementar)
-            if(id == R.id.nav_saude){
+            // Saúde
+            if (id == R.id.nav_saude) {
 
                 Intent intent =
                         new Intent(
@@ -145,7 +145,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             // Perfil
-            if(id == R.id.nav_perfil){
+            if (id == R.id.nav_perfil) {
 
                 Intent intent =
                         new Intent(
@@ -163,21 +163,28 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    // Cargar datos desde Room
+    private void cargarDatos() {
+
+        // Cargar mascotas
+        listaMascotas.clear();
+        listaMascotas.addAll(mascotaDAO.listar());
+
+        // Cargar eventos
+        listaEventos.clear();
+        listaEventos.addAll(eventoDAO.listar());
+
+        // Actualizar RecyclerView
+        mascotaAdapter.notifyDataSetChanged();
+        eventoAdapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void onResume() {
 
         super.onResume();
 
-        // Actualiza a lista de mascotas ao volver á pantalla
-        if(mascotaAdapter != null){
-
-            mascotaAdapter.notifyDataSetChanged();
-        }
-
-        // Actualiza a lista de eventos ao volver á pantalla
-        if(eventoAdapter != null){
-
-            eventoAdapter.notifyDataSetChanged();
-        }
+        // Actualizar datos ao volver
+        cargarDatos();
     }
 }

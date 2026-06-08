@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petcare.MascotaCompletaActivity;
 import com.example.petcare.R;
+import com.example.petcare.dao.MascotaDAO;
+import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.MascotaDTO;
 
 import java.util.ArrayList;
@@ -31,7 +33,10 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
     // Crea cada celda
     @NonNull
     @Override
-    public MascotaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MascotaViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent,
+            int viewType
+    ) {
 
         View elemento =
                 LayoutInflater
@@ -47,7 +52,10 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
 
     // Asigna datos a la celda
     @Override
-    public void onBindViewHolder(@NonNull MascotaViewHolder holder, int position) {
+    public void onBindViewHolder(
+            @NonNull MascotaViewHolder holder,
+            int position
+    ) {
 
         MascotaDTO mascota = mascotas.get(position);
 
@@ -83,6 +91,7 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
 
             super(itemView);
 
+            // Referencias XML
             ivMascota = itemView.findViewById(R.id.ivMascota);
             txtNombreMascota = itemView.findViewById(R.id.txtNombreMascota);
             txtDatosMascota = itemView.findViewById(R.id.txtDatosMascota);
@@ -98,21 +107,23 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
 
                     if (posicion != RecyclerView.NO_POSITION) {
 
+                        MascotaDTO mascota = mascotas.get(posicion);
+
                         Intent intent =
                                 new Intent(
                                         view.getContext(),
                                         MascotaCompletaActivity.class
                                 );
 
-                        intent.putExtra("mascota", mascotas.get(posicion));
-                        intent.putExtra("posicion", posicion);
+                        // Enviamos a mascota completa co seu id de Room
+                        intent.putExtra("mascota", mascota);
 
                         view.getContext().startActivity(intent);
                     }
                 }
             });
 
-            // Borrar mascota mantendo pulsado sobre a tarxeta
+            // Borrar mascota
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
 
                 @Override
@@ -130,6 +141,18 @@ public class MascotaAdapter extends RecyclerView.Adapter<MascotaAdapter.MascotaV
 
                         dialogo.setPositiveButton("Si", (dialogInterface, i) -> {
 
+                            MascotaDTO mascota = mascotas.get(posicion);
+
+                            // Base de datos
+                            MascotaDAO dao =
+                                    PetCareDatabase
+                                            .getInstance(view.getContext())
+                                            .mascotaDAO();
+
+                            // Borrar en Room usando o id da mascota
+                            dao.borrar(mascota);
+
+                            // Borrar da lista visible
                             mascotas.remove(posicion);
                             notifyItemRemoved(posicion);
 

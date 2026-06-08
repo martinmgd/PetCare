@@ -7,8 +7,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.GridLayout;
-import android.widget.TextView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petcare.adapter.EventoAdapter;
 import com.example.petcare.dao.EventoDAO;
+import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.EventoDTO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -45,20 +46,25 @@ public class EventosActivity extends AppCompatActivity {
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
 
-                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        if (result.getResultCode() == RESULT_OK
+                                && result.getData() != null) {
 
                             EventoDTO evento =
-                                    (EventoDTO) result.getData().getSerializableExtra("evento");
+                                    (EventoDTO) result.getData()
+                                            .getSerializableExtra("evento");
 
                             if (evento != null) {
 
+                                // Gardar evento en Room
                                 dao.insertar(evento);
 
+                                // Actualizar calendario e lista
                                 cargarCalendario();
                                 cargarEventosDelDiaSeleccionado();
                             }
                         }
-                    });
+                    }
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +73,13 @@ public class EventosActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_eventos);
 
-        dao = new EventoDAO();
+        // Base de datos
+        dao =
+                PetCareDatabase
+                        .getInstance(this)
+                        .eventoDAO();
 
-        // Inicializa o calendario coa data actual
+        // Inicializar calendario
         calendarioActual = Calendar.getInstance();
         diaSeleccionado = calendarioActual.get(Calendar.DAY_OF_MONTH);
 
@@ -80,14 +90,16 @@ public class EventosActivity extends AppCompatActivity {
         tvMesEventos = findViewById(R.id.tvMesEventos);
         gridCalendarioEventos = findViewById(R.id.gridCalendarioEventos);
 
-        // RecyclerView de eventos
-        rvEventos.setLayoutManager(new LinearLayoutManager(this));
+        // RecyclerView
+        rvEventos.setLayoutManager(
+                new LinearLayoutManager(this)
+        );
 
-        // Carga inicial do calendario e dos eventos do día actual
+        // Cargar datos
         cargarCalendario();
         cargarEventosDelDiaSeleccionado();
 
-        // Botón para engadir un novo evento
+        // Añadir evento
         btnAddEvento.setOnClickListener(v -> {
 
             Intent intent =
@@ -158,7 +170,7 @@ public class EventosActivity extends AppCompatActivity {
             }
 
             // Perfil
-            if(id == R.id.nav_perfil){
+            if (id == R.id.nav_perfil) {
 
                 Intent intent =
                         new Intent(
@@ -176,7 +188,7 @@ public class EventosActivity extends AppCompatActivity {
         });
     }
 
-    // Carga o calendario do mes actual e marca os días con eventos
+    // Cargar calendario
     private void cargarCalendario() {
 
         gridCalendarioEventos.removeAllViews();
@@ -185,7 +197,7 @@ public class EventosActivity extends AppCompatActivity {
                 "L", "M", "M", "X", "V", "S", "D"
         };
 
-        // Engadir os días da semana
+        // Días da semana
         for (String diaSemana : diasSemana) {
 
             gridCalendarioEventos.addView(
@@ -202,7 +214,6 @@ public class EventosActivity extends AppCompatActivity {
                 "Setembro", "Outubro", "Novembro", "Decembro"
         };
 
-        // Mostrar mes e ano seleccionados
         tvMesEventos.setText(
                 nomesMeses[mes] + " " + ano
         );
@@ -227,7 +238,7 @@ public class EventosActivity extends AppCompatActivity {
         HashSet<Integer> diasConEventos =
                 obterDiasConEventos(ano, mes);
 
-        // Engadir ocos antes do día 1
+        // Ocos antes do día 1
         for (int i = 0; i < ocosAntesDoDiaUn; i++) {
 
             gridCalendarioEventos.addView(
@@ -235,7 +246,7 @@ public class EventosActivity extends AppCompatActivity {
             );
         }
 
-        // Engadir os días do mes
+        // Días do mes
         for (int dia = 1; dia <= diasDoMes; dia++) {
 
             boolean seleccionado =
@@ -253,7 +264,7 @@ public class EventosActivity extends AppCompatActivity {
 
             int diaFinal = dia;
 
-            // Seleccionar un día do calendario
+            // Seleccionar día
             txtDia.setOnClickListener(v -> {
 
                 diaSeleccionado = diaFinal;
@@ -266,14 +277,17 @@ public class EventosActivity extends AppCompatActivity {
         }
     }
 
-    // Obtén os días do mes que teñen eventos rexistrados
-    private HashSet<Integer> obterDiasConEventos(int ano, int mes) {
+    // Obter días con eventos
+    private HashSet<Integer> obterDiasConEventos(
+            int ano,
+            int mes
+    ) {
 
         HashSet<Integer> diasConEventos =
                 new HashSet<>();
 
         ArrayList<EventoDTO> eventos =
-                dao.listar();
+                new ArrayList<>(dao.listar());
 
         for (EventoDTO evento : eventos) {
 
@@ -294,8 +308,8 @@ public class EventosActivity extends AppCompatActivity {
                     int anoEvento =
                             Integer.parseInt(partes[2]);
 
-                    if (anoEvento == ano &&
-                            mesEvento == mes) {
+                    if (anoEvento == ano
+                            && mesEvento == mes) {
 
                         diasConEventos.add(diaEvento);
                     }
@@ -306,13 +320,10 @@ public class EventosActivity extends AppCompatActivity {
         return diasConEventos;
     }
 
-    // Filtra e mostra os eventos do día seleccionado
+    // Cargar eventos do día seleccionado
     private void cargarEventosDelDiaSeleccionado() {
 
         ArrayList<EventoDTO> eventosFiltrados =
-                new ArrayList<>();
-
-        ArrayList<Integer> posicionesReais =
                 new ArrayList<>();
 
         String fechaSeleccionada =
@@ -324,30 +335,27 @@ public class EventosActivity extends AppCompatActivity {
                 );
 
         ArrayList<EventoDTO> eventos =
-                dao.listar();
+                new ArrayList<>(dao.listar());
 
-        for (int i = 0; i < eventos.size(); i++) {
-
-            EventoDTO evento = eventos.get(i);
+        for (EventoDTO evento : eventos) {
 
             if (evento.getFecha() != null
                     && evento.getFecha().equals(fechaSeleccionada)) {
 
                 eventosFiltrados.add(evento);
-                posicionesReais.add(i);
             }
         }
 
+        // Adapter con eventos filtrados
         miAdaptador =
                 new EventoAdapter(
-                        eventosFiltrados,
-                        posicionesReais
+                        eventosFiltrados
                 );
 
         rvEventos.setAdapter(miAdaptador);
     }
 
-    // Crea a cabeceira cos días da semana
+    // Crear cabecera días semana
     private TextView crearTextoDiaSemana(String texto) {
 
         TextView textView = new TextView(this);
@@ -362,6 +370,7 @@ public class EventosActivity extends AppCompatActivity {
 
         params.width = 0;
         params.height = dp(34);
+
         params.columnSpec =
                 GridLayout.spec(
                         GridLayout.UNDEFINED,
@@ -373,7 +382,7 @@ public class EventosActivity extends AppCompatActivity {
         return textView;
     }
 
-    // Crea unha cela baleira para aliñar correctamente os días
+    // Crear celda vacía
     private TextView crearTextoBaleiro() {
 
         TextView textView = new TextView(this);
@@ -383,6 +392,7 @@ public class EventosActivity extends AppCompatActivity {
 
         params.width = 0;
         params.height = dp(38);
+
         params.columnSpec =
                 GridLayout.spec(
                         GridLayout.UNDEFINED,
@@ -394,7 +404,7 @@ public class EventosActivity extends AppCompatActivity {
         return textView;
     }
 
-    // Crea unha cela do calendario
+    // Crear día calendario
     private TextView crearTextoDia(
             int dia,
             boolean seleccionado,
@@ -403,7 +413,7 @@ public class EventosActivity extends AppCompatActivity {
 
         TextView textView = new TextView(this);
 
-        // Mostrar un punto se existen eventos nese día
+        // Marcar días con eventos
         if (tenEventos) {
 
             textView.setText(dia + "\n•");
@@ -419,26 +429,24 @@ public class EventosActivity extends AppCompatActivity {
         textView.setTextSize(15);
         textView.setClickable(true);
 
-        // Destacar o día seleccionado
+        // Día seleccionado
         if (seleccionado) {
 
             textView.setTextColor(Color.WHITE);
             textView.setTypeface(null, Typeface.BOLD);
 
-            GradientDrawable fondoSeleccionado =
+            GradientDrawable fondo =
                     new GradientDrawable();
 
-            fondoSeleccionado.setColor(
+            fondo.setColor(
                     Color.parseColor("#8F61FF")
             );
 
-            fondoSeleccionado.setCornerRadius(
+            fondo.setCornerRadius(
                     dp(4)
             );
 
-            textView.setBackground(
-                    fondoSeleccionado
-            );
+            textView.setBackground(fondo);
 
         } else {
 
@@ -471,7 +479,7 @@ public class EventosActivity extends AppCompatActivity {
         return textView;
     }
 
-    // Converte unha medida en dp a píxeles
+    // Convertir dp a px
     private int dp(int valor) {
 
         return (int) (
@@ -482,12 +490,12 @@ public class EventosActivity extends AppCompatActivity {
         );
     }
 
-    // Actualiza o calendario e os eventos ao volver á pantalla
     @Override
     protected void onResume() {
 
         super.onResume();
 
+        // Actualizar pantalla
         if (gridCalendarioEventos != null) {
 
             cargarCalendario();

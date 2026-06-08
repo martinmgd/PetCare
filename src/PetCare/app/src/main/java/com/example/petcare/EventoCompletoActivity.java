@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.petcare.dao.EventoDAO;
+import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.EventoDTO;
 import com.google.android.material.button.MaterialButton;
 
@@ -29,21 +30,23 @@ public class EventoCompletoActivity extends AppCompatActivity {
 
     private EventoDTO evento;
     private EventoDAO dao;
-    private int posicion;
 
     ActivityResultLauncher<Intent> launcherEditar =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
 
-                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        if (result.getResultCode() == RESULT_OK
+                                && result.getData() != null) {
 
                             EventoDTO eventoEditado =
-                                    (EventoDTO) result.getData().getSerializableExtra("evento");
+                                    (EventoDTO) result.getData()
+                                            .getSerializableExtra("evento");
 
-                            if (eventoEditado != null && posicion != -1) {
+                            if (eventoEditado != null) {
 
-                                dao.actualizar(posicion, eventoEditado);
+                                // Actualizar evento en Room usando o id do evento
+                                dao.actualizar(eventoEditado);
 
                                 evento = eventoEditado;
 
@@ -74,12 +77,16 @@ public class EventoCompletoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_evento_completo);
 
-        dao = new EventoDAO();
+        // Base de datos
+        dao =
+                PetCareDatabase
+                        .getInstance(this)
+                        .eventoDAO();
 
-        // Recibe o evento e a súa posición real na lista
+        // Recibir evento
         evento = (EventoDTO) getIntent().getSerializableExtra("evento");
-        posicion = getIntent().getIntExtra("posicion", -1);
 
+        // Referencias XML
         toolbarEventoCompleto = findViewById(R.id.toolbarEventoCompleto);
 
         txtTituloEventoCompleto = findViewById(R.id.txtTituloEventoCompleto);
@@ -91,15 +98,16 @@ public class EventoCompletoActivity extends AppCompatActivity {
 
         btnEditarEvento = findViewById(R.id.btnEditarEvento);
 
-        // Botón de volver
+        // Botón volver
         toolbarEventoCompleto.setNavigationOnClickListener(v -> finish());
 
+        // Mostrar datos
         mostrarDatos();
 
-        // Abre AddEventoActivity en modo edición
+        // Editar evento
         btnEditarEvento.setOnClickListener(v -> {
 
-            if (evento != null && posicion != -1) {
+            if (evento != null) {
 
                 Intent intent =
                         new Intent(
@@ -108,7 +116,6 @@ public class EventoCompletoActivity extends AppCompatActivity {
                         );
 
                 intent.putExtra("editar", true);
-                intent.putExtra("posicion", posicion);
                 intent.putExtra("evento", evento);
 
                 launcherEditar.launch(intent);
@@ -124,7 +131,7 @@ public class EventoCompletoActivity extends AppCompatActivity {
         });
     }
 
-    // Mostra os datos completos do evento
+    // Mostrar datos
     private void mostrarDatos() {
 
         if (evento != null) {

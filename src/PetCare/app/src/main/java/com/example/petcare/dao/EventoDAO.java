@@ -1,47 +1,43 @@
 package com.example.petcare.dao;
 
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
 import com.example.petcare.dto.EventoDTO;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class EventoDAO {
+@Dao
+public interface EventoDAO {
 
-    private static final ArrayList<EventoDTO> listaEventos =
-            new ArrayList<>();
+    // CREATE
+    @Insert
+    long insertar(EventoDTO evento);
 
-    // Insertar evento
-    public void insertar(EventoDTO evento) {
+    // READ
+    @Query("SELECT * FROM eventos ORDER BY id DESC")
+    List<EventoDTO> listar();
 
-        listaEventos.add(evento);
-    }
+    // READ individual
+    @Query("SELECT * FROM eventos WHERE id = :id")
+    EventoDTO obtenerPorId(int id);
 
-    // Listar eventos
-    public ArrayList<EventoDTO> listar() {
+    // READ por fecha
+    @Query("SELECT * FROM eventos WHERE fecha = :fecha ORDER BY hora ASC")
+    List<EventoDTO> listarPorFecha(String fecha);
 
-        return listaEventos;
-    }
+    // UPDATE
+    @Update
+    void actualizar(EventoDTO evento);
 
-    // Obtener evento
-    public EventoDTO obter(int posicion) {
+    // DELETE
+    @Delete
+    void borrar(EventoDTO evento);
 
-        return listaEventos.get(posicion);
-    }
-
-    // Eliminar evento
-    public void eliminar(int posicion) {
-
-        listaEventos.remove(posicion);
-    }
-
-    // Actualizar evento
-    public void actualizar(int posicion, EventoDTO evento) {
-
-        listaEventos.set(posicion, evento);
-    }
-
-    // Buscar posición dun evento dentro da lista principal
-    public int buscarPosicion(EventoDTO evento) {
-
-        return listaEventos.indexOf(evento);
-    }
+    // DELETE por id
+    @Query("DELETE FROM eventos WHERE id = :id")
+    void borrarPorId(int id);
 }

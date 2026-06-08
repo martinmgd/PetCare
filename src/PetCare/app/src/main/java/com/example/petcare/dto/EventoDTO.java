@@ -8,9 +8,16 @@ import java.io.Serializable;
 @Entity(tableName = "eventos")
 public class EventoDTO implements Serializable {
 
-    // Clave primaria
+    // Clave primaria local Room
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    // Datos para Supabase
+    private String supabaseId;
+    private String usuarioId;
+    private long fechaCreacion;
+    private long fechaActualizacion;
+    private boolean pendienteSync;
 
     // Datos do evento
     private String titulo;
@@ -40,6 +47,13 @@ public class EventoDTO implements Serializable {
         this.hora = hora;
         this.tipo = tipo;
         this.mascota = mascota;
+
+        // Datos iniciais Supabase
+        supabaseId = "";
+        usuarioId = "";
+        fechaCreacion = System.currentTimeMillis();
+        fechaActualizacion = System.currentTimeMillis();
+        pendienteSync = true;
     }
 
     // Getters e Setters
@@ -50,6 +64,51 @@ public class EventoDTO implements Serializable {
     public void setId(int id) {
 
         this.id = id;
+    }
+
+    public String getSupabaseId() {
+        return supabaseId;
+    }
+
+    public void setSupabaseId(String supabaseId) {
+
+        this.supabaseId = supabaseId;
+    }
+
+    public String getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(String usuarioId) {
+
+        this.usuarioId = usuarioId;
+    }
+
+    public long getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(long fechaCreacion) {
+
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public long getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(long fechaActualizacion) {
+
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public boolean isPendienteSync() {
+        return pendienteSync;
+    }
+
+    public void setPendienteSync(boolean pendienteSync) {
+
+        this.pendienteSync = pendienteSync;
     }
 
     public String getTitulo() {

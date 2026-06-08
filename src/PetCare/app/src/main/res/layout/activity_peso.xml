@@ -3,7 +3,6 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8F8FC"
@@ -134,7 +133,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardGraficoPeso"
             android:layout_width="0dp"
-            android:layout_height="210dp"
+            android:layout_height="250dp"
             android:layout_marginTop="12dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="20dp"
@@ -143,15 +142,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
-                android:id="@+id/txtGraficoPeso"
+            <HorizontalScrollView
+                android:id="@+id/scrollGraficoPeso"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="O gráfico mostrarase cando existan varios rexistros de peso."
-                android:textColor="#777777"
-                android:textSize="14sp" />
+                android:fillViewport="true"
+                android:scrollbars="horizontal">
+
+                <com.example.petcare.view.GraficoPesoView
+                    android:id="@+id/graficoPesoView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+            </HorizontalScrollView>
 
         </com.google.android.material.card.MaterialCardView>
 

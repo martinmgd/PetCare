@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -14,68 +14,78 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.petcare.dao.MascotaDAO;
+import com.example.petcare.data.PetCareDatabase;
+import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.MascotaDTO;
-
-import android.widget.EditText;
-import android.widget.Toast;
-import android.app.AlertDialog;
+import com.google.android.material.button.MaterialButton;
 
 public class MascotaCompletaActivity extends AppCompatActivity {
 
-    ImageView ivMascotaCompleta;
+    private ImageView ivMascotaCompleta;
 
-    TextView txtNombreCompleto;
-    TextView txtEspecie;
-    TextView txtRaza;
-    TextView txtEdad;
-    TextView txtPeso;
-    TextView txtNacimiento;
-    TextView txtSexo;
-    TextView txtFavorito;
+    private TextView txtNombreCompleto;
+    private TextView txtEspecie;
+    private TextView txtRaza;
+    private TextView txtEdad;
+    private TextView txtPeso;
+    private TextView txtNacimiento;
+    private TextView txtSexo;
 
-    Button btnEditarMascota;
+    private MaterialButton btnEditarMascota;
+    private MaterialButton btnGestionarUsuarios;
 
-    MascotaDTO mascota;
-    MascotaDAO dao;
+    private Toolbar toolbarMascota;
 
-    Uri imagenSeleccionada;
+    private MascotaDTO mascota;
+    private MascotaDAO dao;
 
-    int posicion;
-
-    Toolbar toolbarMascota;
-
-    Button btnRegistrarPeso;
+    private Uri imagenSeleccionada;
 
     ActivityResultLauncher<String> selectorImagen =
-            registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+            registerForActivityResult(
+                    new ActivityResultContracts.GetContent(),
+                    uri -> {
 
-                if(uri != null){
-                    imagenSeleccionada = uri;
-                    ivMascotaCompleta.setImageURI(uri);
-                }
-            });
+                        if (uri != null) {
+
+                            imagenSeleccionada = uri;
+                            ivMascotaCompleta.setImageURI(uri);
+                        }
+                    }
+            );
 
     ActivityResultLauncher<Intent> launcherEditar =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
 
-                if(result.getResultCode() == RESULT_OK){
+                        if (result.getResultCode() == RESULT_OK
+                                && result.getData() != null) {
 
-                    Intent data = result.getData();
+                            MascotaDTO mascotaEditada =
+                                    (MascotaDTO) result.getData()
+                                            .getSerializableExtra("mascota");
 
-                    MascotaDTO mascotaEditada = (MascotaDTO) data.getSerializableExtra("mascota");
+                            if (mascotaEditada != null) {
 
-                    if(posicion != -1 && mascotaEditada != null){
+                                // Actualizar mascota en Room usando o id
+                                dao.actualizar(mascotaEditada);
 
-                        // Actualizar mascota
-                        dao.actualizar(posicion, mascotaEditada);
+                                mascota = mascotaEditada;
 
-                        mascota = mascotaEditada;
+                                // Actualizar pantalla
+                                mostrarDatos();
+                                configurarBotonGestionUsuarios();
 
-                        // Actualizar pantalla
-                        mostrarDatos();
+                                Toast.makeText(
+                                        MascotaCompletaActivity.this,
+                                        "Mascota actualizada",
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+                        }
                     }
-                }
-            });
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +94,13 @@ public class MascotaCompletaActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_mascota_completa);
 
-        dao = new MascotaDAO();
+        // Base de datos
+        dao =
+                PetCareDatabase
+                        .getInstance(this)
+                        .mascotaDAO();
 
-        // Referencias
+        // Referencias XML
         toolbarMascota = findViewById(R.id.toolbarMascota);
 
         ivMascotaCompleta = findViewById(R.id.ivMascotaCompleta);
@@ -98,30 +112,33 @@ public class MascotaCompletaActivity extends AppCompatActivity {
         txtPeso = findViewById(R.id.txtPeso);
         txtNacimiento = findViewById(R.id.txtNacimiento);
         txtSexo = findViewById(R.id.txtSexo);
-        txtFavorito = findViewById(R.id.txtFavorito);
 
         btnEditarMascota = findViewById(R.id.btnEditarMascota);
-
-        btnRegistrarPeso = findViewById(R.id.btnRegistrarPeso);
+        btnGestionarUsuarios = findViewById(R.id.btnGestionarUsuarios);
 
         // Recibir mascota
-        mascota = (MascotaDTO) getIntent().getSerializableExtra("mascota");
-        posicion = getIntent().getIntExtra("posicion", -1);
+        mascota =
+                (MascotaDTO)
+                        getIntent().getSerializableExtra("mascota");
 
         // Toolbar
         setSupportActionBar(toolbarMascota);
 
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            if(mascota != null){
+            if (mascota != null) {
+
                 getSupportActionBar().setTitle(mascota.getNombre());
-            }else{
+
+            } else {
+
                 getSupportActionBar().setTitle("Mascota");
             }
         }
 
+        // Botón volver
         toolbarMascota.setNavigationOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -134,8 +151,10 @@ public class MascotaCompletaActivity extends AppCompatActivity {
         // Mostrar datos
         mostrarDatos();
 
-        // Cambiar imagen
+        // Configurar botón de gestión de usuarios
+        configurarBotonGestionUsuarios();
 
+        // Cambiar imagen
         ivMascotaCompleta.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -151,63 +170,71 @@ public class MascotaCompletaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(MascotaCompletaActivity.this, AddMascotaActivity.class);
+                if (mascota != null) {
 
-                intent.putExtra("mascota", mascota);
-                intent.putExtra("posicion", posicion);
-                intent.putExtra("editar", true);
+                    Intent intent =
+                            new Intent(
+                                    MascotaCompletaActivity.this,
+                                    AddMascotaActivity.class
+                            );
 
-                launcherEditar.launch(intent);
+                    // Enviamos a mascota completa co seu id
+                    intent.putExtra("mascota", mascota);
+                    intent.putExtra("editar", true);
+
+                    launcherEditar.launch(intent);
+                }
             }
         });
 
-        // Registrar peso
-
-        btnRegistrarPeso.setOnClickListener(new View.OnClickListener() {
+        // Gestionar usuarios da mascota
+        btnGestionarUsuarios.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
-                EditText txtPesoNuevo = new EditText(MascotaCompletaActivity.this);
+                if (mascota != null) {
 
-                txtPesoNuevo.setHint("Peso actual");
-                txtPesoNuevo.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    Intent intent =
+                            new Intent(
+                                    MascotaCompletaActivity.this,
+                                    GestionUsuariosMascotaActivity.class
+                            );
 
-                AlertDialog.Builder dialogo = new AlertDialog.Builder(MascotaCompletaActivity.this);
+                    intent.putExtra("mascota", mascota);
 
-                dialogo.setTitle("Registrar peso");
-                dialogo.setMessage("Introduce o peso actual da mascota:");
-                dialogo.setView(txtPesoNuevo);
-
-                dialogo.setPositiveButton("Gardar", (dialogInterface, i) -> {
-
-                    String pesoTexto = txtPesoNuevo.getText().toString();
-
-                    if(!pesoTexto.isEmpty()){
-
-                        double peso = Double.parseDouble(pesoTexto);
-
-                        mascota.setPesoActual(peso);
-
-                        dao.actualizar(posicion, mascota);
-
-                        mostrarDatos();
-
-                        Toast.makeText(MascotaCompletaActivity.this, "Peso rexistrado", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                dialogo.setNegativeButton("Cancelar", null);
-
-                dialogo.show();
+                    startActivity(intent);
+                }
             }
         });
     }
 
-    // Mostrar datos
-    private void mostrarDatos(){
+    // Mostrar ou ocultar o botón segundo o propietario
+    private void configurarBotonGestionUsuarios() {
 
-        if(mascota != null){
+        if (mascota == null) {
+
+            btnGestionarUsuarios.setVisibility(View.GONE);
+            return;
+        }
+
+        String usuarioActualId =
+                SesionUsuario.obtenerUsuarioId(this);
+
+        if (usuarioActualId.equals(mascota.getPropietarioId())) {
+
+            btnGestionarUsuarios.setVisibility(View.VISIBLE);
+
+        } else {
+
+            btnGestionarUsuarios.setVisibility(View.GONE);
+        }
+    }
+
+    // Mostrar datos
+    private void mostrarDatos() {
+
+        if (mascota != null) {
 
             ivMascotaCompleta.setImageResource(R.drawable.ic_launcher_foreground);
 
@@ -216,17 +243,20 @@ public class MascotaCompletaActivity extends AppCompatActivity {
             txtRaza.setText("Raza: " + mascota.getRaza());
             txtEdad.setText("Idade: " + mascota.getEdad() + " anos");
 
-            if(mascota.getPesoActual() == 0){
+            if (mascota.getPesoActual() == 0) {
+
                 txtPeso.setText("Peso actual: Sen rexistrar");
-            }else{
+
+            } else {
+
                 txtPeso.setText("Peso actual: " + mascota.getPesoActual() + " kg");
             }
 
             txtNacimiento.setText("Fecha nacemento: " + mascota.getFechaNacimiento());
             txtSexo.setText("Sexo: " + mascota.getSexo());
-            txtFavorito.setText("Favorito: " + (mascota.isFavorito() ? "Sí" : "Non"));
 
-            if(getSupportActionBar() != null){
+            if (getSupportActionBar() != null) {
+
                 getSupportActionBar().setTitle(mascota.getNombre());
             }
         }

@@ -2,6 +2,7 @@ package com.example.petcare;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -11,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petcare.adapter.MascotaAdapter;
 import com.example.petcare.dao.MascotaDAO;
+import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.MascotaDTO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import android.widget.ImageButton;
+
+import java.util.ArrayList;
 
 public class ListadoMascotasActivity extends AppCompatActivity {
 
@@ -24,21 +27,31 @@ public class ListadoMascotasActivity extends AppCompatActivity {
     private MascotaAdapter miAdaptador;
     private MascotaDAO dao;
 
+    private ArrayList<MascotaDTO> listaMascotas;
+
     ActivityResultLauncher<Intent> launcher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
 
-                if(result.getResultCode() == RESULT_OK && result.getData() != null){
+                        if (result.getResultCode() == RESULT_OK
+                                && result.getData() != null) {
 
-                    MascotaDTO mascota =
-                            (MascotaDTO) result.getData().getSerializableExtra("mascota");
+                            MascotaDTO mascota =
+                                    (MascotaDTO) result.getData()
+                                            .getSerializableExtra("mascota");
 
-                    if(mascota != null){
+                            if (mascota != null) {
 
-                        dao.insertar(mascota);
-                        miAdaptador.notifyDataSetChanged();
+                                // Gardar mascota en Room
+                                dao.insertar(mascota);
+
+                                // Recargar lista
+                                cargarMascotas();
+                            }
+                        }
                     }
-                }
-            });
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,20 +60,36 @@ public class ListadoMascotasActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_listado_mascotas);
 
-        dao = new MascotaDAO();
+        // Base de datos
+        dao =
+                PetCareDatabase
+                        .getInstance(this)
+                        .mascotaDAO();
 
         // Referencias XML
         rvMascotas = findViewById(R.id.rvMascotas);
         btnAddMascota = findViewById(R.id.btnAddMascota);
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
-        // RecyclerView vertical
-        miAdaptador = new MascotaAdapter(dao.listar());
+        // Lista de mascotas
+        listaMascotas = new ArrayList<>();
 
-        rvMascotas.setLayoutManager(new LinearLayoutManager(this));
+        // RecyclerView vertical
+        miAdaptador =
+                new MascotaAdapter(
+                        listaMascotas
+                );
+
+        rvMascotas.setLayoutManager(
+                new LinearLayoutManager(this)
+        );
+
         rvMascotas.setAdapter(miAdaptador);
 
-        // Botón añadir mascota
+        // Cargar mascotas
+        cargarMascotas();
+
+        // Añadir mascota
         btnAddMascota.setOnClickListener(v -> {
 
             Intent intent =
@@ -80,7 +109,7 @@ public class ListadoMascotasActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             // Inicio
-            if(id == R.id.nav_inicio){
+            if (id == R.id.nav_inicio) {
 
                 Intent intent =
                         new Intent(
@@ -95,13 +124,13 @@ public class ListadoMascotasActivity extends AppCompatActivity {
             }
 
             // Mascotas
-            if(id == R.id.nav_mascotas){
+            if (id == R.id.nav_mascotas) {
 
                 return true;
             }
 
             // Eventos
-            if(id == R.id.nav_eventos){
+            if (id == R.id.nav_eventos) {
 
                 Intent intent =
                         new Intent(
@@ -116,7 +145,7 @@ public class ListadoMascotasActivity extends AppCompatActivity {
             }
 
             // Saúde
-            if(id == R.id.nav_saude){
+            if (id == R.id.nav_saude) {
 
                 Intent intent =
                         new Intent(
@@ -131,7 +160,7 @@ public class ListadoMascotasActivity extends AppCompatActivity {
             }
 
             // Perfil
-            if(id == R.id.nav_perfil){
+            if (id == R.id.nav_perfil) {
 
                 Intent intent =
                         new Intent(
@@ -146,8 +175,19 @@ public class ListadoMascotasActivity extends AppCompatActivity {
             }
 
             return false;
-
         });
+    }
+
+    // Cargar mascotas desde Room
+    private void cargarMascotas() {
+
+        listaMascotas.clear();
+
+        listaMascotas.addAll(
+                dao.listar()
+        );
+
+        miAdaptador.notifyDataSetChanged();
     }
 
     @Override
@@ -155,9 +195,10 @@ public class ListadoMascotasActivity extends AppCompatActivity {
 
         super.onResume();
 
-        if(miAdaptador != null){
+        // Actualizar lista ao volver
+        if (miAdaptador != null) {
 
-            miAdaptador.notifyDataSetChanged();
+            cargarMascotas();
         }
     }
 }

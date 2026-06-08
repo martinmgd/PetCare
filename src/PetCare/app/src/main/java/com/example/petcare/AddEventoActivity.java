@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.petcare.dao.EventoDAO;
 import com.example.petcare.dao.MascotaDAO;
+import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.EventoDTO;
 import com.example.petcare.dto.MascotaDTO;
 import com.google.android.material.button.MaterialButton;
@@ -39,7 +40,6 @@ public class AddEventoActivity extends AppCompatActivity {
     private MascotaDAO mascotaDAO;
 
     private boolean editar;
-    private int posicion;
     private EventoDTO eventoEditar;
 
     @Override
@@ -49,10 +49,14 @@ public class AddEventoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_add_evento);
 
-        dao = new EventoDAO();
-        mascotaDAO = new MascotaDAO();
+        // Base de datos
+        PetCareDatabase db =
+                PetCareDatabase.getInstance(this);
 
-        // Referencias aos compoñentes da interface
+        dao = db.eventoDAO();
+        mascotaDAO = db.mascotaDAO();
+
+        // Referencias XML
         toolbarAddEvento = findViewById(R.id.toolbarAddEvento);
 
         txtTituloEvento = findViewById(R.id.txtTituloEvento);
@@ -64,23 +68,42 @@ public class AddEventoActivity extends AppCompatActivity {
 
         btnGuardarEvento = findViewById(R.id.btnGuardarEvento);
 
+        // Recibir datos
         editar = getIntent().getBooleanExtra("editar", false);
-        posicion = getIntent().getIntExtra("posicion", -1);
-        eventoEditar = (EventoDTO) getIntent().getSerializableExtra("evento");
 
-        // Botón de volver da barra superior
+        eventoEditar =
+                (EventoDTO)
+                        getIntent().getSerializableExtra("evento");
+
+        // Configurar título
+        if (editar) {
+
+            toolbarAddEvento.setTitle("Editar evento");
+
+        } else {
+
+            toolbarAddEvento.setTitle("Novo evento");
+        }
+
+        // Botón volver
         toolbarAddEvento.setNavigationOnClickListener(v -> finish());
 
-        // Configuración dos campos especiais
+        // Configurar selectores
         configurarSelectorFecha();
         configurarSelectorHora();
         configurarSelectorMascota();
 
-        // Acción do botón gardar
+        // Cargar datos si estamos editando
+        if (editar && eventoEditar != null) {
+
+            cargarDatosEvento();
+        }
+
+        // Guardar evento
         btnGuardarEvento.setOnClickListener(v -> guardarEvento());
     }
 
-    // Configura o campo de data para que abra un calendario ao pulsar nel
+    // Configurar selector de fecha
     private void configurarSelectorFecha() {
 
         Calendar calendario = Calendar.getInstance();
@@ -106,7 +129,7 @@ public class AddEventoActivity extends AppCompatActivity {
         txtFechaEvento.setOnClickListener(v -> mostrarCalendario());
     }
 
-    // Mostra un DatePickerDialog para seleccionar a data do evento
+    // Mostrar calendario
     private void mostrarCalendario() {
 
         Calendar calendario = Calendar.getInstance();
@@ -138,7 +161,7 @@ public class AddEventoActivity extends AppCompatActivity {
         dialogoFecha.show();
     }
 
-    // Configura o campo de hora para que abra un reloxo ao pulsar nel
+    // Configurar selector de hora
     private void configurarSelectorHora() {
 
         txtHoraEvento.setFocusable(false);
@@ -148,7 +171,7 @@ public class AddEventoActivity extends AppCompatActivity {
         txtHoraEvento.setOnClickListener(v -> mostrarRelojHora());
     }
 
-    // Mostra un TimePickerDialog para seleccionar a hora e os minutos
+    // Mostrar selector de hora
     private void mostrarRelojHora() {
 
         Calendar calendario = Calendar.getInstance();
@@ -176,19 +199,24 @@ public class AddEventoActivity extends AppCompatActivity {
                 );
 
         dialogoHora.setTitle("Selecciona unha hora");
+
         dialogoHora.show();
     }
 
-    // Configura o despregable coas mascotas dispoñibles
+    // Configurar selector de mascotas
     private void configurarSelectorMascota() {
 
-        ArrayList<MascotaDTO> listaMascotas = mascotaDAO.listar();
+        ArrayList<MascotaDTO> listaMascotas =
+                new ArrayList<>(mascotaDAO.listar());
 
-        ArrayList<String> nombresMascotas = new ArrayList<>();
+        ArrayList<String> nombresMascotas =
+                new ArrayList<>();
 
         for (MascotaDTO mascota : listaMascotas) {
 
-            nombresMascotas.add(mascota.getNombre());
+            nombresMascotas.add(
+                    mascota.getNombre()
+            );
         }
 
         ArrayAdapter<String> adapterMascotas =
@@ -212,100 +240,159 @@ public class AddEventoActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT
             ).show();
         }
-
-        if (editar && eventoEditar != null) {
-
-            txtTituloEvento.setText(eventoEditar.getTitulo());
-            txtDescripcionEvento.setText(eventoEditar.getDescripcion());
-            txtFechaEvento.setText(eventoEditar.getFecha());
-            txtHoraEvento.setText(eventoEditar.getHora());
-            txtTipoEvento.setText(eventoEditar.getTipo());
-            txtMascotaEvento.setText(eventoEditar.getMascota(), false);
-
-            btnGuardarEvento.setText("Gardar cambios");
-        }
     }
 
-    // Recolle os datos do formulario, valida os campos obrigatorios e devolve o evento creado
+    // Cargar datos do evento en edición
+    private void cargarDatosEvento() {
+
+        txtTituloEvento.setText(eventoEditar.getTitulo());
+        txtDescripcionEvento.setText(eventoEditar.getDescripcion());
+        txtFechaEvento.setText(eventoEditar.getFecha());
+        txtHoraEvento.setText(eventoEditar.getHora());
+        txtTipoEvento.setText(eventoEditar.getTipo());
+
+        txtMascotaEvento.setText(
+                eventoEditar.getMascota(),
+                false
+        );
+
+        btnGuardarEvento.setText("Gardar cambios");
+    }
+
+    // Guardar evento
     private void guardarEvento() {
 
         String titulo;
 
         if (txtTituloEvento.getText() != null) {
-            titulo = txtTituloEvento.getText().toString().trim();
+
+            titulo =
+                    txtTituloEvento
+                            .getText()
+                            .toString()
+                            .trim();
+
         } else {
+
             titulo = "";
         }
 
         String descripcion;
 
         if (txtDescripcionEvento.getText() != null) {
-            descripcion = txtDescripcionEvento.getText().toString().trim();
+
+            descripcion =
+                    txtDescripcionEvento
+                            .getText()
+                            .toString()
+                            .trim();
+
         } else {
+
             descripcion = "";
         }
 
         String fecha;
 
         if (txtFechaEvento.getText() != null) {
-            fecha = txtFechaEvento.getText().toString().trim();
+
+            fecha =
+                    txtFechaEvento
+                            .getText()
+                            .toString()
+                            .trim();
+
         } else {
+
             fecha = "";
         }
 
         String hora;
 
         if (txtHoraEvento.getText() != null) {
-            hora = txtHoraEvento.getText().toString().trim();
+
+            hora =
+                    txtHoraEvento
+                            .getText()
+                            .toString()
+                            .trim();
+
         } else {
+
             hora = "";
         }
 
         String tipo;
 
         if (txtTipoEvento.getText() != null) {
-            tipo = txtTipoEvento.getText().toString().trim();
+
+            tipo =
+                    txtTipoEvento
+                            .getText()
+                            .toString()
+                            .trim();
+
         } else {
+
             tipo = "";
         }
 
         String mascota;
 
         if (txtMascotaEvento.getText() != null) {
-            mascota = txtMascotaEvento.getText().toString().trim();
+
+            mascota =
+                    txtMascotaEvento
+                            .getText()
+                            .toString()
+                            .trim();
+
         } else {
+
             mascota = "";
         }
 
-        // Validación do título
+        // Validar título
         if (titulo.isEmpty()) {
 
-            txtTituloEvento.setError("Introduce o título do evento");
+            txtTituloEvento.setError(
+                    "Introduce o título do evento"
+            );
+
             return;
         }
 
-        // Validación da data
+        // Validar fecha
         if (fecha.isEmpty()) {
 
-            txtFechaEvento.setError("Introduce a data");
+            txtFechaEvento.setError(
+                    "Introduce a data"
+            );
+
             return;
         }
 
-        // Validación da hora
+        // Validar hora
         if (hora.isEmpty()) {
 
-            txtHoraEvento.setError("Introduce a hora");
+            txtHoraEvento.setError(
+                    "Introduce a hora"
+            );
+
             return;
         }
 
-        // Validación da mascota
+        // Validar mascota
         if (mascota.isEmpty()) {
 
-            txtMascotaEvento.setError("Selecciona unha mascota");
+            txtMascotaEvento.setError(
+                    "Selecciona unha mascota"
+            );
+
             return;
         }
 
-        // Creación do obxecto EventoDTO cos datos introducidos
+        // Crear evento
         EventoDTO evento =
                 new EventoDTO(
                         titulo,
@@ -316,20 +403,30 @@ public class AddEventoActivity extends AppCompatActivity {
                         mascota
                 );
 
+        // Manter o id ao editar
+        if (editar && eventoEditar != null) {
+
+            evento.setId(
+                    eventoEditar.getId()
+            );
+        }
+
         Toast.makeText(
                 this,
                 "Evento gardado correctamente",
                 Toast.LENGTH_SHORT
         ).show();
 
-        // Devolvemos o evento á Activity anterior
+        // Devolver evento á Activity anterior
         Intent intent = new Intent();
 
         intent.putExtra("evento", evento);
-        intent.putExtra("posicion", posicion);
         intent.putExtra("editar", editar);
 
-        setResult(RESULT_OK, intent);
+        setResult(
+                RESULT_OK,
+                intent
+        );
 
         finish();
     }

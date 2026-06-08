@@ -8,16 +8,22 @@ import java.io.Serializable;
 @Entity(tableName = "mascotas")
 public class MascotaDTO implements Serializable {
 
-    // Clave primaria
+    // Clave primaria local Room
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    // Datos para Supabase
+    private String supabaseId;
+    private String propietarioId;
+    private long fechaCreacion;
+    private long fechaActualizacion;
+    private boolean pendienteSync;
 
     // Datos básicos
     private String nombre;
     private String especie;
     private String raza;
     private int edad;
-    private boolean favorito;
 
     // Datos de saúde
     private double pesoActual;
@@ -36,12 +42,16 @@ public class MascotaDTO implements Serializable {
         this.raza = raza;
         this.edad = edad;
 
-        favorito = false;
-
-        // Valores iniciales
         pesoActual = 0;
         fechaNacimiento = "";
         sexo = "";
+
+        // Datos iniciais Supabase
+        supabaseId = "";
+        propietarioId = "";
+        fechaCreacion = System.currentTimeMillis();
+        fechaActualizacion = System.currentTimeMillis();
+        pendienteSync = true;
     }
 
     // Getters e Setters
@@ -52,6 +62,51 @@ public class MascotaDTO implements Serializable {
     public void setId(int id) {
 
         this.id = id;
+    }
+
+    public String getSupabaseId() {
+        return supabaseId;
+    }
+
+    public void setSupabaseId(String supabaseId) {
+
+        this.supabaseId = supabaseId;
+    }
+
+    public String getPropietarioId() {
+        return propietarioId;
+    }
+
+    public void setPropietarioId(String propietarioId) {
+
+        this.propietarioId = propietarioId;
+    }
+
+    public long getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(long fechaCreacion) {
+
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public long getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(long fechaActualizacion) {
+
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public boolean isPendienteSync() {
+        return pendienteSync;
+    }
+
+    public void setPendienteSync(boolean pendienteSync) {
+
+        this.pendienteSync = pendienteSync;
     }
 
     public String getNombre() {
@@ -88,15 +143,6 @@ public class MascotaDTO implements Serializable {
     public void setEdad(int edad) {
 
         this.edad = edad;
-    }
-
-    public boolean isFavorito() {
-        return favorito;
-    }
-
-    public void setFavorito(boolean favorito) {
-
-        this.favorito = favorito;
     }
 
     public double getPesoActual() {

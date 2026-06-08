@@ -9,7 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.petcare.dao.MascotaDAO;
+import com.example.petcare.dao.PesoDAO;
+import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.MascotaDTO;
+import com.example.petcare.dto.PesoDTO;
+import com.example.petcare.view.GraficoPesoView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -27,17 +31,18 @@ public class PesoActivity extends AppCompatActivity {
     private TextInputEditText txtNovoPeso;
 
     private TextView txtPesoActual;
-    private TextView txtGraficoPeso;
     private TextView txtHistorialPeso;
+
+    private GraficoPesoView graficoPesoView;
 
     private MaterialButton btnGuardarPeso;
 
     private MascotaDAO mascotaDAO;
+    private PesoDAO pesoDAO;
+
     private ArrayList<MascotaDTO> mascotas;
 
     private MascotaDTO mascotaSeleccionada;
-
-    private ArrayList<String> historialPeso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,31 +51,37 @@ public class PesoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_peso);
 
-        mascotaDAO = new MascotaDAO();
-        mascotas = mascotaDAO.listar();
+        // Base de datos
+        PetCareDatabase db =
+                PetCareDatabase.getInstance(this);
 
-        historialPeso = new ArrayList<>();
+        mascotaDAO = db.mascotaDAO();
+        pesoDAO = db.pesoDAO();
+
+        // Listas
+        mascotas = new ArrayList<>();
+        mascotas.addAll(mascotaDAO.listar());
 
         // Referencias XML
         toolbarPeso = findViewById(R.id.toolbarPeso);
         txtMascotaPeso = findViewById(R.id.txtMascotaPeso);
         txtNovoPeso = findViewById(R.id.txtNovoPeso);
         txtPesoActual = findViewById(R.id.txtPesoActual);
-        txtGraficoPeso = findViewById(R.id.txtGraficoPeso);
         txtHistorialPeso = findViewById(R.id.txtHistorialPeso);
+        graficoPesoView = findViewById(R.id.graficoPesoView);
         btnGuardarPeso = findViewById(R.id.btnGuardarPeso);
 
-        // Botón de volver da barra superior
+        // Botón volver
         toolbarPeso.setNavigationOnClickListener(v -> finish());
 
-        // Configuración do despregable de mascotas
+        // Selector de mascotas
         configurarSelectorMascota();
 
-        // Gardar novo peso
+        // Gardar peso
         btnGuardarPeso.setOnClickListener(v -> guardarPeso());
     }
 
-    // Configura o despregable coas mascotas dispoñibles
+    // Configurar selector de mascotas
     private void configurarSelectorMascota() {
 
         ArrayList<String> nomesMascotas = new ArrayList<>();
@@ -110,6 +121,10 @@ public class PesoActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT
             ).show();
 
+            txtPesoActual.setText("Sen rexistrar");
+            txtHistorialPeso.setText("Sen rexistros de peso");
+            graficoPesoView.setPesos(new ArrayList<>());
+
         } else {
 
             mascotaSeleccionada = mascotas.get(0);
@@ -121,7 +136,7 @@ public class PesoActivity extends AppCompatActivity {
         }
     }
 
-    // Actualiza o texto do peso actual da mascota seleccionada
+    // Actualizar peso actual
     private void actualizarPesoActual() {
 
         if (mascotaSeleccionada == null) {
@@ -142,7 +157,7 @@ public class PesoActivity extends AppCompatActivity {
         }
     }
 
-    // Garda un novo peso e actualiza a mascota seleccionada
+    // Gardar peso
     private void guardarPeso() {
 
         if (mascotaSeleccionada == null) {
@@ -191,17 +206,37 @@ public class PesoActivity extends AppCompatActivity {
             return;
         }
 
-        mascotaSeleccionada.setPesoActual(peso);
-
         String fecha =
                 new SimpleDateFormat(
                         "dd/MM/yyyy",
                         Locale.getDefault()
                 ).format(new Date());
 
-        historialPeso.add(
-                fecha + "  →  " + peso + " kg"
-        );
+        String hora =
+                new SimpleDateFormat(
+                        "HH:mm",
+                        Locale.getDefault()
+                ).format(new Date());
+
+        // Crear rexistro de peso
+        PesoDTO pesoDTO =
+                new PesoDTO(
+                        mascotaSeleccionada.getId(),
+                        peso,
+                        fecha,
+                        hora
+                );
+
+        // Gardar rexistro en Room
+        pesoDAO.insertar(pesoDTO);
+
+        // Actualizar mascota
+        mascotaSeleccionada.setPesoActual(peso);
+        mascotaSeleccionada.setFechaActualizacion(System.currentTimeMillis());
+        mascotaSeleccionada.setPendienteSync(true);
+
+        // Gardar mascota en Room
+        mascotaDAO.actualizar(mascotaSeleccionada);
 
         txtNovoPeso.setText("");
 
@@ -216,10 +251,23 @@ public class PesoActivity extends AppCompatActivity {
         ).show();
     }
 
-    // Actualiza o historial textual de pesos
+    // Actualizar historial
     private void actualizarHistorial() {
 
-        if (historialPeso.isEmpty()) {
+        if (mascotaSeleccionada == null) {
+
+            txtHistorialPeso.setText("Sen rexistros de peso");
+            return;
+        }
+
+        ArrayList<PesoDTO> historial =
+                new ArrayList<>(
+                        pesoDAO.listarPorMascota(
+                                mascotaSeleccionada.getId()
+                        )
+                );
+
+        if (historial.isEmpty()) {
 
             txtHistorialPeso.setText("Sen rexistros de peso");
             return;
@@ -227,11 +275,18 @@ public class PesoActivity extends AppCompatActivity {
 
         StringBuilder texto = new StringBuilder();
 
-        for (int i = historialPeso.size() - 1; i >= 0; i--) {
+        for (int i = 0; i < historial.size(); i++) {
 
-            texto.append(historialPeso.get(i));
+            PesoDTO pesoDTO = historial.get(i);
 
-            if (i > 0) {
+            texto.append(pesoDTO.getFecha())
+                    .append("  ")
+                    .append(pesoDTO.getHora())
+                    .append("  →  ")
+                    .append(pesoDTO.getPeso())
+                    .append(" kg");
+
+            if (i < historial.size() - 1) {
 
                 texto.append("\n\n");
             }
@@ -240,23 +295,22 @@ public class PesoActivity extends AppCompatActivity {
         txtHistorialPeso.setText(texto.toString());
     }
 
-    // Actualiza unha representación simple do gráfico de pesos
+    // Actualizar gráfico
     private void actualizarGrafico() {
 
-        if (historialPeso.size() < 2) {
+        if (mascotaSeleccionada == null) {
 
-            txtGraficoPeso.setText(
-                    "O gráfico mostrarase cando existan varios rexistros de peso."
-            );
-
-        } else {
-
-            txtGraficoPeso.setText(
-                    "Gráfico de evolución pendente de implementar.\n\n" +
-                            "Último peso rexistrado: " +
-                            mascotaSeleccionada.getPesoActual() +
-                            " kg"
-            );
+            graficoPesoView.setPesos(new ArrayList<>());
+            return;
         }
+
+        ArrayList<PesoDTO> historial =
+                new ArrayList<>(
+                        pesoDAO.listarPorMascotaAsc(
+                                mascotaSeleccionada.getId()
+                        )
+                );
+
+        graficoPesoView.setPesos(historial);
     }
 }
