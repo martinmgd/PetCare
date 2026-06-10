@@ -21,6 +21,18 @@ public interface EventoDAO {
     @Query("SELECT * FROM eventos ORDER BY id DESC")
     List<EventoDTO> listar();
 
+    // READ por usuario creador
+    @Query("SELECT * FROM eventos WHERE usuarioId = :usuarioId ORDER BY id DESC")
+    List<EventoDTO> listarPorUsuario(String usuarioId);
+
+    // READ por mascota
+    @Query("SELECT * FROM eventos WHERE mascotaId = :mascotaId ORDER BY fecha ASC, hora ASC")
+    List<EventoDTO> listarPorMascota(int mascotaId);
+
+    // READ por varias mascotas
+    @Query("SELECT * FROM eventos WHERE mascotaId IN (:mascotasIds) ORDER BY fecha ASC, hora ASC")
+    List<EventoDTO> listarPorMascotas(List<Integer> mascotasIds);
+
     // READ individual
     @Query("SELECT * FROM eventos WHERE id = :id")
     EventoDTO obtenerPorId(int id);
@@ -28,6 +40,13 @@ public interface EventoDAO {
     // READ por fecha
     @Query("SELECT * FROM eventos WHERE fecha = :fecha ORDER BY hora ASC")
     List<EventoDTO> listarPorFecha(String fecha);
+
+    // READ por fecha e mascotas permitidas
+    @Query("SELECT * FROM eventos WHERE fecha = :fecha AND mascotaId IN (:mascotasIds) ORDER BY hora ASC")
+    List<EventoDTO> listarPorFechaYMascotas(
+            String fecha,
+            List<Integer> mascotasIds
+    );
 
     // UPDATE
     @Update

@@ -7,187 +7,245 @@
     android:layout_height="match_parent"
     android:background="#F8F8FC">
 
-    <TextView
-        android:id="@+id/tvTituloPerfil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="52dp"
-        android:text="Perfil"
-        android:textColor="#222222"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardPerfil"
+    <ScrollView
+        android:id="@+id/scrollPerfil"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="24dp"
-        app:cardBackgroundColor="#F1EAF8"
-        app:cardCornerRadius="22dp"
-        app:cardElevation="2dp"
-        app:layout_constraintTop_toBottomOf="@id/tvTituloPerfil"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:paddingBottom="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="22dp">
+            android:paddingBottom="24dp">
 
-            <ImageView
-                android:id="@+id/imgPerfil"
-                android:layout_width="82dp"
-                android:layout_height="82dp"
-                android:src="@drawable/ic_usuario"
-                android:tint="#8F61FF"
-                app:layout_constraintTop_toTopOf="parent"
+            <TextView
+                android:id="@+id/tvTituloPerfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="52dp"
+                android:text="Perfil"
+                android:textColor="#222222"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardPerfil"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="24dp"
+                app:cardBackgroundColor="#F1EAF8"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="2dp"
+                app:layout_constraintTop_toBottomOf="@id/tvTituloPerfil"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="22dp">
+
+                    <ImageView
+                        android:id="@+id/imgPerfil"
+                        android:layout_width="82dp"
+                        android:layout_height="82dp"
+                        android:src="@drawable/ic_usuario"
+                        android:tint="#8F61FF"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtNomePerfil"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:text="Usuario"
+                        android:textColor="#222222"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="@id/imgPerfil"
+                        app:layout_constraintStart_toEndOf="@id/imgPerfil"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtCorreoPerfil"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="6dp"
+                        android:text="correo@exemplo.com"
+                        android:textColor="#777777"
+                        android:textSize="15sp"
+                        app:layout_constraintTop_toBottomOf="@id/txtNomePerfil"
+                        app:layout_constraintStart_toEndOf="@id/imgPerfil"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvDatosConta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="28dp"
+                android:text="Datos da conta"
+                android:textColor="#222222"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/cardPerfil"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/txtNomePerfil"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDatosConta"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:text="Usuario"
-                android:textColor="#222222"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="@id/imgPerfil"
-                app:layout_constraintStart_toEndOf="@id/imgPerfil"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="24dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:layout_constraintTop_toBottomOf="@id/tvDatosConta"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <TextView
+                        android:id="@+id/txtNomeConta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nome:"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/txtCorreoConta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Correo:"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/txtUsuarioId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="ID usuario:"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCopiarId"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="14dp"
+                        android:backgroundTint="#F1EAF8"
+                        android:text="📋 Copiar ID"
+                        android:textAllCaps="false"
+                        android:textColor="#8F61FF"
+                        android:textSize="15sp"
+                        app:cornerRadius="24dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/txtCorreoPerfil"
+                android:id="@+id/tvInvitacionesPendientes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="28dp"
+                android:text="Invitacións pendentes"
+                android:textColor="#222222"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/cardDatosConta"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardInvitaciones"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="6dp"
-                android:text="correo@exemplo.com"
-                android:textColor="#777777"
-                android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@id/txtNomePerfil"
-                app:layout_constraintStart_toEndOf="@id/imgPerfil"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="24dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:layout_constraintTop_toBottomOf="@id/tvInvitacionesPendientes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/contenedorInvitaciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditarPerfil"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="24dp"
+                android:backgroundTint="#8F61FF"
+                android:text="Editar perfil"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="17sp"
+                app:cornerRadius="28dp"
+                app:layout_constraintTop_toBottomOf="@id/cardInvitaciones"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCerrarSesion"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="24dp"
+                android:backgroundTint="#FFFFFF"
+                android:text="Pechar sesión"
+                android:textAllCaps="false"
+                android:textColor="#8F61FF"
+                android:textSize="17sp"
+                app:cornerRadius="28dp"
+                app:strokeColor="#8F61FF"
+                app:strokeWidth="1dp"
+                app:layout_constraintTop_toBottomOf="@id/btnEditarPerfil"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
-
-    <TextView
-        android:id="@+id/tvDatosConta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:text="Datos da conta"
-        android:textColor="#222222"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/cardPerfil"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardDatosConta"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="2dp"
-        app:layout_constraintTop_toBottomOf="@id/tvDatosConta"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="18dp">
-
-            <TextView
-                android:id="@+id/txtNomeConta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nome:"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/txtCorreoConta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Correo:"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/txtUsuarioId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="ID usuario:"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCopiarId"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="14dp"
-                android:backgroundTint="#F1EAF8"
-                android:text="📋 Copiar ID"
-                android:textAllCaps="false"
-                android:textColor="#8F61FF"
-                android:textSize="15sp"
-                app:cornerRadius="24dp" />
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnEditarPerfil"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="24dp"
-        android:backgroundTint="#8F61FF"
-        android:text="Editar perfil"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="17sp"
-        app:cornerRadius="28dp"
-        app:layout_constraintTop_toBottomOf="@id/cardDatosConta"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCerrarSesion"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="24dp"
-        android:backgroundTint="#FFFFFF"
-        android:text="Pechar sesión"
-        android:textAllCaps="false"
-        android:textColor="#8F61FF"
-        android:textSize="17sp"
-        app:cornerRadius="28dp"
-        app:strokeColor="#8F61FF"
-        app:strokeWidth="1dp"
-        app:layout_constraintTop_toBottomOf="@id/btnEditarPerfil"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"

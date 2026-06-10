@@ -33,6 +33,13 @@ public interface InvitacionDAO {
     @Query("SELECT * FROM invitaciones WHERE mascotaId = :mascotaId ORDER BY id DESC")
     List<InvitacionDTO> listarPorMascota(int mascotaId);
 
+    // READ invitación pendiente concreta
+    @Query("SELECT * FROM invitaciones WHERE mascotaId = :mascotaId AND usuarioDestinoId = :usuarioDestinoId AND estado = 'PENDIENTE' LIMIT 1")
+    InvitacionDTO obtenerPendientePorMascotaYUsuario(
+            int mascotaId,
+            String usuarioDestinoId
+    );
+
     // READ pendientes de sincronizar
     @Query("SELECT * FROM invitaciones WHERE pendienteSync = 1")
     List<InvitacionDTO> listarPendientesSync();
@@ -40,6 +47,14 @@ public interface InvitacionDAO {
     // UPDATE
     @Update
     void actualizar(InvitacionDTO invitacion);
+
+    // UPDATE estado
+    @Query("UPDATE invitaciones SET estado = :estado, fechaActualizacion = :fechaActualizacion, pendienteSync = 1 WHERE id = :id")
+    void actualizarEstado(
+            int id,
+            String estado,
+            long fechaActualizacion
+    );
 
     // DELETE
     @Delete

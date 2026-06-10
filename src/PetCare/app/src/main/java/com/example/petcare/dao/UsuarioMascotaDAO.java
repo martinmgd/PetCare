@@ -29,6 +29,10 @@ public interface UsuarioMascotaDAO {
     @Query("SELECT * FROM usuarios_mascotas WHERE usuarioId = :usuarioId ORDER BY id DESC")
     List<UsuarioMascotaDTO> listarPorUsuario(String usuarioId);
 
+    // READ mascotas compartidas aceptadas dun usuario
+    @Query("SELECT * FROM usuarios_mascotas WHERE usuarioId = :usuarioId AND estado = 'ACEPTADA' ORDER BY id DESC")
+    List<UsuarioMascotaDTO> listarAceptadasPorUsuario(String usuarioId);
+
     // READ relación concreta
     @Query("SELECT * FROM usuarios_mascotas WHERE usuarioId = :usuarioId AND mascotaId = :mascotaId LIMIT 1")
     UsuarioMascotaDTO obtenerRelacion(

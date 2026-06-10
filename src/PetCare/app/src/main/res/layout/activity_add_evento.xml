@@ -131,6 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="Tipo de evento"
+            app:endIconMode="dropdown_menu"
             app:boxBackgroundColor="#FFFFFF"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="16dp"
@@ -141,11 +142,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/txtTipoEvento"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:inputType="textCapWords" />
+                android:inputType="none" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

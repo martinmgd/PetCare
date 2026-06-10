@@ -18,8 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petcare.adapter.EventoAdapter;
 import com.example.petcare.dao.EventoDAO;
+import com.example.petcare.dao.MascotaDAO;
+import com.example.petcare.dao.UsuarioMascotaDAO;
 import com.example.petcare.data.PetCareDatabase;
+import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.EventoDTO;
+import com.example.petcare.dto.MascotaDTO;
+import com.example.petcare.dto.UsuarioMascotaDTO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -36,6 +41,9 @@ public class EventosActivity extends AppCompatActivity {
     private GridLayout gridCalendarioEventos;
 
     private EventoDAO dao;
+    private MascotaDAO mascotaDAO;
+    private UsuarioMascotaDAO usuarioMascotaDAO;
+
     private EventoAdapter miAdaptador;
 
     private Calendar calendarioActual;
@@ -55,10 +63,8 @@ public class EventosActivity extends AppCompatActivity {
 
                             if (evento != null) {
 
-                                // Gardar evento en Room
                                 dao.insertar(evento);
 
-                                // Actualizar calendario e lista
                                 cargarCalendario();
                                 cargarEventosDelDiaSeleccionado();
                             }
@@ -73,33 +79,29 @@ public class EventosActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_eventos);
 
-        // Base de datos
-        dao =
-                PetCareDatabase
-                        .getInstance(this)
-                        .eventoDAO();
+        PetCareDatabase db =
+                PetCareDatabase.getInstance(this);
 
-        // Inicializar calendario
+        dao = db.eventoDAO();
+        mascotaDAO = db.mascotaDAO();
+        usuarioMascotaDAO = db.usuarioMascotaDAO();
+
         calendarioActual = Calendar.getInstance();
         diaSeleccionado = calendarioActual.get(Calendar.DAY_OF_MONTH);
 
-        // Referencias XML
         rvEventos = findViewById(R.id.rvEventos);
         btnAddEvento = findViewById(R.id.btnAddEvento);
         bottomNavigation = findViewById(R.id.bottomNavigation);
         tvMesEventos = findViewById(R.id.tvMesEventos);
         gridCalendarioEventos = findViewById(R.id.gridCalendarioEventos);
 
-        // RecyclerView
         rvEventos.setLayoutManager(
                 new LinearLayoutManager(this)
         );
 
-        // Cargar datos
         cargarCalendario();
         cargarEventosDelDiaSeleccionado();
 
-        // Añadir evento
         btnAddEvento.setOnClickListener(v -> {
 
             Intent intent =
@@ -111,84 +113,9 @@ public class EventosActivity extends AppCompatActivity {
             launcher.launch(intent);
         });
 
-        // Bottom Navigation
-        bottomNavigation.setSelectedItemId(R.id.nav_eventos);
-
-        bottomNavigation.setOnItemSelectedListener(item -> {
-
-            int id = item.getItemId();
-
-            // Inicio
-            if (id == R.id.nav_inicio) {
-
-                Intent intent =
-                        new Intent(
-                                EventosActivity.this,
-                                HomeActivity.class
-                        );
-
-                startActivity(intent);
-                finish();
-
-                return true;
-            }
-
-            // Mascotas
-            if (id == R.id.nav_mascotas) {
-
-                Intent intent =
-                        new Intent(
-                                EventosActivity.this,
-                                ListadoMascotasActivity.class
-                        );
-
-                startActivity(intent);
-                finish();
-
-                return true;
-            }
-
-            // Eventos
-            if (id == R.id.nav_eventos) {
-
-                return true;
-            }
-
-            // Saúde
-            if (id == R.id.nav_saude) {
-
-                Intent intent =
-                        new Intent(
-                                EventosActivity.this,
-                                SaudeActivity.class
-                        );
-
-                startActivity(intent);
-                finish();
-
-                return true;
-            }
-
-            // Perfil
-            if (id == R.id.nav_perfil) {
-
-                Intent intent =
-                        new Intent(
-                                EventosActivity.this,
-                                PerfilActivity.class
-                        );
-
-                startActivity(intent);
-                finish();
-
-                return true;
-            }
-
-            return false;
-        });
+        configurarBottomNavigation();
     }
 
-    // Cargar calendario
     private void cargarCalendario() {
 
         gridCalendarioEventos.removeAllViews();
@@ -197,7 +124,6 @@ public class EventosActivity extends AppCompatActivity {
                 "L", "M", "M", "X", "V", "S", "D"
         };
 
-        // Días da semana
         for (String diaSemana : diasSemana) {
 
             gridCalendarioEventos.addView(
@@ -238,7 +164,6 @@ public class EventosActivity extends AppCompatActivity {
         HashSet<Integer> diasConEventos =
                 obterDiasConEventos(ano, mes);
 
-        // Ocos antes do día 1
         for (int i = 0; i < ocosAntesDoDiaUn; i++) {
 
             gridCalendarioEventos.addView(
@@ -246,7 +171,6 @@ public class EventosActivity extends AppCompatActivity {
             );
         }
 
-        // Días do mes
         for (int dia = 1; dia <= diasDoMes; dia++) {
 
             boolean seleccionado =
@@ -264,7 +188,6 @@ public class EventosActivity extends AppCompatActivity {
 
             int diaFinal = dia;
 
-            // Seleccionar día
             txtDia.setOnClickListener(v -> {
 
                 diaSeleccionado = diaFinal;
@@ -277,7 +200,6 @@ public class EventosActivity extends AppCompatActivity {
         }
     }
 
-    // Obter días con eventos
     private HashSet<Integer> obterDiasConEventos(
             int ano,
             int mes
@@ -286,8 +208,18 @@ public class EventosActivity extends AppCompatActivity {
         HashSet<Integer> diasConEventos =
                 new HashSet<>();
 
+        ArrayList<Integer> mascotasIds =
+                obtenerMascotasPermitidas();
+
         ArrayList<EventoDTO> eventos =
-                new ArrayList<>(dao.listar());
+                new ArrayList<>();
+
+        if (!mascotasIds.isEmpty()) {
+
+            eventos.addAll(
+                    dao.listarPorMascotas(mascotasIds)
+            );
+        }
 
         for (EventoDTO evento : eventos) {
 
@@ -308,8 +240,7 @@ public class EventosActivity extends AppCompatActivity {
                     int anoEvento =
                             Integer.parseInt(partes[2]);
 
-                    if (anoEvento == ano
-                            && mesEvento == mes) {
+                    if (anoEvento == ano && mesEvento == mes) {
 
                         diasConEventos.add(diaEvento);
                     }
@@ -320,11 +251,7 @@ public class EventosActivity extends AppCompatActivity {
         return diasConEventos;
     }
 
-    // Cargar eventos do día seleccionado
     private void cargarEventosDelDiaSeleccionado() {
-
-        ArrayList<EventoDTO> eventosFiltrados =
-                new ArrayList<>();
 
         String fechaSeleccionada =
                 String.format(
@@ -334,28 +261,142 @@ public class EventosActivity extends AppCompatActivity {
                         calendarioActual.get(Calendar.YEAR)
                 );
 
-        ArrayList<EventoDTO> eventos =
-                new ArrayList<>(dao.listar());
+        ArrayList<Integer> mascotasIds =
+                obtenerMascotasPermitidas();
 
-        for (EventoDTO evento : eventos) {
+        ArrayList<EventoDTO> eventosFiltrados =
+                new ArrayList<>();
 
-            if (evento.getFecha() != null
-                    && evento.getFecha().equals(fechaSeleccionada)) {
+        if (!mascotasIds.isEmpty()) {
 
-                eventosFiltrados.add(evento);
-            }
+            eventosFiltrados.addAll(
+                    dao.listarPorFechaYMascotas(
+                            fechaSeleccionada,
+                            mascotasIds
+                    )
+            );
         }
 
-        // Adapter con eventos filtrados
         miAdaptador =
-                new EventoAdapter(
-                        eventosFiltrados
-                );
+                new EventoAdapter(eventosFiltrados);
 
         rvEventos.setAdapter(miAdaptador);
     }
 
-    // Crear cabecera días semana
+    private ArrayList<Integer> obtenerMascotasPermitidas() {
+
+        String usuarioActualId =
+                SesionUsuario.obtenerUsuarioId(this);
+
+        ArrayList<Integer> mascotasIds =
+                new ArrayList<>();
+
+        ArrayList<MascotaDTO> mascotasPropias =
+                new ArrayList<>(
+                        mascotaDAO.listarPorPropietario(
+                                usuarioActualId
+                        )
+                );
+
+        for (MascotaDTO mascota : mascotasPropias) {
+
+            if (!mascotasIds.contains(mascota.getId())) {
+
+                mascotasIds.add(mascota.getId());
+            }
+        }
+
+        ArrayList<UsuarioMascotaDTO> relaciones =
+                new ArrayList<>(
+                        usuarioMascotaDAO.listarAceptadasPorUsuario(
+                                usuarioActualId
+                        )
+                );
+
+        for (UsuarioMascotaDTO relacion : relaciones) {
+
+            if (!mascotasIds.contains(relacion.getMascotaId())) {
+
+                mascotasIds.add(relacion.getMascotaId());
+            }
+        }
+
+        return mascotasIds;
+    }
+
+    private void configurarBottomNavigation() {
+
+        bottomNavigation.setSelectedItemId(R.id.nav_eventos);
+
+        bottomNavigation.setOnItemSelectedListener(item -> {
+
+            int id = item.getItemId();
+
+            if (id == R.id.nav_inicio) {
+
+                Intent intent =
+                        new Intent(
+                                EventosActivity.this,
+                                HomeActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
+
+                return true;
+            }
+
+            if (id == R.id.nav_mascotas) {
+
+                Intent intent =
+                        new Intent(
+                                EventosActivity.this,
+                                ListadoMascotasActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
+
+                return true;
+            }
+
+            if (id == R.id.nav_eventos) {
+
+                return true;
+            }
+
+            if (id == R.id.nav_saude) {
+
+                Intent intent =
+                        new Intent(
+                                EventosActivity.this,
+                                SaudeActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
+
+                return true;
+            }
+
+            if (id == R.id.nav_perfil) {
+
+                Intent intent =
+                        new Intent(
+                                EventosActivity.this,
+                                PerfilActivity.class
+                        );
+
+                startActivity(intent);
+                finish();
+
+                return true;
+            }
+
+            return false;
+        });
+    }
+
     private TextView crearTextoDiaSemana(String texto) {
 
         TextView textView = new TextView(this);
@@ -382,7 +423,6 @@ public class EventosActivity extends AppCompatActivity {
         return textView;
     }
 
-    // Crear celda vacía
     private TextView crearTextoBaleiro() {
 
         TextView textView = new TextView(this);
@@ -404,7 +444,6 @@ public class EventosActivity extends AppCompatActivity {
         return textView;
     }
 
-    // Crear día calendario
     private TextView crearTextoDia(
             int dia,
             boolean seleccionado,
@@ -413,7 +452,6 @@ public class EventosActivity extends AppCompatActivity {
 
         TextView textView = new TextView(this);
 
-        // Marcar días con eventos
         if (tenEventos) {
 
             textView.setText(dia + "\n•");
@@ -429,7 +467,6 @@ public class EventosActivity extends AppCompatActivity {
         textView.setTextSize(15);
         textView.setClickable(true);
 
-        // Día seleccionado
         if (seleccionado) {
 
             textView.setTextColor(Color.WHITE);
@@ -479,7 +516,6 @@ public class EventosActivity extends AppCompatActivity {
         return textView;
     }
 
-    // Convertir dp a px
     private int dp(int valor) {
 
         return (int) (
@@ -495,7 +531,6 @@ public class EventosActivity extends AppCompatActivity {
 
         super.onResume();
 
-        // Actualizar pantalla
         if (gridCalendarioEventos != null) {
 
             cargarCalendario();

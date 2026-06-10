@@ -1,6 +1,7 @@
 package com.example.petcare;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +14,17 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.petcare.dao.ComidaDAO;
 import com.example.petcare.dao.MascotaDAO;
 import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.data.SesionUsuario;
+import com.example.petcare.dto.ComidaDTO;
 import com.example.petcare.dto.MascotaDTO;
 import com.google.android.material.button.MaterialButton;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MascotaCompletaActivity extends AppCompatActivity {
 
@@ -31,6 +38,10 @@ public class MascotaCompletaActivity extends AppCompatActivity {
     private TextView txtNacimiento;
     private TextView txtSexo;
 
+    private MaterialButton btnAlmorzo;
+    private MaterialButton btnComida;
+    private MaterialButton btnCea;
+
     private MaterialButton btnEditarMascota;
     private MaterialButton btnGestionarUsuarios;
 
@@ -38,6 +49,9 @@ public class MascotaCompletaActivity extends AppCompatActivity {
 
     private MascotaDTO mascota;
     private MascotaDAO dao;
+    private ComidaDAO comidaDAO;
+
+    private ComidaDTO comidaHoy;
 
     private Uri imagenSeleccionada;
 
@@ -68,14 +82,13 @@ public class MascotaCompletaActivity extends AppCompatActivity {
 
                             if (mascotaEditada != null) {
 
-                                // Actualizar mascota en Room usando o id
                                 dao.actualizar(mascotaEditada);
 
                                 mascota = mascotaEditada;
 
-                                // Actualizar pantalla
                                 mostrarDatos();
                                 configurarBotonGestionUsuarios();
+                                cargarComidaHoy();
 
                                 Toast.makeText(
                                         MascotaCompletaActivity.this,
@@ -94,13 +107,12 @@ public class MascotaCompletaActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_mascota_completa);
 
-        // Base de datos
-        dao =
-                PetCareDatabase
-                        .getInstance(this)
-                        .mascotaDAO();
+        PetCareDatabase db =
+                PetCareDatabase.getInstance(this);
 
-        // Referencias XML
+        dao = db.mascotaDAO();
+        comidaDAO = db.comidaDAO();
+
         toolbarMascota = findViewById(R.id.toolbarMascota);
 
         ivMascotaCompleta = findViewById(R.id.ivMascotaCompleta);
@@ -113,15 +125,17 @@ public class MascotaCompletaActivity extends AppCompatActivity {
         txtNacimiento = findViewById(R.id.txtNacimiento);
         txtSexo = findViewById(R.id.txtSexo);
 
+        btnAlmorzo = findViewById(R.id.btnAlmorzo);
+        btnComida = findViewById(R.id.btnComida);
+        btnCea = findViewById(R.id.btnCea);
+
         btnEditarMascota = findViewById(R.id.btnEditarMascota);
         btnGestionarUsuarios = findViewById(R.id.btnGestionarUsuarios);
 
-        // Recibir mascota
         mascota =
                 (MascotaDTO)
                         getIntent().getSerializableExtra("mascota");
 
-        // Toolbar
         setSupportActionBar(toolbarMascota);
 
         if (getSupportActionBar() != null) {
@@ -138,7 +152,6 @@ public class MascotaCompletaActivity extends AppCompatActivity {
             }
         }
 
-        // Botón volver
         toolbarMascota.setNavigationOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -148,13 +161,10 @@ public class MascotaCompletaActivity extends AppCompatActivity {
             }
         });
 
-        // Mostrar datos
         mostrarDatos();
-
-        // Configurar botón de gestión de usuarios
         configurarBotonGestionUsuarios();
+        cargarComidaHoy();
 
-        // Cambiar imagen
         ivMascotaCompleta.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -164,7 +174,10 @@ public class MascotaCompletaActivity extends AppCompatActivity {
             }
         });
 
-        // Editar mascota
+        btnAlmorzo.setOnClickListener(v -> cambiarAlmorzo());
+        btnComida.setOnClickListener(v -> cambiarComida());
+        btnCea.setOnClickListener(v -> cambiarCea());
+
         btnEditarMascota.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -178,7 +191,6 @@ public class MascotaCompletaActivity extends AppCompatActivity {
                                     AddMascotaActivity.class
                             );
 
-                    // Enviamos a mascota completa co seu id
                     intent.putExtra("mascota", mascota);
                     intent.putExtra("editar", true);
 
@@ -187,7 +199,6 @@ public class MascotaCompletaActivity extends AppCompatActivity {
             }
         });
 
-        // Gestionar usuarios da mascota
         btnGestionarUsuarios.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -209,7 +220,153 @@ public class MascotaCompletaActivity extends AppCompatActivity {
         });
     }
 
-    // Mostrar ou ocultar o botón segundo o propietario
+    private void cargarComidaHoy() {
+
+        if (mascota == null) {
+
+            return;
+        }
+
+        String fechaHoy =
+                new SimpleDateFormat(
+                        "dd/MM/yyyy",
+                        Locale.getDefault()
+                ).format(new Date());
+
+        comidaHoy =
+                comidaDAO.obtenerPorMascotaYFecha(
+                        mascota.getId(),
+                        fechaHoy
+                );
+
+        if (comidaHoy == null) {
+
+            comidaHoy =
+                    new ComidaDTO(
+                            mascota.getId(),
+                            fechaHoy
+                    );
+
+            long id =
+                    comidaDAO.insertar(comidaHoy);
+
+            comidaHoy.setId((int) id);
+        }
+
+        actualizarBotonesComida();
+    }
+
+    private void cambiarAlmorzo() {
+
+        if (comidaHoy == null) {
+
+            return;
+        }
+
+        comidaHoy.setAlmorzoComido(
+                !comidaHoy.isAlmorzoComido()
+        );
+
+        guardarComida();
+    }
+
+    private void cambiarComida() {
+
+        if (comidaHoy == null) {
+
+            return;
+        }
+
+        comidaHoy.setComidaComida(
+                !comidaHoy.isComidaComida()
+        );
+
+        guardarComida();
+    }
+
+    private void cambiarCea() {
+
+        if (comidaHoy == null) {
+
+            return;
+        }
+
+        comidaHoy.setCeaComida(
+                !comidaHoy.isCeaComida()
+        );
+
+        guardarComida();
+    }
+
+    private void guardarComida() {
+
+        comidaHoy.setFechaActualizacion(
+                System.currentTimeMillis()
+        );
+
+        comidaHoy.setPendienteSync(true);
+
+        comidaDAO.actualizar(comidaHoy);
+
+        actualizarBotonesComida();
+    }
+
+    private void actualizarBotonesComida() {
+
+        if (comidaHoy == null) {
+
+            return;
+        }
+
+        configurarBotonComida(
+                btnAlmorzo,
+                "Almorzo",
+                comidaHoy.isAlmorzoComido()
+        );
+
+        configurarBotonComida(
+                btnComida,
+                "Comida",
+                comidaHoy.isComidaComida()
+        );
+
+        configurarBotonComida(
+                btnCea,
+                "Cea",
+                comidaHoy.isCeaComida()
+        );
+    }
+
+    private void configurarBotonComida(
+            MaterialButton boton,
+            String texto,
+            boolean comido
+    ) {
+
+        if (comido) {
+
+            boton.setText(texto + ": Si");
+            boton.setTextColor(0xFFFFFFFF);
+            boton.setBackgroundTintList(
+                    ColorStateList.valueOf(0xFF8F61FF)
+            );
+            boton.setStrokeColor(
+                    ColorStateList.valueOf(0xFF8F61FF)
+            );
+
+        } else {
+
+            boton.setText(texto + ": Non");
+            boton.setTextColor(0xFF8F61FF);
+            boton.setBackgroundTintList(
+                    ColorStateList.valueOf(0xFFFFFFFF)
+            );
+            boton.setStrokeColor(
+                    ColorStateList.valueOf(0xFF8F61FF)
+            );
+        }
+    }
+
     private void configurarBotonGestionUsuarios() {
 
         if (mascota == null) {
@@ -231,7 +388,6 @@ public class MascotaCompletaActivity extends AppCompatActivity {
         }
     }
 
-    // Mostrar datos
     private void mostrarDatos() {
 
         if (mascota != null) {

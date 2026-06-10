@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petcare.adapter.MascotaAdapter;
 import com.example.petcare.dao.MascotaDAO;
+import com.example.petcare.dao.UsuarioMascotaDAO;
 import com.example.petcare.data.PetCareDatabase;
+import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.MascotaDTO;
+import com.example.petcare.dto.UsuarioMascotaDTO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ public class ListadoMascotasActivity extends AppCompatActivity {
 
     private MascotaAdapter miAdaptador;
     private MascotaDAO dao;
+    private UsuarioMascotaDAO usuarioMascotaDAO;
 
     private ArrayList<MascotaDTO> listaMascotas;
 
@@ -61,10 +65,11 @@ public class ListadoMascotasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_listado_mascotas);
 
         // Base de datos
-        dao =
-                PetCareDatabase
-                        .getInstance(this)
-                        .mascotaDAO();
+        PetCareDatabase db =
+                PetCareDatabase.getInstance(this);
+
+        dao = db.mascotaDAO();
+        usuarioMascotaDAO = db.usuarioMascotaDAO();
 
         // Referencias XML
         rvMascotas = findViewById(R.id.rvMascotas);
@@ -108,7 +113,6 @@ public class ListadoMascotasActivity extends AppCompatActivity {
 
             int id = item.getItemId();
 
-            // Inicio
             if (id == R.id.nav_inicio) {
 
                 Intent intent =
@@ -123,13 +127,11 @@ public class ListadoMascotasActivity extends AppCompatActivity {
                 return true;
             }
 
-            // Mascotas
             if (id == R.id.nav_mascotas) {
 
                 return true;
             }
 
-            // Eventos
             if (id == R.id.nav_eventos) {
 
                 Intent intent =
@@ -144,7 +146,6 @@ public class ListadoMascotasActivity extends AppCompatActivity {
                 return true;
             }
 
-            // Saúde
             if (id == R.id.nav_saude) {
 
                 Intent intent =
@@ -159,7 +160,6 @@ public class ListadoMascotasActivity extends AppCompatActivity {
                 return true;
             }
 
-            // Perfil
             if (id == R.id.nav_perfil) {
 
                 Intent intent =
@@ -181,13 +181,58 @@ public class ListadoMascotasActivity extends AppCompatActivity {
     // Cargar mascotas desde Room
     private void cargarMascotas() {
 
+        String usuarioActualId =
+                SesionUsuario.obtenerUsuarioId(this);
+
         listaMascotas.clear();
 
+        // Mascotas propias
         listaMascotas.addAll(
-                dao.listar()
+                dao.listarPorPropietario(usuarioActualId)
         );
 
+        // Mascotas compartidas aceptadas
+        ArrayList<UsuarioMascotaDTO> relaciones =
+                new ArrayList<>(
+                        usuarioMascotaDAO.listarAceptadasPorUsuario(
+                                usuarioActualId
+                        )
+                );
+
+        for (UsuarioMascotaDTO relacion : relaciones) {
+
+            MascotaDTO mascota =
+                    dao.obtenerPorId(
+                            relacion.getMascotaId()
+                    );
+
+            if (mascota != null) {
+
+                agregarMascotaSiNoExiste(mascota);
+            }
+        }
+
         miAdaptador.notifyDataSetChanged();
+    }
+
+    // Evitar mascotas duplicadas
+    private void agregarMascotaSiNoExiste(MascotaDTO mascota) {
+
+        boolean existe = false;
+
+        for (MascotaDTO mascotaLista : listaMascotas) {
+
+            if (mascotaLista.getId() == mascota.getId()) {
+
+                existe = true;
+                break;
+            }
+        }
+
+        if (!existe) {
+
+            listaMascotas.add(mascota);
+        }
     }
 
     @Override
@@ -195,7 +240,6 @@ public class ListadoMascotasActivity extends AppCompatActivity {
 
         super.onResume();
 
-        // Actualizar lista ao volver
         if (miAdaptador != null) {
 
             cargarMascotas();

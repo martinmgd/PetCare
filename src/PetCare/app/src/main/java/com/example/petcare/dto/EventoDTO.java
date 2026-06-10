@@ -15,6 +15,7 @@ public class EventoDTO implements Serializable {
     // Datos para Supabase
     private String supabaseId;
     private String usuarioId;
+    private int mascotaId;
     private long fechaCreacion;
     private long fechaActualizacion;
     private boolean pendienteSync;
@@ -51,6 +52,7 @@ public class EventoDTO implements Serializable {
         // Datos iniciais Supabase
         supabaseId = "";
         usuarioId = "";
+        mascotaId = 0;
         fechaCreacion = System.currentTimeMillis();
         fechaActualizacion = System.currentTimeMillis();
         pendienteSync = true;
@@ -82,6 +84,15 @@ public class EventoDTO implements Serializable {
     public void setUsuarioId(String usuarioId) {
 
         this.usuarioId = usuarioId;
+    }
+
+    public int getMascotaId() {
+        return mascotaId;
+    }
+
+    public void setMascotaId(int mascotaId) {
+
+        this.mascotaId = mascotaId;
     }
 
     public long getFechaCreacion() {

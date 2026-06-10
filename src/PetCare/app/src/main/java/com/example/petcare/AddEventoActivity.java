@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.petcare.dao.EventoDAO;
 import com.example.petcare.dao.MascotaDAO;
 import com.example.petcare.data.PetCareDatabase;
+import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.EventoDTO;
 import com.example.petcare.dto.MascotaDTO;
 import com.google.android.material.button.MaterialButton;
@@ -30,8 +31,8 @@ public class AddEventoActivity extends AppCompatActivity {
     private TextInputEditText txtDescripcionEvento;
     private TextInputEditText txtFechaEvento;
     private TextInputEditText txtHoraEvento;
-    private TextInputEditText txtTipoEvento;
 
+    private MaterialAutoCompleteTextView txtTipoEvento;
     private MaterialAutoCompleteTextView txtMascotaEvento;
 
     private MaterialButton btnGuardarEvento;
@@ -42,6 +43,9 @@ public class AddEventoActivity extends AppCompatActivity {
     private boolean editar;
     private EventoDTO eventoEditar;
 
+    private ArrayList<MascotaDTO> listaMascotasDisponibles;
+    private MascotaDTO mascotaSeleccionada;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -49,14 +53,14 @@ public class AddEventoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_add_evento);
 
-        // Base de datos
         PetCareDatabase db =
                 PetCareDatabase.getInstance(this);
 
         dao = db.eventoDAO();
         mascotaDAO = db.mascotaDAO();
 
-        // Referencias XML
+        listaMascotasDisponibles = new ArrayList<>();
+
         toolbarAddEvento = findViewById(R.id.toolbarAddEvento);
 
         txtTituloEvento = findViewById(R.id.txtTituloEvento);
@@ -68,14 +72,12 @@ public class AddEventoActivity extends AppCompatActivity {
 
         btnGuardarEvento = findViewById(R.id.btnGuardarEvento);
 
-        // Recibir datos
         editar = getIntent().getBooleanExtra("editar", false);
 
         eventoEditar =
                 (EventoDTO)
                         getIntent().getSerializableExtra("evento");
 
-        // Configurar título
         if (editar) {
 
             toolbarAddEvento.setTitle("Editar evento");
@@ -85,25 +87,21 @@ public class AddEventoActivity extends AppCompatActivity {
             toolbarAddEvento.setTitle("Novo evento");
         }
 
-        // Botón volver
         toolbarAddEvento.setNavigationOnClickListener(v -> finish());
 
-        // Configurar selectores
         configurarSelectorFecha();
         configurarSelectorHora();
+        configurarSelectorTipoEvento();
         configurarSelectorMascota();
 
-        // Cargar datos si estamos editando
         if (editar && eventoEditar != null) {
 
             cargarDatosEvento();
         }
 
-        // Guardar evento
         btnGuardarEvento.setOnClickListener(v -> guardarEvento());
     }
 
-    // Configurar selector de fecha
     private void configurarSelectorFecha() {
 
         Calendar calendario = Calendar.getInstance();
@@ -129,7 +127,6 @@ public class AddEventoActivity extends AppCompatActivity {
         txtFechaEvento.setOnClickListener(v -> mostrarCalendario());
     }
 
-    // Mostrar calendario
     private void mostrarCalendario() {
 
         Calendar calendario = Calendar.getInstance();
@@ -161,7 +158,6 @@ public class AddEventoActivity extends AppCompatActivity {
         dialogoFecha.show();
     }
 
-    // Configurar selector de hora
     private void configurarSelectorHora() {
 
         txtHoraEvento.setFocusable(false);
@@ -171,7 +167,6 @@ public class AddEventoActivity extends AppCompatActivity {
         txtHoraEvento.setOnClickListener(v -> mostrarRelojHora());
     }
 
-    // Mostrar selector de hora
     private void mostrarRelojHora() {
 
         Calendar calendario = Calendar.getInstance();
@@ -203,16 +198,51 @@ public class AddEventoActivity extends AppCompatActivity {
         dialogoHora.show();
     }
 
-    // Configurar selector de mascotas
+    private void configurarSelectorTipoEvento() {
+
+        String[] tiposEvento = {
+                "Cita veterinaria",
+                "Vacuna",
+                "Medicación",
+                "Desparasitación",
+                "Baño",
+                "Peluquería",
+                "Control de peso",
+                "Cirurxía",
+                "Alerxia",
+                "Revisión",
+                "Outro"
+        };
+
+        ArrayAdapter<String> adapterTipos =
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_dropdown_item_1line,
+                        tiposEvento
+                );
+
+        txtTipoEvento.setAdapter(adapterTipos);
+
+        txtTipoEvento.setFocusable(false);
+        txtTipoEvento.setClickable(true);
+        txtTipoEvento.setCursorVisible(false);
+    }
+
     private void configurarSelectorMascota() {
 
-        ArrayList<MascotaDTO> listaMascotas =
-                new ArrayList<>(mascotaDAO.listar());
+        String usuarioActualId =
+                SesionUsuario.obtenerUsuarioId(this);
+
+        listaMascotasDisponibles.clear();
+
+        listaMascotasDisponibles.addAll(
+                mascotaDAO.listarPorPropietario(usuarioActualId)
+        );
 
         ArrayList<String> nombresMascotas =
                 new ArrayList<>();
 
-        for (MascotaDTO mascota : listaMascotas) {
+        for (MascotaDTO mascota : listaMascotasDisponibles) {
 
             nombresMascotas.add(
                     mascota.getNombre()
@@ -232,34 +262,47 @@ public class AddEventoActivity extends AppCompatActivity {
         txtMascotaEvento.setClickable(true);
         txtMascotaEvento.setCursorVisible(false);
 
+        txtMascotaEvento.setOnItemClickListener((parent, view, position, id) -> {
+
+            mascotaSeleccionada =
+                    listaMascotasDisponibles.get(position);
+        });
+
         if (nombresMascotas.isEmpty()) {
 
             Toast.makeText(
                     this,
-                    "Non hai mascotas rexistradas",
+                    "Non tes mascotas dispoñibles",
                     Toast.LENGTH_SHORT
             ).show();
         }
     }
 
-    // Cargar datos do evento en edición
     private void cargarDatosEvento() {
 
         txtTituloEvento.setText(eventoEditar.getTitulo());
         txtDescripcionEvento.setText(eventoEditar.getDescripcion());
         txtFechaEvento.setText(eventoEditar.getFecha());
         txtHoraEvento.setText(eventoEditar.getHora());
-        txtTipoEvento.setText(eventoEditar.getTipo());
+        txtTipoEvento.setText(eventoEditar.getTipo(), false);
 
         txtMascotaEvento.setText(
                 eventoEditar.getMascota(),
                 false
         );
 
+        for (MascotaDTO mascota : listaMascotasDisponibles) {
+
+            if (mascota.getId() == eventoEditar.getMascotaId()) {
+
+                mascotaSeleccionada = mascota;
+                break;
+            }
+        }
+
         btnGuardarEvento.setText("Gardar cambios");
     }
 
-    // Guardar evento
     private void guardarEvento() {
 
         String titulo;
@@ -352,47 +395,54 @@ public class AddEventoActivity extends AppCompatActivity {
             mascota = "";
         }
 
-        // Validar título
         if (titulo.isEmpty()) {
 
-            txtTituloEvento.setError(
-                    "Introduce o título do evento"
-            );
-
+            txtTituloEvento.setError("Introduce o título do evento");
             return;
         }
 
-        // Validar fecha
         if (fecha.isEmpty()) {
 
-            txtFechaEvento.setError(
-                    "Introduce a data"
-            );
-
+            txtFechaEvento.setError("Introduce a data");
             return;
         }
 
-        // Validar hora
         if (hora.isEmpty()) {
 
-            txtHoraEvento.setError(
-                    "Introduce a hora"
-            );
-
+            txtHoraEvento.setError("Introduce a hora");
             return;
         }
 
-        // Validar mascota
+        if (tipo.isEmpty()) {
+
+            txtTipoEvento.setError("Selecciona o tipo de evento");
+            return;
+        }
+
         if (mascota.isEmpty()) {
 
-            txtMascotaEvento.setError(
-                    "Selecciona unha mascota"
-            );
-
+            txtMascotaEvento.setError("Selecciona unha mascota");
             return;
         }
 
-        // Crear evento
+        if (mascotaSeleccionada == null) {
+
+            for (MascotaDTO mascotaActual : listaMascotasDisponibles) {
+
+                if (mascotaActual.getNombre().equals(mascota)) {
+
+                    mascotaSeleccionada = mascotaActual;
+                    break;
+                }
+            }
+        }
+
+        if (mascotaSeleccionada == null) {
+
+            txtMascotaEvento.setError("Selecciona unha mascota válida");
+            return;
+        }
+
         EventoDTO evento =
                 new EventoDTO(
                         titulo,
@@ -400,15 +450,42 @@ public class AddEventoActivity extends AppCompatActivity {
                         fecha,
                         hora,
                         tipo,
-                        mascota
+                        mascotaSeleccionada.getNombre()
                 );
 
-        // Manter o id ao editar
+        evento.setUsuarioId(
+                SesionUsuario.obtenerUsuarioId(this)
+        );
+
+        evento.setMascotaId(
+                mascotaSeleccionada.getId()
+        );
+
+        evento.setFechaActualizacion(
+                System.currentTimeMillis()
+        );
+
+        evento.setPendienteSync(true);
+
         if (editar && eventoEditar != null) {
 
             evento.setId(
                     eventoEditar.getId()
             );
+
+            evento.setSupabaseId(
+                    eventoEditar.getSupabaseId()
+            );
+
+            evento.setFechaCreacion(
+                    eventoEditar.getFechaCreacion()
+            );
+
+            evento.setFechaActualizacion(
+                    System.currentTimeMillis()
+            );
+
+            evento.setPendienteSync(true);
         }
 
         Toast.makeText(
@@ -417,7 +494,6 @@ public class AddEventoActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT
         ).show();
 
-        // Devolver evento á Activity anterior
         Intent intent = new Intent();
 
         intent.putExtra("evento", evento);

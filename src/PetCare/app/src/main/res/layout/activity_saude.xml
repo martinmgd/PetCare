@@ -20,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Contedor principal das opcións de saúde -->
     <LinearLayout
         android:id="@+id/contenedorSaude"
         android:layout_width="0dp"
@@ -33,7 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Primeira fila: Actividade e Peso -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,10 +54,9 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@android:drawable/ic_menu_compass"
-                        app:tint="#8F61FF" />
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:src="@drawable/ic_actividad" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -91,10 +88,9 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@android:drawable/ic_menu_sort_by_size"
-                        app:tint="#8F61FF" />
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:src="@drawable/ic_peso" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -111,7 +107,6 @@
 
         </LinearLayout>
 
-        <!-- Segunda fila: Vacinas e Medicación -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,10 +130,9 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@android:drawable/ic_menu_info_details"
-                        app:tint="#8F61FF" />
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:src="@drawable/ic_vacinas" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -170,10 +164,9 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@android:drawable/ic_menu_edit"
-                        app:tint="#8F61FF" />
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:src="@drawable/ic_medicacion" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -190,7 +183,6 @@
 
         </LinearLayout>
 
-        <!-- Historial médico ocupa o ancho completo -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardHistorial"
             android:layout_width="match_parent"
@@ -208,16 +200,15 @@
                 android:padding="20dp">
 
                 <ImageView
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:src="@android:drawable/ic_menu_agenda"
-                    app:tint="#8F61FF" />
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:src="@drawable/ic_historial_saude" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
-                    android:text="Historial médico"
+                    android:text="Historial de saúde"
                     android:textColor="#222222"
                     android:textSize="18sp"
                     android:textStyle="bold" />

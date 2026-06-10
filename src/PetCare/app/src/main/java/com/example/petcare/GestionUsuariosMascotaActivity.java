@@ -155,6 +155,24 @@ public class GestionUsuariosMascotaActivity extends AppCompatActivity {
             return;
         }
 
+        // Evitar invitacións duplicadas pendentes para a mesma mascota e usuario
+        InvitacionDTO invitacionExistente =
+                invitacionDAO.obtenerPendientePorMascotaYUsuario(
+                        mascota.getId(),
+                        usuarioDestinoId
+                );
+
+        if (invitacionExistente != null) {
+
+            Toast.makeText(
+                    this,
+                    "Xa existe unha invitación pendente para este usuario",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+            return;
+        }
+
         InvitacionDTO invitacion =
                 new InvitacionDTO(
                         mascota.getId(),
