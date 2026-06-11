@@ -202,12 +202,9 @@ public class AddEventoActivity extends AppCompatActivity {
 
         String[] tiposEvento = {
                 "Cita veterinaria",
-                "Vacuna",
-                "Medicación",
                 "Desparasitación",
                 "Baño",
                 "Peluquería",
-                "Control de peso",
                 "Cirurxía",
                 "Alerxia",
                 "Revisión",

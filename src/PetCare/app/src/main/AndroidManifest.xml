@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permiso para consultar el tiempo por internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Ubicación aproximada -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Permiso para usar la ubicación actual en Actividade -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -11,55 +21,88 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PetCare">
+
+        <activity
+            android:name=".ActividadeActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".MedicacionActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".VacinasActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".HistorialSaudeActivity"
+            android:exported="false" />
+
         <activity
             android:name=".GestionUsuariosMascotaActivity"
             android:exported="false" />
+
         <activity
             android:name=".PerfilActivity"
             android:exported="false" />
+
         <activity
             android:name=".SaudeActivity"
             android:exported="false" />
+
         <activity
             android:name=".EventoCompletoActivity"
             android:exported="false" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
         <activity
             android:name=".MainActivityLogo"
             android:exported="false" />
+
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
+
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
+
         <activity
             android:name=".ListadoMascotasActivity"
             android:exported="false" />
+
         <activity
             android:name=".AddMascotaActivity"
             android:exported="false" />
+
         <activity
             android:name=".MascotaCompletaActivity"
             android:exported="false" />
+
         <activity
             android:name=".EventosActivity"
             android:exported="false" />
+
         <activity
             android:name=".AddEventoActivity"
             android:exported="false" />
+
         <activity
             android:name=".PesoActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

@@ -6,20 +6,27 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.example.petcare.dao.ActividadeDAO;
 import com.example.petcare.dao.ComidaDAO;
 import com.example.petcare.dao.EventoDAO;
 import com.example.petcare.dao.InvitacionDAO;
 import com.example.petcare.dao.MascotaDAO;
+import com.example.petcare.dao.MedicacionDAO;
 import com.example.petcare.dao.PesoDAO;
 import com.example.petcare.dao.UsuarioDAO;
 import com.example.petcare.dao.UsuarioMascotaDAO;
+import com.example.petcare.dao.VacinaDAO;
+
+import com.example.petcare.dto.ActividadeDTO;
 import com.example.petcare.dto.ComidaDTO;
 import com.example.petcare.dto.EventoDTO;
 import com.example.petcare.dto.InvitacionDTO;
 import com.example.petcare.dto.MascotaDTO;
+import com.example.petcare.dto.MedicacionDTO;
 import com.example.petcare.dto.PesoDTO;
 import com.example.petcare.dto.UsuarioDTO;
 import com.example.petcare.dto.UsuarioMascotaDTO;
+import com.example.petcare.dto.VacinaDTO;
 
 @Database(
         entities = {
@@ -29,9 +36,12 @@ import com.example.petcare.dto.UsuarioMascotaDTO;
                 UsuarioDTO.class,
                 UsuarioMascotaDTO.class,
                 InvitacionDTO.class,
-                ComidaDTO.class
+                ComidaDTO.class,
+                VacinaDTO.class,
+                MedicacionDTO.class,
+                ActividadeDTO.class
         },
-        version = 7,
+        version = 10,
         exportSchema = false
 )
 public abstract class PetCareDatabase extends RoomDatabase {
@@ -51,6 +61,12 @@ public abstract class PetCareDatabase extends RoomDatabase {
     public abstract InvitacionDAO invitacionDAO();
 
     public abstract ComidaDAO comidaDAO();
+
+    public abstract VacinaDAO vacinaDAO();
+
+    public abstract MedicacionDAO medicacionDAO();
+
+    public abstract ActividadeDAO actividadeDAO();
 
     public static synchronized PetCareDatabase getInstance(Context context) {
 
