@@ -11,13 +11,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.petcare.dao.EventoDAO;
 import com.example.petcare.dao.MascotaDAO;
-import com.example.petcare.dao.UsuarioMascotaDAO;
 import com.example.petcare.dao.VacinaDAO;
 import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.EventoDTO;
 import com.example.petcare.dto.MascotaDTO;
-import com.example.petcare.dto.UsuarioMascotaDTO;
 import com.example.petcare.dto.VacinaDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -25,6 +23,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import com.example.petcare.util.MascotasUtils;
+import com.example.petcare.supabase.SupabaseSyncManager;
 
 public class VacinasActivity extends AppCompatActivity {
 
@@ -39,8 +40,6 @@ public class VacinasActivity extends AppCompatActivity {
 
     private TextView txtHistorialVacinas;
 
-    private MascotaDAO mascotaDAO;
-    private UsuarioMascotaDAO usuarioMascotaDAO;
     private VacinaDAO vacinaDAO;
     private EventoDAO eventoDAO;
 
@@ -58,8 +57,6 @@ public class VacinasActivity extends AppCompatActivity {
         PetCareDatabase db =
                 PetCareDatabase.getInstance(this);
 
-        mascotaDAO = db.mascotaDAO();
-        usuarioMascotaDAO = db.usuarioMascotaDAO();
         vacinaDAO = db.vacinaDAO();
         eventoDAO = db.eventoDAO();
 
@@ -92,56 +89,10 @@ public class VacinasActivity extends AppCompatActivity {
     // Cargar mascotas propias y compartidas aceptadas
     private void cargarMascotasPermitidas() {
 
-        String usuarioActualId =
-                SesionUsuario.obtenerUsuarioId(this);
-
-        listaMascotas.clear();
-
-        // Mascotas propias
-        listaMascotas.addAll(
-                mascotaDAO.listarPorPropietario(usuarioActualId)
-        );
-
-        // Mascotas compartidas aceptadas
-        ArrayList<UsuarioMascotaDTO> relaciones =
-                new ArrayList<>(
-                        usuarioMascotaDAO.listarAceptadasPorUsuario(
-                                usuarioActualId
-                        )
+        listaMascotas =
+                MascotasUtils.obtenerMascotasDisponibles(
+                        this
                 );
-
-        for (UsuarioMascotaDTO relacion : relaciones) {
-
-            MascotaDTO mascota =
-                    mascotaDAO.obtenerPorId(
-                            relacion.getMascotaId()
-                    );
-
-            if (mascota != null) {
-
-                agregarMascotaSiNoExiste(mascota);
-            }
-        }
-    }
-
-    // Evitar mascotas duplicadas
-    private void agregarMascotaSiNoExiste(MascotaDTO mascota) {
-
-        boolean existe = false;
-
-        for (MascotaDTO mascotaLista : listaMascotas) {
-
-            if (mascotaLista.getId() == mascota.getId()) {
-
-                existe = true;
-                break;
-            }
-        }
-
-        if (!existe) {
-
-            listaMascotas.add(mascota);
-        }
     }
 
     // Configurar selector de mascota
@@ -153,7 +104,7 @@ public class VacinasActivity extends AppCompatActivity {
         for (MascotaDTO mascota : listaMascotas) {
 
             nombresMascotas.add(
-                    mascota.getNombre()
+                    "   " + mascota.getNombre()
             );
         }
 
@@ -194,7 +145,7 @@ public class VacinasActivity extends AppCompatActivity {
                     listaMascotas.get(0);
 
             txtMascotaVacina.setText(
-                    mascotaSeleccionada.getNombre(),
+                    "   " + mascotaSeleccionada.getNombre(),
                     false
             );
 
@@ -358,6 +309,9 @@ public class VacinasActivity extends AppCompatActivity {
                 fecha,
                 notas
         );
+
+        // Intentar sincronizar con Supabase
+        SupabaseSyncManager.sincronizar(this);
 
         txtNomeVacina.setText("");
         txtNotasVacina.setText("");

@@ -8,19 +8,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.petcare.util.MascotasUtils;
 import com.example.petcare.dao.EventoDAO;
-import com.example.petcare.dao.MascotaDAO;
 import com.example.petcare.dao.MedicacionDAO;
 import com.example.petcare.dao.PesoDAO;
-import com.example.petcare.dao.UsuarioMascotaDAO;
 import com.example.petcare.dao.VacinaDAO;
 import com.example.petcare.data.PetCareDatabase;
-import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.EventoDTO;
 import com.example.petcare.dto.MascotaDTO;
 import com.example.petcare.dto.MedicacionDTO;
 import com.example.petcare.dto.PesoDTO;
-import com.example.petcare.dto.UsuarioMascotaDTO;
 import com.example.petcare.dto.VacinaDTO;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
@@ -36,11 +33,8 @@ public class HistorialSaudeActivity extends AppCompatActivity {
 
     private MaterialAutoCompleteTextView txtMascotaHistorial;
     private TextView txtHistorialSaude;
-
-    private MascotaDAO mascotaDAO;
     private EventoDAO eventoDAO;
     private PesoDAO pesoDAO;
-    private UsuarioMascotaDAO usuarioMascotaDAO;
     private VacinaDAO vacinaDAO;
     private MedicacionDAO medicacionDAO;
 
@@ -58,10 +52,8 @@ public class HistorialSaudeActivity extends AppCompatActivity {
         PetCareDatabase db =
                 PetCareDatabase.getInstance(this);
 
-        mascotaDAO = db.mascotaDAO();
         eventoDAO = db.eventoDAO();
         pesoDAO = db.pesoDAO();
-        usuarioMascotaDAO = db.usuarioMascotaDAO();
         vacinaDAO = db.vacinaDAO();
         medicacionDAO = db.medicacionDAO();
 
@@ -83,56 +75,10 @@ public class HistorialSaudeActivity extends AppCompatActivity {
     // Cargar mascotas propias y compartidas aceptadas
     private void cargarMascotasPermitidas() {
 
-        String usuarioActualId =
-                SesionUsuario.obtenerUsuarioId(this);
-
-        listaMascotas.clear();
-
-        // Mascotas propias
-        listaMascotas.addAll(
-                mascotaDAO.listarPorPropietario(usuarioActualId)
-        );
-
-        // Mascotas compartidas aceptadas
-        ArrayList<UsuarioMascotaDTO> relaciones =
-                new ArrayList<>(
-                        usuarioMascotaDAO.listarAceptadasPorUsuario(
-                                usuarioActualId
-                        )
+        listaMascotas =
+                MascotasUtils.obtenerMascotasDisponibles(
+                        this
                 );
-
-        for (UsuarioMascotaDTO relacion : relaciones) {
-
-            MascotaDTO mascota =
-                    mascotaDAO.obtenerPorId(
-                            relacion.getMascotaId()
-                    );
-
-            if (mascota != null) {
-
-                agregarMascotaSiNoExiste(mascota);
-            }
-        }
-    }
-
-    // Evitar mascotas duplicadas
-    private void agregarMascotaSiNoExiste(MascotaDTO mascota) {
-
-        boolean existe = false;
-
-        for (MascotaDTO mascotaLista : listaMascotas) {
-
-            if (mascotaLista.getId() == mascota.getId()) {
-
-                existe = true;
-                break;
-            }
-        }
-
-        if (!existe) {
-
-            listaMascotas.add(mascota);
-        }
     }
 
     // Configurar desplegable de mascotas
@@ -144,7 +90,7 @@ public class HistorialSaudeActivity extends AppCompatActivity {
         for (MascotaDTO mascota : listaMascotas) {
 
             nombresMascotas.add(
-                    mascota.getNombre()
+                    "   " + mascota.getNombre()
             );
         }
 
@@ -188,7 +134,7 @@ public class HistorialSaudeActivity extends AppCompatActivity {
                     listaMascotas.get(0);
 
             txtMascotaHistorial.setText(
-                    mascotaSeleccionada.getNombre(),
+                    "   " + mascotaSeleccionada.getNombre(),
                     false
             );
 

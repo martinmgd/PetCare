@@ -28,6 +28,7 @@ import com.example.petcare.dto.UsuarioMascotaDTO;
 import com.example.petcare.util.SwipeNavigationHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import android.app.DatePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -101,6 +102,8 @@ public class EventosActivity extends AppCompatActivity {
         btnAddEvento = findViewById(R.id.btnAddEvento);
         bottomNavigation = findViewById(R.id.bottomNavigation);
         tvMesEventos = findViewById(R.id.tvMesEventos);
+        tvMesEventos.setClickable(true);
+        tvMesEventos.setOnClickListener(v -> mostrarSelectorFechaCalendario());
         gridCalendarioEventos = findViewById(R.id.gridCalendarioEventos);
 
         rvEventos.setLayoutManager(
@@ -544,6 +547,40 @@ public class EventosActivity extends AppCompatActivity {
                                 .getDisplayMetrics()
                                 .density
         );
+    }
+
+    // Cambiar o mes e o ano do calendario
+    private void mostrarSelectorFechaCalendario() {
+
+        int ano =
+                calendarioActual.get(Calendar.YEAR);
+
+        int mes =
+                calendarioActual.get(Calendar.MONTH);
+
+        int dia =
+                diaSeleccionado;
+
+        DatePickerDialog dialogoFecha =
+                new DatePickerDialog(
+                        EventosActivity.this,
+                        (view, year, month, dayOfMonth) -> {
+
+                            calendarioActual.set(Calendar.YEAR, year);
+                            calendarioActual.set(Calendar.MONTH, month);
+                            calendarioActual.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                            diaSeleccionado = dayOfMonth;
+
+                            cargarCalendario();
+                            cargarEventosDelDiaSeleccionado();
+                        },
+                        ano,
+                        mes,
+                        dia
+                );
+
+        dialogoFecha.show();
     }
 
     @Override

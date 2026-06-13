@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import com.example.petcare.util.MascotasUtils;
+import com.example.petcare.supabase.SupabaseSyncManager;
+
 public class PesoActivity extends AppCompatActivity {
 
     private Toolbar toolbarPeso;
@@ -59,8 +62,10 @@ public class PesoActivity extends AppCompatActivity {
         pesoDAO = db.pesoDAO();
 
         // Listas
-        mascotas = new ArrayList<>();
-        mascotas.addAll(mascotaDAO.listar());
+        mascotas =
+                MascotasUtils.obtenerMascotasDisponibles(
+                        this
+                );
 
         // Referencias XML
         toolbarPeso = findViewById(R.id.toolbarPeso);
@@ -88,7 +93,7 @@ public class PesoActivity extends AppCompatActivity {
 
         for (MascotaDTO mascota : mascotas) {
 
-            nomesMascotas.add(mascota.getNombre());
+            nomesMascotas.add("   " + mascota.getNombre());
         }
 
         ArrayAdapter<String> adapterMascotas =
@@ -128,7 +133,7 @@ public class PesoActivity extends AppCompatActivity {
         } else {
 
             mascotaSeleccionada = mascotas.get(0);
-            txtMascotaPeso.setText(mascotaSeleccionada.getNombre(), false);
+            txtMascotaPeso.setText("   " + mascotaSeleccionada.getNombre(), false);
 
             actualizarPesoActual();
             actualizarHistorial();
@@ -237,6 +242,8 @@ public class PesoActivity extends AppCompatActivity {
 
         // Gardar mascota en Room
         mascotaDAO.actualizar(mascotaSeleccionada);
+
+        SupabaseSyncManager.sincronizar(this);
 
         txtNovoPeso.setText("");
 

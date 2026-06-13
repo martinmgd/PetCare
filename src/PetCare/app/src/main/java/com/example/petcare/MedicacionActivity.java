@@ -10,15 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.petcare.dao.EventoDAO;
-import com.example.petcare.dao.MascotaDAO;
 import com.example.petcare.dao.MedicacionDAO;
-import com.example.petcare.dao.UsuarioMascotaDAO;
 import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.EventoDTO;
 import com.example.petcare.dto.MascotaDTO;
 import com.example.petcare.dto.MedicacionDTO;
-import com.example.petcare.dto.UsuarioMascotaDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -28,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import com.example.petcare.util.MascotasUtils;
+import com.example.petcare.supabase.SupabaseSyncManager;
 
 public class MedicacionActivity extends AppCompatActivity {
 
@@ -45,8 +45,6 @@ public class MedicacionActivity extends AppCompatActivity {
 
     private TextView txtHistorialMedicacion;
 
-    private MascotaDAO mascotaDAO;
-    private UsuarioMascotaDAO usuarioMascotaDAO;
     private MedicacionDAO medicacionDAO;
     private EventoDAO eventoDAO;
 
@@ -64,8 +62,6 @@ public class MedicacionActivity extends AppCompatActivity {
         PetCareDatabase db =
                 PetCareDatabase.getInstance(this);
 
-        mascotaDAO = db.mascotaDAO();
-        usuarioMascotaDAO = db.usuarioMascotaDAO();
         medicacionDAO = db.medicacionDAO();
         eventoDAO = db.eventoDAO();
 
@@ -101,56 +97,10 @@ public class MedicacionActivity extends AppCompatActivity {
     // Cargar mascotas propias y compartidas aceptadas
     private void cargarMascotasPermitidas() {
 
-        String usuarioActualId =
-                SesionUsuario.obtenerUsuarioId(this);
-
-        listaMascotas.clear();
-
-        // Mascotas propias
-        listaMascotas.addAll(
-                mascotaDAO.listarPorPropietario(usuarioActualId)
-        );
-
-        // Mascotas compartidas aceptadas
-        ArrayList<UsuarioMascotaDTO> relaciones =
-                new ArrayList<>(
-                        usuarioMascotaDAO.listarAceptadasPorUsuario(
-                                usuarioActualId
-                        )
+        listaMascotas =
+                MascotasUtils.obtenerMascotasDisponibles(
+                        this
                 );
-
-        for (UsuarioMascotaDTO relacion : relaciones) {
-
-            MascotaDTO mascota =
-                    mascotaDAO.obtenerPorId(
-                            relacion.getMascotaId()
-                    );
-
-            if (mascota != null) {
-
-                agregarMascotaSiNoExiste(mascota);
-            }
-        }
-    }
-
-    // Evitar mascotas duplicadas
-    private void agregarMascotaSiNoExiste(MascotaDTO mascota) {
-
-        boolean existe = false;
-
-        for (MascotaDTO mascotaLista : listaMascotas) {
-
-            if (mascotaLista.getId() == mascota.getId()) {
-
-                existe = true;
-                break;
-            }
-        }
-
-        if (!existe) {
-
-            listaMascotas.add(mascota);
-        }
     }
 
     // Configurar selector de mascota
@@ -162,7 +112,7 @@ public class MedicacionActivity extends AppCompatActivity {
         for (MascotaDTO mascota : listaMascotas) {
 
             nombresMascotas.add(
-                    mascota.getNombre()
+                    "   " + mascota.getNombre()
             );
         }
 
@@ -203,7 +153,7 @@ public class MedicacionActivity extends AppCompatActivity {
                     listaMascotas.get(0);
 
             txtMascotaMedicacion.setText(
-                    mascotaSeleccionada.getNombre(),
+                    "   " + mascotaSeleccionada.getNombre(),
                     false
             );
 
@@ -419,6 +369,8 @@ public class MedicacionActivity extends AppCompatActivity {
                 fechaInicio,
                 fechaFin
         );
+
+        SupabaseSyncManager.sincronizar(this);
 
         txtNombreMedicamento.setText("");
         txtDosis.setText("");

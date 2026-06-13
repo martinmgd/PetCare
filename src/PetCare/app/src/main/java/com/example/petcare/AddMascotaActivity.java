@@ -242,8 +242,8 @@ public class AddMascotaActivity extends AppCompatActivity {
     private void configurarSelectorSexo() {
 
         String[] sexos = {
-                "Macho",
-                "Femia"
+                "   Macho",
+                "   Femia"
         };
 
         ArrayAdapter<String> adapterSexo =

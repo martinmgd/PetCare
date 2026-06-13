@@ -16,6 +16,7 @@ import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.EventoDTO;
 import com.example.petcare.dto.MascotaDTO;
+import com.example.petcare.util.MascotasUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -201,14 +202,14 @@ public class AddEventoActivity extends AppCompatActivity {
     private void configurarSelectorTipoEvento() {
 
         String[] tiposEvento = {
-                "Cita veterinaria",
-                "Desparasitación",
-                "Baño",
-                "Peluquería",
-                "Cirurxía",
-                "Alerxia",
-                "Revisión",
-                "Outro"
+                "   Cita veterinaria",
+                "   Desparasitación",
+                "   Baño",
+                "   Peluquería",
+                "   Cirurxía",
+                "   Alerxia",
+                "   Revisión",
+                "   Outro"
         };
 
         ArrayAdapter<String> adapterTipos =
@@ -227,14 +228,10 @@ public class AddEventoActivity extends AppCompatActivity {
 
     private void configurarSelectorMascota() {
 
-        String usuarioActualId =
-                SesionUsuario.obtenerUsuarioId(this);
-
-        listaMascotasDisponibles.clear();
-
-        listaMascotasDisponibles.addAll(
-                mascotaDAO.listarPorPropietario(usuarioActualId)
-        );
+        listaMascotasDisponibles =
+                MascotasUtils.obtenerMascotasDisponibles(
+                        this
+                );
 
         ArrayList<String> nombresMascotas =
                 new ArrayList<>();
@@ -242,7 +239,7 @@ public class AddEventoActivity extends AppCompatActivity {
         for (MascotaDTO mascota : listaMascotasDisponibles) {
 
             nombresMascotas.add(
-                    mascota.getNombre()
+                    "   " + mascota.getNombre()
             );
         }
 
@@ -284,7 +281,7 @@ public class AddEventoActivity extends AppCompatActivity {
         txtTipoEvento.setText(eventoEditar.getTipo(), false);
 
         txtMascotaEvento.setText(
-                eventoEditar.getMascota(),
+                "   " + eventoEditar.getMascota(),
                 false
         );
 

@@ -19,6 +19,14 @@ import com.example.petcare.dao.UsuarioMascotaDAO;
 import com.example.petcare.dto.ComidaDTO;
 import com.example.petcare.dto.InvitacionDTO;
 import com.example.petcare.dto.UsuarioMascotaDTO;
+import com.example.petcare.dao.PesoDAO;
+import com.example.petcare.dto.PesoDTO;
+import com.example.petcare.dao.VacinaDAO;
+import com.example.petcare.dto.VacinaDTO;
+import com.example.petcare.dao.MedicacionDAO;
+import com.example.petcare.dto.MedicacionDTO;
+import com.example.petcare.dao.ActividadeDAO;
+import com.example.petcare.dto.ActividadeDTO;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,6 +71,10 @@ public class SupabaseSyncManager {
                 sincronizarUsuariosMascotas(context);
                 sincronizarInvitaciones(context);
                 sincronizarComidas(context);
+                sincronizarPesos(context);
+                sincronizarVacinas(context);
+                sincronizarMedicaciones(context);
+                sincronizarActividades(context);
 
 
                 Log.d("SupabaseSync", "Sincronización finalizada.");
@@ -582,6 +594,346 @@ public class SupabaseSyncManager {
         json.put("cea", comida.isCeaComida());
         json.put("fecha_creacion", convertirFechaIso(comida.getFechaCreacion()));
         json.put("fecha_actualizacion", convertirFechaIso(comida.getFechaActualizacion()));
+
+        return json.toString();
+    }
+
+    // PESOS
+
+    // Sincronizar pesos pendentes con Supabase
+    private static void sincronizarPesos(Context context) throws Exception {
+
+        PetCareDatabase db =
+                PetCareDatabase.getInstance(context);
+
+        PesoDAO pesoDAO =
+                db.pesoDAO();
+
+        MascotaDAO mascotaDAO =
+                db.mascotaDAO();
+
+        List<PesoDTO> pesosPendientes =
+                pesoDAO.listarPendientesSync();
+
+        for (PesoDTO peso : pesosPendientes) {
+
+            String mascotaSupabaseId =
+                    obtenerSupabaseIdMascota(
+                            mascotaDAO,
+                            peso.getMascotaId()
+                    );
+
+            String json =
+                    crearJsonPeso(
+                            peso,
+                            mascotaSupabaseId
+                    );
+
+            if (estaVacio(peso.getSupabaseId())) {
+
+                String respuesta =
+                        insertar(
+                                "pesos",
+                                json
+                        );
+
+                peso.setSupabaseId(
+                        extraerIdSupabase(respuesta)
+                );
+
+            } else {
+
+                actualizarPorId(
+                        "pesos",
+                        peso.getSupabaseId(),
+                        json
+                );
+            }
+
+            peso.setPendienteSync(false);
+            peso.setFechaActualizacion(System.currentTimeMillis());
+
+            pesoDAO.actualizar(peso);
+        }
+    }
+
+    // Crear JSON para a táboa pesos de Supabase
+    private static String crearJsonPeso(
+            PesoDTO peso,
+            String mascotaSupabaseId
+    ) throws Exception {
+
+        JSONObject json =
+                new JSONObject();
+
+        json.put("mascota_id", mascotaSupabaseId);
+        json.put("peso", peso.getPeso());
+        json.put("fecha", convertirFechaSimple(peso.getFecha()));
+        json.put("hora", convertirHoraSupabase(peso.getHora()));
+        json.put("fecha_creacion", convertirFechaIso(peso.getFechaCreacion()));
+        json.put("fecha_actualizacion", convertirFechaIso(peso.getFechaActualizacion()));
+
+        return json.toString();
+    }
+
+    // VACINAS
+
+    // Sincronizar vacinas pendentes con Supabase
+    private static void sincronizarVacinas(Context context) throws Exception {
+
+        PetCareDatabase db =
+                PetCareDatabase.getInstance(context);
+
+        VacinaDAO vacinaDAO =
+                db.vacinaDAO();
+
+        MascotaDAO mascotaDAO =
+                db.mascotaDAO();
+
+        List<VacinaDTO> vacinasPendentes =
+                vacinaDAO.listarPendientesSync();
+
+        for (VacinaDTO vacina : vacinasPendentes) {
+
+            String mascotaSupabaseId =
+                    obtenerSupabaseIdMascota(
+                            mascotaDAO,
+                            vacina.getMascotaId()
+                    );
+
+            String json =
+                    crearJsonVacina(
+                            vacina,
+                            mascotaSupabaseId
+                    );
+
+            if (estaVacio(vacina.getSupabaseId())) {
+
+                String respuesta =
+                        insertar(
+                                "vacinas",
+                                json
+                        );
+
+                vacina.setSupabaseId(
+                        extraerIdSupabase(respuesta)
+                );
+
+            } else {
+
+                actualizarPorId(
+                        "vacinas",
+                        vacina.getSupabaseId(),
+                        json
+                );
+            }
+
+            vacina.setPendienteSync(false);
+            vacina.setFechaActualizacion(System.currentTimeMillis());
+
+            vacinaDAO.actualizar(vacina);
+        }
+    }
+
+    // Crear JSON para a táboa vacinas
+    private static String crearJsonVacina(
+            VacinaDTO vacina,
+            String mascotaSupabaseId
+    ) throws Exception {
+
+        JSONObject json =
+                new JSONObject();
+
+        json.put("mascota_id", mascotaSupabaseId);
+        json.put("nombre", vacina.getNombre());
+        json.put("fecha", convertirFechaSimple(vacina.getFecha()));
+        json.put("notas", vacina.getNotas());
+        json.put("fecha_creacion", convertirFechaIso(vacina.getFechaCreacion()));
+        json.put("fecha_actualizacion", convertirFechaIso(vacina.getFechaActualizacion()));
+
+        return json.toString();
+    }
+
+    // MEDICACIONES
+
+    // Sincronizar medicacións pendentes con Supabase
+    private static void sincronizarMedicaciones(Context context) throws Exception {
+
+        PetCareDatabase db =
+                PetCareDatabase.getInstance(context);
+
+        MedicacionDAO medicacionDAO =
+                db.medicacionDAO();
+
+        MascotaDAO mascotaDAO =
+                db.mascotaDAO();
+
+        UsuarioDAO usuarioDAO =
+                db.usuarioDAO();
+
+        List<MedicacionDTO> medicacionesPendientes =
+                medicacionDAO.listarPendientesSync();
+
+        for (MedicacionDTO medicacion : medicacionesPendientes) {
+
+            String mascotaSupabaseId =
+                    obtenerSupabaseIdMascota(
+                            mascotaDAO,
+                            medicacion.getMascotaId()
+                    );
+
+            String usuarioSupabaseId =
+                    resolverUsuarioSupabaseId(
+                            usuarioDAO,
+                            medicacion.getUsuarioId()
+                    );
+
+            String json =
+                    crearJsonMedicacion(
+                            medicacion,
+                            mascotaSupabaseId,
+                            usuarioSupabaseId
+                    );
+
+            if (estaVacio(medicacion.getSupabaseId())) {
+
+                String respuesta =
+                        insertar(
+                                "medicaciones",
+                                json
+                        );
+
+                medicacion.setSupabaseId(
+                        extraerIdSupabase(respuesta)
+                );
+
+            } else {
+
+                actualizarPorId(
+                        "medicaciones",
+                        medicacion.getSupabaseId(),
+                        json
+                );
+            }
+
+            medicacion.setPendienteSync(false);
+            medicacion.setFechaActualizacion(System.currentTimeMillis());
+
+            medicacionDAO.actualizar(medicacion);
+        }
+    }
+
+    // Crear JSON para a táboa medicaciones
+    private static String crearJsonMedicacion(
+            MedicacionDTO medicacion,
+            String mascotaSupabaseId,
+            String usuarioSupabaseId
+    ) throws Exception {
+
+        JSONObject json =
+                new JSONObject();
+
+        json.put("usuario_id", usuarioSupabaseId);
+        json.put("mascota_id", mascotaSupabaseId);
+        json.put("nombre", textoSeguro(medicacion.getNombre()));
+        json.put("dosis", textoSeguro(medicacion.getDosis()));
+        json.put("fecha_inicio", convertirFechaSimple(medicacion.getFechaInicio()));
+        json.put("fecha_fin", convertirFechaSimple(medicacion.getFechaFin()));
+        json.put("notas", textoSeguro(medicacion.getNotas()));
+        json.put("fecha_creacion", convertirFechaIso(medicacion.getFechaCreacion()));
+        json.put("fecha_actualizacion", convertirFechaIso(medicacion.getFechaActualizacion()));
+
+        return json.toString();
+    }
+
+    // ACTIVIDADES
+
+    // Sincronizar actividades pendentes con Supabase
+    private static void sincronizarActividades(Context context) throws Exception {
+
+        PetCareDatabase db =
+                PetCareDatabase.getInstance(context);
+
+        ActividadeDAO actividadeDAO =
+                db.actividadeDAO();
+
+        MascotaDAO mascotaDAO =
+                db.mascotaDAO();
+
+        UsuarioDAO usuarioDAO =
+                db.usuarioDAO();
+
+        List<ActividadeDTO> actividadesPendientes =
+                actividadeDAO.listarPendientesSync();
+
+        for (ActividadeDTO actividade : actividadesPendientes) {
+
+            String mascotaSupabaseId =
+                    obtenerSupabaseIdMascota(
+                            mascotaDAO,
+                            actividade.getMascotaId()
+                    );
+
+            String usuarioSupabaseId =
+                    resolverUsuarioSupabaseId(
+                            usuarioDAO,
+                            actividade.getUsuarioId()
+                    );
+
+            String json =
+                    crearJsonActividade(
+                            actividade,
+                            mascotaSupabaseId,
+                            usuarioSupabaseId
+                    );
+
+            if (estaVacio(actividade.getSupabaseId())) {
+
+                String respuesta =
+                        insertar(
+                                "actividades",
+                                json
+                        );
+
+                actividade.setSupabaseId(
+                        extraerIdSupabase(respuesta)
+                );
+
+            } else {
+
+                actualizarPorId(
+                        "actividades",
+                        actividade.getSupabaseId(),
+                        json
+                );
+            }
+
+            actividade.setPendienteSync(false);
+            actividade.setFechaActualizacion(System.currentTimeMillis());
+
+            actividadeDAO.actualizar(actividade);
+        }
+    }
+
+    // Crear JSON para a táboa actividades
+    private static String crearJsonActividade(
+            ActividadeDTO actividade,
+            String mascotaSupabaseId,
+            String usuarioSupabaseId
+    ) throws Exception {
+
+        JSONObject json =
+                new JSONObject();
+
+        json.put("usuario_id", usuarioSupabaseId);
+        json.put("mascota_id", mascotaSupabaseId);
+        json.put("tipo", textoSeguro(actividade.getTipo()));
+        json.put("duracion_minutos", actividade.getDuracionMinutos());
+        json.put("fecha", convertirFechaSimple(actividade.getFecha()));
+        json.put("zona", textoSeguro(actividade.getZona()));
+        json.put("tiempo_resumen", textoSeguro(actividade.getTiempoResumen()));
+        json.put("fecha_creacion", convertirFechaIso(actividade.getFechaCreacion()));
+        json.put("fecha_actualizacion", convertirFechaIso(actividade.getFechaActualizacion()));
 
         return json.toString();
     }

@@ -9,14 +9,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.petcare.dao.ActividadeDAO;
-import com.example.petcare.dao.MascotaDAO;
-import com.example.petcare.dao.UsuarioMascotaDAO;
-import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.data.SesionUsuario;
+import com.example.petcare.dao.ActividadeDAO;
+import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.ActividadeDTO;
 import com.example.petcare.dto.MascotaDTO;
-import com.example.petcare.dto.UsuarioMascotaDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -31,6 +28,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import com.example.petcare.util.MascotasUtils;
+import com.example.petcare.supabase.SupabaseSyncManager;
 
 public class ActividadeActivity extends AppCompatActivity {
 
@@ -53,8 +53,6 @@ public class ActividadeActivity extends AppCompatActivity {
     private MaterialButton btnConsultarTempo;
     private MaterialButton btnGuardarActividade;
 
-    private MascotaDAO mascotaDAO;
-    private UsuarioMascotaDAO usuarioMascotaDAO;
     private ActividadeDAO actividadeDAO;
 
     private ArrayList<MascotaDTO> listaMascotas;
@@ -73,8 +71,6 @@ public class ActividadeActivity extends AppCompatActivity {
         PetCareDatabase db =
                 PetCareDatabase.getInstance(this);
 
-        mascotaDAO = db.mascotaDAO();
-        usuarioMascotaDAO = db.usuarioMascotaDAO();
         actividadeDAO = db.actividadeDAO();
 
         // Referencias XML
@@ -121,56 +117,10 @@ public class ActividadeActivity extends AppCompatActivity {
     // Cargar mascotas propias y compartidas aceptadas
     private void cargarMascotasPermitidas() {
 
-        String usuarioActualId =
-                SesionUsuario.obtenerUsuarioId(this);
-
-        listaMascotas.clear();
-
-        // Mascotas propias
-        listaMascotas.addAll(
-                mascotaDAO.listarPorPropietario(usuarioActualId)
-        );
-
-        // Mascotas compartidas aceptadas
-        ArrayList<UsuarioMascotaDTO> relaciones =
-                new ArrayList<>(
-                        usuarioMascotaDAO.listarAceptadasPorUsuario(
-                                usuarioActualId
-                        )
+        listaMascotas =
+                MascotasUtils.obtenerMascotasDisponibles(
+                        this
                 );
-
-        for (UsuarioMascotaDTO relacion : relaciones) {
-
-            MascotaDTO mascota =
-                    mascotaDAO.obtenerPorId(
-                            relacion.getMascotaId()
-                    );
-
-            if (mascota != null) {
-
-                agregarMascotaSiNoExiste(mascota);
-            }
-        }
-    }
-
-    // Evitar mascotas duplicadas
-    private void agregarMascotaSiNoExiste(MascotaDTO mascota) {
-
-        boolean existe = false;
-
-        for (MascotaDTO mascotaLista : listaMascotas) {
-
-            if (mascotaLista.getId() == mascota.getId()) {
-
-                existe = true;
-                break;
-            }
-        }
-
-        if (!existe) {
-
-            listaMascotas.add(mascota);
-        }
     }
 
     // Configurar selector de mascota
@@ -182,7 +132,7 @@ public class ActividadeActivity extends AppCompatActivity {
         for (MascotaDTO mascota : listaMascotas) {
 
             nombresMascotas.add(
-                    mascota.getNombre()
+                    "   " + mascota.getNombre()
             );
         }
 
@@ -223,7 +173,7 @@ public class ActividadeActivity extends AppCompatActivity {
                     listaMascotas.get(0);
 
             txtMascotaActividade.setText(
-                    mascotaSeleccionada.getNombre(),
+                    "   " + mascotaSeleccionada.getNombre(),
                     false
             );
 
@@ -235,11 +185,11 @@ public class ActividadeActivity extends AppCompatActivity {
     private void configurarSelectorTipoActividade() {
 
         String[] tipos = {
-                "Paseo",
-                "Xogo",
-                "Adestramento",
-                "Carreira",
-                "Outro"
+                "   Paseo",
+                "   Xogo",
+                "   Adestramento",
+                "   Carreira",
+                "   Outro"
         };
 
         ArrayAdapter<String> adapter =
@@ -255,7 +205,7 @@ public class ActividadeActivity extends AppCompatActivity {
         txtTipoActividade.setClickable(true);
         txtTipoActividade.setCursorVisible(false);
 
-        txtTipoActividade.setText("Paseo", false);
+        txtTipoActividade.setText("   Paseo", false);
     }
 
     // Configurar selector de fecha
@@ -755,6 +705,8 @@ public class ActividadeActivity extends AppCompatActivity {
                 );
 
         actividadeDAO.insertar(actividade);
+
+        SupabaseSyncManager.sincronizar(this);
 
         txtDuracionActividade.setText("");
 
