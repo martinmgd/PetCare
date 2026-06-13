@@ -6,6 +6,9 @@
     <!-- Permiso para consultar el tiempo por internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Permite comprobar o estado da conexión á internet -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <!-- Ubicación aproximada -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 

@@ -149,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
         SesionUsuario.guardarUsuario(
                 this,
                 String.valueOf(usuario.getId()),
+                usuario.getSupabaseId(),
                 usuario.getEmail()
         );
 

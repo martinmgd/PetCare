@@ -45,8 +45,11 @@ public interface EventoDAO {
     @Query("SELECT * FROM eventos WHERE fecha = :fecha AND mascotaId IN (:mascotasIds) ORDER BY hora ASC")
     List<EventoDTO> listarPorFechaYMascotas(
             String fecha,
-            List<Integer> mascotasIds
-    );
+            List<Integer> mascotasIds);
+
+    // READ pendientes de sincronizar
+    @Query("SELECT * FROM eventos WHERE pendienteSync = 1")
+    List<EventoDTO> listarPendientesSync();
 
     // UPDATE
     @Update

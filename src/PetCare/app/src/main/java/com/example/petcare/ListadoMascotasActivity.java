@@ -17,9 +17,12 @@ import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.MascotaDTO;
 import com.example.petcare.dto.UsuarioMascotaDTO;
+import com.example.petcare.util.SwipeNavigationHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+
+import com.example.petcare.supabase.SupabaseSyncManager;
 
 public class ListadoMascotasActivity extends AppCompatActivity {
 
@@ -32,6 +35,8 @@ public class ListadoMascotasActivity extends AppCompatActivity {
     private UsuarioMascotaDAO usuarioMascotaDAO;
 
     private ArrayList<MascotaDTO> listaMascotas;
+
+    private SwipeNavigationHelper swipeNavigationHelper;
 
     ActivityResultLauncher<Intent> launcher =
             registerForActivityResult(
@@ -49,6 +54,9 @@ public class ListadoMascotasActivity extends AppCompatActivity {
 
                                 // Gardar mascota en Room
                                 dao.insertar(mascota);
+
+                                // Intentar sincronizar con Supabase
+                                SupabaseSyncManager.sincronizar(this);
 
                                 // Recargar lista
                                 cargarMascotas();
@@ -122,6 +130,7 @@ public class ListadoMascotasActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -141,6 +150,7 @@ public class ListadoMascotasActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -155,6 +165,7 @@ public class ListadoMascotasActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -169,6 +180,7 @@ public class ListadoMascotasActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -176,6 +188,14 @@ public class ListadoMascotasActivity extends AppCompatActivity {
 
             return false;
         });
+
+        // Navegación entre apartados mediante deslizamiento
+        swipeNavigationHelper =
+                new SwipeNavigationHelper(
+                        this,
+                        EventosActivity.class,
+                        HomeActivity.class
+                );
     }
 
     // Cargar mascotas desde Room
@@ -244,5 +264,18 @@ public class ListadoMascotasActivity extends AppCompatActivity {
 
             cargarMascotas();
         }
+    }
+
+    // Permitir navegar entre apartados deslizando o dedo
+    @Override
+    public boolean dispatchTouchEvent(android.view.MotionEvent event) {
+
+        if (swipeNavigationHelper != null
+                && swipeNavigationHelper.procesarEvento(event)) {
+
+            return true;
+        }
+
+        return super.dispatchTouchEvent(event);
     }
 }

@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 
+import com.example.petcare.util.SwipeNavigationHelper;
+
 public class SaudeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
@@ -18,6 +20,8 @@ public class SaudeActivity extends AppCompatActivity {
     private MaterialCardView cardVacinas;
     private MaterialCardView cardMedicacion;
     private MaterialCardView cardHistorial;
+
+    private SwipeNavigationHelper swipeNavigationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +100,14 @@ public class SaudeActivity extends AppCompatActivity {
         });
 
         configurarBottomNavigation();
+
+        // Navegación entre apartados mediante deslizamiento
+        swipeNavigationHelper =
+                new SwipeNavigationHelper(
+                        this,
+                        PerfilActivity.class,
+                        EventosActivity.class
+                );
     }
 
     // Bottom Navigation
@@ -117,6 +129,7 @@ public class SaudeActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -132,6 +145,7 @@ public class SaudeActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -147,6 +161,7 @@ public class SaudeActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -168,6 +183,7 @@ public class SaudeActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -185,5 +201,18 @@ public class SaudeActivity extends AppCompatActivity {
                 apartado + " pendente de implementar",
                 Toast.LENGTH_SHORT
         ).show();
+    }
+
+    // Permitir navegar entre apartados deslizando o dedo
+    @Override
+    public boolean dispatchTouchEvent(android.view.MotionEvent event) {
+
+        if (swipeNavigationHelper != null
+                && swipeNavigationHelper.procesarEvento(event)) {
+
+            return true;
+        }
+
+        return super.dispatchTouchEvent(event);
     }
 }

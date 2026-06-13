@@ -21,6 +21,7 @@ import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.ComidaDTO;
 import com.example.petcare.dto.MascotaDTO;
 import com.google.android.material.button.MaterialButton;
+import com.example.petcare.supabase.SupabaseSyncManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -251,6 +252,8 @@ public class MascotaCompletaActivity extends AppCompatActivity {
                     comidaDAO.insertar(comidaHoy);
 
             comidaHoy.setId((int) id);
+
+            SupabaseSyncManager.sincronizar(this);
         }
 
         actualizarBotonesComida();
@@ -307,6 +310,8 @@ public class MascotaCompletaActivity extends AppCompatActivity {
         comidaHoy.setPendienteSync(true);
 
         comidaDAO.actualizar(comidaHoy);
+
+        SupabaseSyncManager.sincronizar(this);
 
         actualizarBotonesComida();
     }

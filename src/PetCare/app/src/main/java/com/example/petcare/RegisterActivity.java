@@ -13,6 +13,7 @@ import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.UsuarioDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.example.petcare.supabase.SupabaseSyncManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -160,6 +161,9 @@ public class RegisterActivity extends AppCompatActivity {
         usuario.setPendienteSync(true);
 
         usuarioDAO.insertar(usuario);
+
+        // Intentar sincronizar con Supabase
+        SupabaseSyncManager.sincronizar(this);
 
         Toast.makeText(
                 RegisterActivity.this,

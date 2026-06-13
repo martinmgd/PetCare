@@ -29,6 +29,10 @@ public interface UsuarioDAO {
     @Query("SELECT * FROM usuarios WHERE email = :email LIMIT 1")
     UsuarioDTO obtenerPorEmail(String email);
 
+    // READ por supabaseId
+    @Query("SELECT * FROM usuarios WHERE supabaseId = :supabaseId LIMIT 1")
+    UsuarioDTO obtenerPorSupabaseId(String supabaseId);
+
     // READ pendientes de sincronizar
     @Query("SELECT * FROM usuarios WHERE pendienteSync = 1")
     List<UsuarioDTO> listarPendientesSync();

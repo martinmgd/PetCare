@@ -19,6 +19,7 @@ import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.EventoDTO;
 import com.example.petcare.dto.MascotaDTO;
 import com.example.petcare.dto.UsuarioMascotaDTO;
+import com.example.petcare.util.SwipeNavigationHelper;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -41,6 +42,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private ArrayList<MascotaDTO> listaMascotas;
     private ArrayList<EventoDTO> listaEventos;
+
+    private SwipeNavigationHelper swipeNavigationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +102,14 @@ public class HomeActivity extends AppCompatActivity {
 
         // Badge de invitacións pendentes
         actualizarBadgePerfil();
+
+        // Navegación entre apartados mediante deslizamiento
+        swipeNavigationHelper =
+                new SwipeNavigationHelper(
+                        this,
+                        ListadoMascotasActivity.class,
+                        PerfilActivity.class
+                );
     }
 
     // Bottom Navigation
@@ -124,6 +135,7 @@ public class HomeActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -138,6 +150,7 @@ public class HomeActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -152,6 +165,7 @@ public class HomeActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -166,6 +180,7 @@ public class HomeActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -302,5 +317,18 @@ public class HomeActivity extends AppCompatActivity {
 
         cargarDatos();
         actualizarBadgePerfil();
+    }
+
+    // Permitir navegar entre apartados deslizando o dedo
+    @Override
+    public boolean dispatchTouchEvent(android.view.MotionEvent event) {
+
+        if (swipeNavigationHelper != null
+                && swipeNavigationHelper.procesarEvento(event)) {
+
+            return true;
+        }
+
+        return super.dispatchTouchEvent(event);
     }
 }

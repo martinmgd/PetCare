@@ -106,7 +106,8 @@
             android:id="@+id/txtUsuarioIdInvitar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:inputType="number" />
+            android:inputType="textNoSuggestions"
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -20,11 +20,14 @@ import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.InvitacionDTO;
 import com.example.petcare.dto.UsuarioDTO;
 import com.example.petcare.dto.UsuarioMascotaDTO;
+import com.example.petcare.util.SwipeNavigationHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
+
+import com.example.petcare.supabase.SupabaseSyncManager;
 
 public class PerfilActivity extends AppCompatActivity {
 
@@ -50,6 +53,8 @@ public class PerfilActivity extends AppCompatActivity {
     private UsuarioMascotaDAO usuarioMascotaDAO;
 
     private UsuarioDTO usuarioActual;
+
+    private SwipeNavigationHelper swipeNavigationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +124,14 @@ public class PerfilActivity extends AppCompatActivity {
         });
 
         configurarBottomNavigation();
+
+        // Navegación entre apartados mediante deslizamiento
+        swipeNavigationHelper =
+                new SwipeNavigationHelper(
+                        this,
+                        HomeActivity.class,
+                        SaudeActivity.class
+                );
     }
 
     // Cargar usuario gardado na sesión
@@ -163,7 +176,20 @@ public class PerfilActivity extends AppCompatActivity {
         txtNomeConta.setText("Nome: " + nombre);
         txtCorreoConta.setText("Correo: " + email);
 
-        txtUsuarioId.setText("ID usuario: " + usuarioActual.getId());
+        if (usuarioActual.getSupabaseId() != null
+                && !usuarioActual.getSupabaseId().isEmpty()) {
+
+            txtUsuarioId.setText(
+                    "ID usuario: "
+                            + usuarioActual.getSupabaseId()
+            );
+
+        } else {
+
+            txtUsuarioId.setText(
+                    "ID usuario: pendente de sincronización"
+            );
+        }
     }
 
     // Cargar invitacións pendentes
@@ -177,7 +203,14 @@ public class PerfilActivity extends AppCompatActivity {
         }
 
         String usuarioId =
-                String.valueOf(usuarioActual.getId());
+                usuarioActual.getSupabaseId();
+
+        if (usuarioId == null || usuarioId.isEmpty()) {
+
+            tvInvitacionesPendientes.setVisibility(View.GONE);
+            cardInvitaciones.setVisibility(View.GONE);
+            return;
+        }
 
         ArrayList<InvitacionDTO> invitaciones =
                 new ArrayList<>(
@@ -315,6 +348,8 @@ public class PerfilActivity extends AppCompatActivity {
                 System.currentTimeMillis()
         );
 
+        SupabaseSyncManager.sincronizar(this);
+
         Toast.makeText(
                 this,
                 "Invitación aceptada",
@@ -323,7 +358,6 @@ public class PerfilActivity extends AppCompatActivity {
 
         cargarInvitacionesPendientes();
     }
-
     // Rexeitar invitación
     private void rexeitarInvitacion(InvitacionDTO invitacion) {
 
@@ -351,7 +385,19 @@ public class PerfilActivity extends AppCompatActivity {
         }
 
         String usuarioId =
-                String.valueOf(usuarioActual.getId());
+                usuarioActual.getSupabaseId();
+
+        if (usuarioId == null
+                || usuarioId.isEmpty()) {
+
+            Toast.makeText(
+                    this,
+                    "Usuario pendente de sincronización",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+            return;
+        }
 
         ClipboardManager clipboard =
                 (ClipboardManager)
@@ -403,6 +449,7 @@ public class PerfilActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -417,6 +464,7 @@ public class PerfilActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -431,6 +479,7 @@ public class PerfilActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -445,6 +494,7 @@ public class PerfilActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -459,5 +509,18 @@ public class PerfilActivity extends AppCompatActivity {
         });
 
         bottomNavigation.setSelectedItemId(R.id.nav_perfil);
+    }
+
+    // Permitir navegar entre apartados deslizando o dedo
+    @Override
+    public boolean dispatchTouchEvent(android.view.MotionEvent event) {
+
+        if (swipeNavigationHelper != null
+                && swipeNavigationHelper.procesarEvento(event)) {
+
+            return true;
+        }
+
+        return super.dispatchTouchEvent(event);
     }
 }

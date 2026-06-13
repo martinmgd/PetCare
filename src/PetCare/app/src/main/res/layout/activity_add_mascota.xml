@@ -130,7 +130,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:hint="Sexo"
+            android:hint="   Sexo"
             app:endIconMode="dropdown_menu"
             app:boxBackgroundColor="#FFFFFF"
             app:boxBackgroundMode="outline"

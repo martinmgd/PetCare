@@ -14,6 +14,7 @@ import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.InvitacionDTO;
 import com.example.petcare.dto.MascotaDTO;
 import com.example.petcare.dto.UsuarioDTO;
+import com.example.petcare.supabase.SupabaseSyncManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -128,26 +129,54 @@ public class GestionUsuariosMascotaActivity extends AppCompatActivity {
             return;
         }
 
-        if (usuarioDestinoId.equals(usuarioActualId)) {
+        UsuarioDTO usuarioActual = null;
+
+        try {
+
+            int idActual =
+                    Integer.parseInt(usuarioActualId);
+
+            usuarioActual =
+                    usuarioDAO.obtenerPorId(idActual);
+
+        } catch (Exception e) {
+
+            usuarioActual = null;
+        }
+
+        if (usuarioActual == null) {
+
+            Toast.makeText(
+                    this,
+                    "Non se puido cargar o usuario actual",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+            return;
+        }
+
+        if (usuarioActual.getSupabaseId() == null
+                || usuarioActual.getSupabaseId().isEmpty()) {
+
+            Toast.makeText(
+                    this,
+                    "O teu usuario aínda non está sincronizado",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+            return;
+        }
+
+        if (usuarioDestinoId.equals(usuarioActual.getSupabaseId())) {
 
             txtUsuarioIdInvitar.setError("Non podes convidarte a ti mesmo");
             return;
         }
 
-        UsuarioDTO usuarioDestino = null;
-
-        try {
-
-            int idDestino =
-                    Integer.parseInt(usuarioDestinoId);
-
-            usuarioDestino =
-                    usuarioDAO.obtenerPorId(idDestino);
-
-        } catch (Exception e) {
-
-            usuarioDestino = null;
-        }
+        UsuarioDTO usuarioDestino =
+                usuarioDAO.obtenerPorSupabaseId(
+                        usuarioDestinoId
+                );
 
         if (usuarioDestino == null) {
 
@@ -182,6 +211,8 @@ public class GestionUsuariosMascotaActivity extends AppCompatActivity {
                 );
 
         invitacionDAO.insertar(invitacion);
+
+        SupabaseSyncManager.sincronizar(this);
 
         txtUsuarioIdInvitar.setText("");
 

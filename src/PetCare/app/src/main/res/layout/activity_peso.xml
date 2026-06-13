@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:hint="Mascota"
+            android:hint="   Mascota"
             app:boxBackgroundColor="#FFFFFF"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="16dp"

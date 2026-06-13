@@ -25,11 +25,14 @@ import com.example.petcare.data.SesionUsuario;
 import com.example.petcare.dto.EventoDTO;
 import com.example.petcare.dto.MascotaDTO;
 import com.example.petcare.dto.UsuarioMascotaDTO;
+import com.example.petcare.util.SwipeNavigationHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+
+import com.example.petcare.supabase.SupabaseSyncManager;
 
 public class EventosActivity extends AppCompatActivity {
 
@@ -49,6 +52,8 @@ public class EventosActivity extends AppCompatActivity {
     private Calendar calendarioActual;
     private int diaSeleccionado;
 
+    private SwipeNavigationHelper swipeNavigationHelper;
+
     ActivityResultLauncher<Intent> launcher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -64,6 +69,9 @@ public class EventosActivity extends AppCompatActivity {
                             if (evento != null) {
 
                                 dao.insertar(evento);
+
+                                // Intentar sincronizar con Supabase
+                                SupabaseSyncManager.sincronizar(this);
 
                                 cargarCalendario();
                                 cargarEventosDelDiaSeleccionado();
@@ -114,6 +122,14 @@ public class EventosActivity extends AppCompatActivity {
         });
 
         configurarBottomNavigation();
+
+        // Navegación entre apartados mediante deslizamiento
+        swipeNavigationHelper =
+                new SwipeNavigationHelper(
+                        this,
+                        SaudeActivity.class,
+                        ListadoMascotasActivity.class
+                );
     }
 
     private void cargarCalendario() {
@@ -341,6 +357,7 @@ public class EventosActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -355,6 +372,7 @@ public class EventosActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -374,6 +392,7 @@ public class EventosActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -388,6 +407,7 @@ public class EventosActivity extends AppCompatActivity {
                         );
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
 
                 return true;
@@ -536,5 +556,18 @@ public class EventosActivity extends AppCompatActivity {
             cargarCalendario();
             cargarEventosDelDiaSeleccionado();
         }
+    }
+
+    // Permitir navegar entre apartados deslizando o dedo
+    @Override
+    public boolean dispatchTouchEvent(android.view.MotionEvent event) {
+
+        if (swipeNavigationHelper != null
+                && swipeNavigationHelper.procesarEvento(event)) {
+
+            return true;
+        }
+
+        return super.dispatchTouchEvent(event);
     }
 }
