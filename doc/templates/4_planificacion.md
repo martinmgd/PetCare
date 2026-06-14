@@ -4,7 +4,7 @@
 
 O obxectivo principal do proxecto é desenvolver unha aplicación móbil Android chamada **PetCare**, orientada á xestión e seguimento do coidado de mascotas.
 
-A aplicación permitirá rexistrar información relacionada coa alimentación, actividade, peso, citas, medicación e eventos importantes da mascota. Ademais, contemplará a xestión compartida entre varios usuarios, empregando **Supabase** como base de datos principal na nube e **SQLite/Room** como sistema de apoio local.
+A aplicación permitirá rexistrar información relacionada coa alimentación, actividade, peso, citas, medicación e eventos importantes da mascota. Ademais, contemplará a xestión compartida entre varios usuarios, empregando SQLite/Room como sistema principal de almacenamento local e Supabase para a sincronización e almacenamento dos datos na nube.
 
 ---
 
@@ -118,7 +118,23 @@ Desenvolvedor do proxecto.
 
 ---
 
-### Tarefa 2: Configuración de Supabase
+### Tarefa 2: Configuración de SQLite/Room
+
+**Descrición:**
+Preparación do sistema principal de almacenamento local mediante SQLite/Room para garantir o funcionamento da aplicación sen conexión a internet.
+
+**Recursos hardware/software:**
+Android Studio, Java, Room/SQLite.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+25 horas.
+
+---
+
+### Tarefa 3: Configuración de Supabase
 
 **Descrición:**
 Creación do proxecto en Supabase, configuración inicial da base de datos e autenticación.
@@ -131,22 +147,6 @@ Desenvolvedor do proxecto.
 
 **Duración:**
 20 horas.
-
----
-
-### Tarefa 3: Configuración de SQLite/Room
-
-**Descrición:**
-Preparación do almacenamento local de apoio mediante SQLite/Room para mellorar a dispoñibilidade da aplicación.
-
-**Recursos hardware/software:**
-Android Studio, Java, Room/SQLite.
-
-**Recursos humanos:**
-Desenvolvedor do proxecto.
-
-**Duración:**
-25 horas.
 
 ---
 
@@ -250,7 +250,23 @@ Desenvolvedor do proxecto.
 
 ## Fase 5: Integración e sincronización
 
-### Tarefa 1: Integración da aplicación con Supabase
+### Tarefa 1: Integración con SQLite/Room
+
+**Descrición:**
+Uso de SQLite/Room como sistema principal de almacenamento local para garantir a dispoñibilidade da información e o funcionamento da aplicación sen conexión.
+
+**Recursos hardware/software:**
+Android Studio, Java, Room/SQLite.
+
+**Recursos humanos:**
+Desenvolvedor do proxecto.
+
+**Duración:**
+25 horas.
+
+---
+
+### Tarefa 2: Integración da aplicación con Supabase
 
 **Descrición:**
 Conexión das funcionalidades da aplicación coa base de datos na nube.
@@ -263,22 +279,6 @@ Desenvolvedor do proxecto.
 
 **Duración:**
 35 horas.
-
----
-
-### Tarefa 2: Integración con SQLite/Room
-
-**Descrición:**
-Uso de SQLite/Room como apoio local para gardar datos de forma auxiliar e mellorar a experiencia de uso.
-
-**Recursos hardware/software:**
-Android Studio, Java, Room/SQLite.
-
-**Recursos humanos:**
-Desenvolvedor do proxecto.
-
-**Duración:**
-25 horas.
 
 ---
 
@@ -348,7 +348,7 @@ Desenvolvedor do proxecto.
 
 ---
 
-## Fase 7: Documentación final e presentación
+## Fase 7: Documentación final
 
 ### Tarefa 1: Elaboración da documentación final
 
@@ -363,22 +363,6 @@ Desenvolvedor do proxecto.
 
 **Duración:**
 20 horas.
-
----
-
-### Tarefa 2: Preparación da presentación
-
-**Descrición:**
-Preparación da defensa do proxecto e demostración da aplicación.
-
-**Recursos hardware/software:**
-LibreOffice Impress, PowerPoint ou ferramenta similar.
-
-**Recursos humanos:**
-Desenvolvedor do proxecto.
-
-**Duración:**
-15 horas.
 
 ---
 
@@ -406,11 +390,6 @@ gantt
     Integración Supabase                 :c2, 2025-05-30, 15d
     Probas e correccións                 :c3, 2025-06-08, 10d
     Documentación final                  :c4, 2025-06-05, 10d
-    Preparación da presentación          :c5, 2025-06-12, 3d
-
-    section Entrega
-    Entrega final                        :milestone, c6, 2025-06-14, 1d
-    Defensa do proxecto                  :milestone, c7, 2025-06-15, 1d
 ```
 
 ---

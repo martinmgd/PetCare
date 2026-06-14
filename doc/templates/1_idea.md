@@ -10,8 +10,6 @@ O proxecto consiste no desenvolvemento dunha aplicación denominada **PetCare**,
 
 A elección dunha aplicación móbil responde ao contexto real de uso, xa que os propietarios adoitan consultar este tipo de información desde o teléfono móbil, que resulta máis accesible e práctico no día a día.
 
-Ademais, a aplicación poderá incorporar un sistema de asistencia intelixente que analice datos como a actividade, alimentación ou evolución do peso da mascota, co obxectivo de ofrecer recomendacións básicas e mellorar o seguimento do seu estado xeral.
-
 ## Público obxectivo
 
 A aplicación está dirixida principalmente a particulares que teñan mascotas e desexen levar un control máis organizado do seu estado de saúde, tratamentos, vacinas e citas. O contexto social ao que se orienta é o de usuarios que precisan consultar esta información en mobilidade, de forma rápida e sinxela.
@@ -22,7 +20,7 @@ Nunha evolución futura, a solución tamén podería complementarse cunha versi�
 
 Actualmente, moitos propietarios de mascotas non dispoñen dunha ferramenta centralizada para xestionar información relevante como vacinas, medicación, citas ou evolución do peso dos seus animais. Esta información adoita estar dispersa entre documentos en papel, mensaxes, recordatorios illados ou simplemente memoria persoal, o que pode provocar esquecementos e dificultar un seguimento adecuado.
 
-O proxecto pretende cubrir esta necesidade mediante unha aplicación móbil que permita consultar, actualizar e sincronizar toda a información desde o teléfono móbil. Ademais, presenta potencial de evolución cara a unha oportunidade de negocio, xa que a aplicación podería evolucionar cara a un produto máis completo con novas funcionalidades, versión premium ou integración con servizos veterinarios.
+O proxecto pretende cubrir esta necesidade mediante unha aplicación móbil que permita consultar, actualizar e almacenar toda a información desde o teléfono móbil, mantendo os datos dispoñibles incluso sen conexión a internet e sincronizándoos posteriormente cando exista conectividade. Ademais, presenta potencial de evolución cara a unha oportunidade de negocio, xa que a aplicación podería evolucionar cara a un produto máis completo con novas funcionalidades, versión premium ou integración con servizos veterinarios.
 
 ## Aplicacións existentes
 
@@ -58,7 +56,7 @@ Para o desenvolvemento do proxecto empregaranse as seguintes tecnoloxías:
 
 * Java
 * Android Studio
-* Supabase para autenticación, almacenamento e sincronización de datos na nube
 * SQLite/Room para persistencia local da información
+* Supabase para autenticación, almacenamento e sincronización de datos na nube
 * XML para o deseño das interfaces
 * Git e GitLab para o control de versións e seguimento do proxecto

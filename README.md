@@ -32,9 +32,7 @@ PetCare poderá utilizarse mediante instalación directa do ficheiro APK no disp
 
 Descargar:
 
-```text
-APK dispoñible proximamente
-```
+[PetCare.apk](doc/apk/PetCare.apk)
 
 Pasos:
 
@@ -50,7 +48,7 @@ Unha vez instalada, a aplicación estará lista para o seu uso.
 Requisitos:
 
 - Android Studio
-- Java JDK 17 ou superior
+- Java JDK 11 ou superior
 - Android SDK actualizado
 - Emulador Android ou dispositivo Android físico
 - Conexión a internet
@@ -84,13 +82,15 @@ PetCare foi deseñado para ofrecer unha experiencia simple e intuitiva.
 Fluxo principal actual:
 
 ```text
-Pantalla inicial
-      ↓
 Inicio de sesión
       ↓
-Listado de mascotas
+Pantalla principal
+      ↓
+Mascotas
       ↓
 Información detallada
+      ↓
+Eventos e rexistros asociados
 ```
 
 Funcionalidades implementadas e previstas:

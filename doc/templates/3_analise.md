@@ -54,17 +54,6 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 * Seguimento da evolución física
 * Rexistro de tratamentos ou medicacións
 
-### Sistema de recomendación básica
-
-* Análise de datos rexistrados (actividade, alimentación e peso)
-* Xeración de recomendacións simples orientadas ao benestar da mascota
-* Recomendacións baseadas nos datos introducidos polo usuario
-* Suxestión de actividade ou paseos en función de condicións externas, como a climatoloxía
-
-### Resumos de información
-
-* Xeración de resumos da información da mascota (actividade, peso, historial, etc.)
-
 ---
 
 ## Requirimentos non funcionais
@@ -125,8 +114,8 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 
 * Android Studio como contorno de desenvolvemento
 * Linguaxe de programación Java
-* Supabase como sistema principal de almacenamento e sincronización de datos
-* SQLite/Room para persistencia local da información no dispositivo
+* SQLite/Room como sistema principal de almacenamento e persistencia local da información
+* Supabase como sistema de sincronización e almacenamento dos datos na nube
 
 ---
 
@@ -140,14 +129,13 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 ### Interfaces hardware
 
 * Uso de notificacións do dispositivo
-* Posible uso de servizos de localización (GPS)
+* Posible uso de servizos de localización
 
 ### Interfaces software
 
 * Comunicación cun sistema de almacenamento e sincronización de datos mediante Supabase
 * Persistencia local da información mediante SQLite/Room
 * Posible integración con servizos externos para a obtención de información (como datos meteorolóxicos)
-* Posible uso dun sistema de asistencia intelixente para recomendacións básicas
 
 ---
 
@@ -194,3 +182,5 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 * Posibilidade de exportar os datos rexistrados
 * Notificacións intelixentes baseadas en hábitos de uso
 * Incorporación de novas funcionalidades orientadas a mellorar o coidado e seguimento das mascotas
+* Integración dun sistema de intelixencia artificial capaz de analizar datos de actividade, alimentación, peso, medicación e saúde da mascota para ofrecer recomendacións personalizadas
+* Xeración de suxestións de actividade, alimentación e paseos en función do historial da mascota e das condicións meteorolóxicas da zona

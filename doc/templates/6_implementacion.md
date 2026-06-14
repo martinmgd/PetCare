@@ -21,7 +21,7 @@ As principais tecnoloxías utilizadas durante a implementación foron:
 * Material Design Components
 * Git e GitLab
 
-SQLite e Room están previstos para o almacenamento local da información, mentres que Supabase utilizarase para a sincronización dos datos na nube e a xestión da autenticación dos usuarios.
+SQLite e Room empréganse como sistema principal de almacenamento local da información, permitindo o funcionamento da aplicación sen conexión a internet. Supabase intégrase como servizo de sincronización, autenticación e almacenamento dos datos na nube.
 
 ---
 
@@ -33,6 +33,8 @@ A aplicación organízase en diferentes paquetes segundo a súa funcionalidade:
 * **adapters**: adaptadores utilizados polos RecyclerView.
 * **dto**: clases que representan as entidades da aplicación.
 * **dao**: acceso e xestión dos datos da aplicación.
+* **data**: configuración da base de datos e sesión de usuario.
+* **util**: clases auxiliares empregadas por diferentes módulos da aplicación.
 
 Esta organización permite manter o código estruturado e facilitar o mantemento da aplicación durante o seu desenvolvemento.
 
@@ -148,6 +150,45 @@ if (hora.isEmpty()) {
 
 ---
 
+### Persistencia local mediante Room
+
+Co obxectivo de garantir a conservación da información incluso cando o dispositivo non dispón de conexión a internet, empregouse Room como capa de acceso á base de datos SQLite. Mediante a utilización de interfaces DAO é posible realizar operacións de inserción, actualización e consulta dos datos de forma sinxela e estruturada.
+
+```java
+@Dao
+public interface MascotaDAO {
+
+    @Insert
+    long insertar(MascotaDTO mascota);
+
+    @Query("SELECT * FROM mascotas")
+    List<MascotaDTO> listar();
+}
+```
+
+Este mecanismo permite abstraer o acceso á base de datos, facilitando o mantemento do código e reducindo a complexidade das operacións de persistencia.
+
+---
+
+### Configuración da base de datos Room
+
+A base de datos local configúrase mediante unha instancia única (Singleton), garantindo que toda a aplicación utilice a mesma conexión e evitando a creación innecesaria de múltiples instancias.
+
+```java
+instancia =
+        Room.databaseBuilder(
+                        context.getApplicationContext(),
+                        PetCareDatabase.class,
+                        "petcare_db"
+                )
+                .fallbackToDestructiveMigration()
+                .build();
+```
+
+Esta configuración permite crear automaticamente a base de datos local da aplicación e xestionar futuras modificacións na súa estrutura durante o desenvolvemento do proxecto.
+
+---
+
 ### Comunicación entre Activities
 
 Para transferir información entre pantallas empregouse o mecanismo de resultados proporcionado por Android. Unha vez creado o evento, este envíase á Activity anterior mediante un Intent.
@@ -162,7 +203,7 @@ setResult(RESULT_OK, intent);
 finish();
 ```
 
-Este sistema permite intercambiar información entre Activities sen necesidade de almacenar previamente os datos na base de datos.
+Este sistema permite intercambiar información entre Activities de forma directa. Posteriormente, os datos poden almacenarse na base de datos local mediante Room para garantir a súa persistencia.
 
 ---
 
@@ -171,7 +212,7 @@ Este sistema permite intercambiar información entre Activities sen necesidade d
 Para executar o proxecto é necesario dispoñer de:
 
 * Android Studio.
-* JDK 17 ou superior.
+* JDK 11 ou superior.
 * Android SDK actualizado.
 * Dispositivo Android físico ou emulador.
 

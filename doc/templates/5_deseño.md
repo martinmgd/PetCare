@@ -37,7 +37,6 @@ AL[Alimentación]
 P[Peso]
 E[Eventos]
 ME[Medicación]
-PA[Pautas]
 I[Invitacións]
 end
 
@@ -48,7 +47,6 @@ Mascota --> AL
 Mascota --> P
 Mascota --> E
 Mascota --> ME
-ME --> PA
 
 Mascota --> I
 Usuario --> I
@@ -107,10 +105,11 @@ class Alimentacion{
 
 class Actividade{
 +int id
-+LocalDateTime dataHora
 +String tipo
 +int duracion
-+String notas
++String fecha
++String zona
++String tempoResumo
 }
 
 class Peso{
@@ -137,13 +136,6 @@ class Medicacion{
 +String notas
 }
 
-class Pauta{
-+int id
-+String dose
-+int frecuenciaHoras
-+LocalDate dataInicio
-+LocalDate dataFin
-}
 
 Mascota "1" --> "*" UsuarioMascota
 Usuario "1" --> "*" UsuarioMascota
@@ -156,8 +148,6 @@ Mascota "1" --> "*" Actividade
 Mascota "1" --> "*" Peso
 Mascota "1" --> "*" Evento
 Mascota "1" --> "*" Medicacion
-
-Medicacion "1" --> "*" Pauta
 ```
 
 Este diagrama representa a organización das entidades principais da aplicación, definindo a estrutura de datos e as relacións necesarias para o funcionamento do sistema.
@@ -192,7 +182,6 @@ I([Rexistrar medicación])
 
 J([Crear eventos])
 K([Consultar historial])
-L([Consultar recomendacións IA])
 end
 
 subgraph Funcións propietario
@@ -214,7 +203,6 @@ U --- H
 U --- I
 U --- J
 U --- K
-U --- L
 
 P --- M
 P --- N
@@ -243,7 +231,6 @@ Inicialmente prevese a existencia das seguintes pantallas:
 * Eventos e citas
 * Invitacións
 * Perfil de usuario
-* Recomendacións IA
 
 As capturas reais da aplicación incorporaranse unha vez implementadas.
 
@@ -290,7 +277,6 @@ STORAGE[Storage]
 end
 
 subgraph Externos
-IA[Sistema IA]
 METEO[API meteorolóxica]
 end
 
@@ -298,7 +284,6 @@ REPO --> AUTH
 REPO --> DB
 REPO --> STORAGE
 
-REPO --> IA
 REPO --> METEO
 ```
 
@@ -325,7 +310,6 @@ STORAGE[Storage imaxes]
 end
 
 subgraph Externos
-IA[API IA]
 METEO[API meteorolóxica]
 end
 
@@ -335,7 +319,6 @@ APP --> ROOM
 APP --> AUTH
 APP --> DB
 APP --> STORAGE
-APP --> IA
 APP --> METEO
 ```
 

@@ -10,7 +10,7 @@ A aplicación pode instalarse mediante un arquivo APK xerado desde Android Studi
 
 PetCare emprega unha base de datos local SQLite mediante a biblioteca Room para almacenar a información das mascotas, eventos e datos de seguimento das mascotas.
 
-Ademais, utiliza Supabase para a autenticación dos usuarios, a verificación do correo electrónico, a recuperación de contrasinais e a sincronización da información entre distintos dispositivos.
+Ademais, Supabase está destinado a proporcionar os servizos de autenticación, recuperación de contrasinais e sincronización da información entre distintos dispositivos.
 
 O sistema segue unha arquitectura local first. Os datos almacénanse inicialmente no dispositivo mediante Room e sincronízanse automaticamente con Supabase cando existe conexión a internet, permitindo conservar a información actualizada entre diferentes dispositivos asociados ao mesmo usuario.
 
