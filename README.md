@@ -1,178 +1,188 @@
-# PetCare 
+      # PetCare 
 
-<h3 align="center">
-Aplicación móbil orientada á organización e seguimento integral do coidado diario das mascotas.
-</h3>
+      <h3 align="center">
+      Aplicación móbil orientada á organización e seguimento integral do coidado diario das mascotas.
+      </h3>
 
-<p align="center"> ──────────────────────────────────────────────────────────────── </p>
+      <p align="center"> ──────────────────────────────────────────────────────────────── </p>
 
-<p align="center">
-  <img src="doc/img/banner_galego.png" width="1100">
-</p>
+      <p align="center">
+      <img src="doc/img/banner_galego.png" width="1100">
+      </p>
 
----
+      ---
 
-## Descrición
+      ## Descrición
 
-PetCare é unha aplicación móbil desenvolvida co obxectivo de centralizar nun único lugar toda a información relacionada co coidado dunha mascota. A aplicación permite rexistrar mascotas e realizar un seguimento organizado de datos importantes como o peso, eventos relevantes, información sanitaria, alimentación ou outros aspectos relacionados co seu benestar.
+      PetCare é unha aplicación móbil desenvolvida co obxectivo de centralizar nun único lugar toda a información relacionada co coidado dunha mascota. A aplicación permite rexistrar mascotas e realizar un seguimento organizado de datos importantes como o peso, eventos relevantes, información sanitaria, alimentación ou outros aspectos relacionados co seu benestar.
 
-Na práctica diaria, moita desta información adoita quedar repartida entre notas, recordatorios, mensaxes ou documentos en papel, dificultando o seu acceso e aumentando a probabilidade de esquecementos. PetCare busca resolver este problema ofrecendo unha ferramenta intuitiva, accesible e pensada para o uso real.
+      Na práctica diaria, moita desta información adoita quedar repartida entre notas, recordatorios, mensaxes ou documentos en papel, dificultando o seu acceso e aumentando a probabilidade de esquecementos. PetCare busca resolver este problema ofrecendo unha ferramenta intuitiva, accesible e pensada para o uso real.
 
-A aplicación está deseñada para funcionar tanto con almacenamento local como mediante sincronización na nube, permitindo manter a información dispoñible mesmo en situacións sen conexión e sincronizando os cambios posteriormente.
+      A aplicación está deseñada para funcionar tanto con almacenamento local como mediante sincronización na nube, permitindo manter a información dispoñible mesmo en situacións sen conexión e sincronizando os cambios posteriormente. Para conseguilo, emprégase unha arquitectura local-first baseada en Room para a persistencia local e Supabase para a autenticación, sincronización e almacenamento na nube.
 
-Ademais, o proxecto nace tamén dunha motivación persoal relacionada coa importancia de realizar un seguimento máis organizado do estado e necesidades dunha mascota.
+      Ademais, o proxecto nace tamén dunha motivación persoal relacionada coa importancia de realizar un seguimento máis organizado do estado e necesidades dunha mascota.
 
----
+      ---
 
-## Instalación / Posta en marcha
+      ## Instalación / Posta en marcha
 
-PetCare poderá utilizarse mediante instalación directa do ficheiro APK no dispositivo Android. Ademais, durante o desenvolvemento tamén poderá executarse localmente desde Android Studio.
+      PetCare poderá utilizarse mediante instalación directa do ficheiro APK no dispositivo Android. Ademais, durante o desenvolvemento tamén poderá executarse localmente desde Android Studio.
 
-### Instalación mediante APK
+      ### Instalación mediante APK
 
-Descargar:
+      Descargar:
 
-[PetCare.apk](doc/apk/PetCare.apk)
+      [PetCare.apk](doc/apk/PetCare.apk)
 
-Pasos:
+      Pasos:
 
-- Descargar o ficheiro APK
-- Activar a instalación desde fontes externas no dispositivo
-- Executar o ficheiro descargado
-- Completar a instalación
+      - Descargar o ficheiro APK
+      - Activar a instalación desde fontes externas no dispositivo
+      - Executar o ficheiro descargado
+      - Completar a instalación
 
-Unha vez instalada, a aplicación estará lista para o seu uso.
+      Unha vez instalada, a aplicación estará lista para o seu uso.
 
-### Execución en ambiente local
+      ### Execución en ambiente local
 
-Requisitos:
+      Requisitos:
 
-- Android Studio
-- Java JDK 11 ou superior
-- Android SDK actualizado
-- Emulador Android ou dispositivo Android físico
-- Conexión a internet
+      - Android Studio
+      - Java JDK 11 ou superior
+      - Android SDK actualizado
+      - Emulador Android ou dispositivo Android físico
+      - Conexión a internet
 
-Clonar o repositorio:
+      Clonar o repositorio:
 
-```bash
-git clone https://gitlab.com/iesleliadoura/DAM2/martin-miguens.git
-```
+      ```bash
+      git clone https://gitlab.com/iesleliadoura/DAM2/martin-miguens.git
+      ```
 
-Abrir o proxecto mediante Android Studio.
+      Abrir o proxecto mediante Android Studio.
 
-Executar:
+      Executar:
 
-```bash
-Run > Run app
-```
+      ```bash
+      Run > Run app
+      ```
 
-ou:
+      ou:
 
-```bash
-Shift + F10
-```
+      ```bash
+      Shift + F10
+      ```
 
----
+      ---
 
-## Uso
+      ## Uso
 
-PetCare foi deseñado para ofrecer unha experiencia simple e intuitiva.
+      PetCare foi deseñado para ofrecer unha experiencia simple e intuitiva, permitindo ao usuario acceder rapidamente á información das súas mascotas e rexistrar os diferentes datos relacionados co seu coidado diario.
 
-Fluxo principal actual:
+      Fluxo principal da aplicación:
 
-```text
-Inicio de sesión
-      ↓
-Pantalla principal
-      ↓
-Mascotas
-      ↓
-Información detallada
-      ↓
-Eventos e rexistros asociados
-```
+      ```text
+      Inicio de sesión / Rexistro
+                  ↓
+      Pantalla principal
+                  ↓
+      Xestión de mascotas
+                  ↓
+      Ficha completa da mascota
+                  ↓
+      Eventos, saúde e alimentación
+      ```
 
-Funcionalidades implementadas e previstas:
+      Principais funcionalidades dispoñibles:
 
-- Rexistro de mascotas
-- Xestión de información asociada
-- Seguimento de peso
-- Rexistro de eventos importantes
-- Sistema de autenticación
-- Sincronización local e nube
-- Xestión compartida entre usuarios
+      * Rexistro e inicio de sesión de usuarios.
+      * Xestión completa de mascotas (alta, modificación e eliminación).
+      * Asociación dunha mascota a varios usuarios mediante invitacións.
+      * Consulta da información detallada de cada mascota.
+      * Rexistro de eventos e citas asociadas ás mascotas.
+      * Calendario de eventos con visualización por datas.
+      * Control da alimentación diaria.
+      * Rexistro de actividades e paseos.
+      * Seguimento da evolución do peso mediante gráficas.
+      * Rexistro de vacinas e historial de vacinación.
+      * Xestión de tratamentos e medicacións.
+      * Consulta do historial sanitario completo da mascota.
+      * Realización de copias de seguridade locais.
+      * Restauración de información mediante copias de seguridade.
+      * Sincronización dos datos coa nube mediante Supabase.
 
-![Captura aplicación](doc/img/pantalla_movil_login.png)
+      A navegación principal realízase mediante unha barra inferior que permite acceder rapidamente aos apartados de Inicio, Mascotas, Eventos, Saúde e Perfil.
 
----
+      ![Captura aplicación](doc/img/pantalla_login.png)
 
-## Sobre o autor
+      ---
 
-Son estudante do ciclo superior de Desenvolvemento de Aplicacións Multiplataforma (DAM), interesado especialmente no desenvolvemento de aplicacións móbiles e no deseño de interfaces intuitivas.
+      ## Sobre o autor
 
-Ao longo da formación traballei con tecnoloxías como Java, Android Studio, XML, SQL, Git e ferramentas de modelado.
+      Son estudante do ciclo superior de Desenvolvemento de Aplicacións Multiplataforma (DAM), interesado especialmente no desenvolvemento de aplicacións móbiles e no deseño de interfaces intuitivas.
 
-Escollín PetCare porque combina unha necesidade real cunha motivación persoal. O obxectivo é desenvolver unha ferramenta útil, práctica e adaptable ao día a día dos propietarios de mascotas.
+      Ao longo da formación traballei con tecnoloxías como Java, Android Studio, XML, SQL, Git e ferramentas de modelado.
 
-Contacto:
+      Escollín PetCare porque combina unha necesidade real cunha motivación persoal. O obxectivo é desenvolver unha ferramenta útil, práctica e adaptable ao día a día dos propietarios de mascotas.
 
-- GitHub: martinmgd
-- GitLab: martinmgd
-- Correo: martin_mgd@hotmail.com
+      Contacto:
 
----
+      - GitHub: martinmgd
+      - GitLab: martinmgd
+      - Correo: martin_mgd@hotmail.com
 
-## Licenza
+      ---
 
-PetCare distribúese baixo a licenza MIT.
+      ## Licenza
 
-Esta licenza permite o uso, copia, modificación e distribución do software mantendo o aviso de copyright orixinal.
+      PetCare distribúese baixo a licenza MIT.
 
-Para máis información consultar o arquivo [LICENSE](LICENSE).
+      Esta licenza permite o uso, copia, modificación e distribución do software mantendo o aviso de copyright orixinal.
 
----
+      Para máis información consultar o arquivo [LICENSE](LICENSE).
 
-## Índice
+      ---
 
-1. Anteproxecto
-   * 1.1 [Idea](doc/templates/1_idea.md)
-   * 1.2 [Necesidades](doc/templates/2_necesidades.md)
+      ## Índice
 
-2. [Análise](doc/templates/3_analise.md)
+      1. Anteproxecto
+      * 1.1 [Idea](doc/templates/1_idea.md)
+      * 1.2 [Necesidades](doc/templates/2_necesidades.md)
 
-3. [Planificación](doc/templates/4_planificacion.md)
+      2. [Análise](doc/templates/3_analise.md)
 
-4. [Deseño](doc/templates/5_deseño.md)
+      3. [Planificación](doc/templates/4_planificacion.md)
 
-5. Implantación
-   * 5.1 [Implementación](doc/templates/6_implementacion.md)
-   * 5.2 [Produción](doc/templates/7_producion.md)
+      4. [Deseño](doc/templates/5_deseño.md)
 
----
+      5. Implantación
+      * 5.1 [Implementación](doc/templates/6_implementacion.md)
+      * 5.2 [Produción](doc/templates/7_producion.md)
 
-## Guía de contribución
+      ---
 
-PetCare é un proxecto aberto á mellora continua.
+      ## Guía de contribución
 
-Pódese colaborar mediante:
+      PetCare é un proxecto aberto á mellora continua.
 
-- Corrección de erros
-- Optimización do código
-- Melloras de interface
-- Novas funcionalidades
-- Probas automatizadas
-- Actualización da documentación
+      Pódese colaborar mediante:
 
-As modificacións realizaranse mediante ramas específicas e integración posterior mediante Pull Requests.
+      - Corrección de erros
+      - Optimización do código
+      - Melloras de interface
+      - Novas funcionalidades
+      - Probas automatizadas
+      - Actualización da documentación
 
----
+      As modificacións realizaranse mediante ramas específicas e integración posterior mediante Pull Requests.
 
-## Links
+      ---
 
-- [Android Studio](https://developer.android.com/studio)
-- [SQLite](https://www.sqlite.org)
-- [Room](https://developer.android.com/training/data-storage/room)
-- [Supabase](https://supabase.com)
-- [DBDiagram](https://dbdiagram.io)
-- [GitLab](https://gitlab.com)
+      ## Links
+
+      - [Android Studio](https://developer.android.com/studio)
+      - [SQLite](https://www.sqlite.org)
+      - [Room](https://developer.android.com/training/data-storage/room)
+      - [Supabase](https://supabase.com)
+      - [DBDiagram](https://dbdiagram.io)
+      - [GitLab](https://gitlab.com)
