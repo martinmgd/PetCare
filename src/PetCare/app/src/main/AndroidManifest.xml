@@ -50,6 +50,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".BackupsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".SaudeActivity"
             android:exported="false" />
 

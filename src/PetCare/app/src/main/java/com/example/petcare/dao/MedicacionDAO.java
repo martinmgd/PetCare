@@ -44,4 +44,8 @@ public interface MedicacionDAO {
     // DELETE por id
     @Query("DELETE FROM medicaciones WHERE id = :id")
     void borrarPorId(int id);
+
+    // DELETE todas as medicacións
+    @Query("DELETE FROM medicaciones")
+    void borrarTodo();
 }

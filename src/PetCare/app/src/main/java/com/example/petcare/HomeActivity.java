@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.petcare.backup.BackupManager;
 import com.example.petcare.adapter.EventoAdapter;
 import com.example.petcare.adapter.MascotaAdapter;
 import com.example.petcare.dao.EventoDAO;
@@ -110,6 +111,8 @@ public class HomeActivity extends AppCompatActivity {
                         ListadoMascotasActivity.class,
                         PerfilActivity.class
                 );
+
+        BackupManager.comprobarBackupDiario(this);
     }
 
     // Bottom Navigation

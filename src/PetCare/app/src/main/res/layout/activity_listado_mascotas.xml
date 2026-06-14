@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="52dp"
-        android:text="As miñas mascotas"
+        android:text="@string/as_mi_as_mascotas"
         android:textColor="#222222"
         android:textSize="26sp"
         android:textStyle="bold"

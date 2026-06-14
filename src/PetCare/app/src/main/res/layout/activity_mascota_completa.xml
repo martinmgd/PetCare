@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Simba"
+                android:text=""
                 android:textColor="#333333"
                 android:textSize="26sp"
                 android:textStyle="bold"
@@ -84,7 +84,7 @@
                         android:id="@+id/txtEspecie"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Especie: Perro"
+                        android:text="Especie: "
                         android:textColor="#333333"
                         android:textSize="15sp" />
 
@@ -93,7 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Raza: Labrador Retriever"
+                        android:text="Raza: "
                         android:textColor="#333333"
                         android:textSize="15sp" />
 
@@ -102,7 +102,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Idade: 3 anos"
+                        android:text="@string/idade"
                         android:textColor="#333333"
                         android:textSize="15sp" />
 
@@ -111,7 +111,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Peso actual: Sen rexistrar"
+                        android:text="@string/peso_actual_sen_rexistrar"
                         android:textColor="#333333"
                         android:textSize="15sp" />
 
@@ -120,7 +120,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Fecha nacemento:"
+                        android:text="@string/fecha_nacemento"
                         android:textColor="#333333"
                         android:textSize="15sp" />
 
@@ -129,7 +129,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Sexo:"
+                        android:text="@string/sexo2"
                         android:textColor="#333333"
                         android:textSize="15sp" />
 
@@ -142,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Alimentación de hoxe"
+                android:text="@string/alimentaci_n_de_hoxe"
                 android:textColor="#222222"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -173,7 +173,7 @@
                         android:id="@+id/btnAlmorzo"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:text="Almorzo: Non"
+                        android:text="@string/almorzo_non"
                         android:textAllCaps="false"
                         android:textColor="#8F61FF"
                         android:backgroundTint="#FFFFFF"
@@ -186,7 +186,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
-                        android:text="Comida: Non"
+                        android:text="@string/comida_non"
                         android:textAllCaps="false"
                         android:textColor="#8F61FF"
                         android:backgroundTint="#FFFFFF"
@@ -199,7 +199,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
-                        android:text="Cea: Non"
+                        android:text="@string/cea_non"
                         android:textAllCaps="false"
                         android:textColor="#8F61FF"
                         android:backgroundTint="#FFFFFF"
@@ -232,7 +232,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:backgroundTint="#8F61FF"
-            android:text="Editar mascota"
+            android:text="@string/editar_mascota"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="17sp"
@@ -245,7 +245,7 @@
             android:layout_height="56dp"
             android:layout_marginTop="14dp"
             android:backgroundTint="#FFFFFF"
-            android:text="Gestionar usuarios"
+            android:text="@string/gestionar_usuarios"
             android:textAllCaps="false"
             android:textColor="#8F61FF"
             android:textSize="17sp"

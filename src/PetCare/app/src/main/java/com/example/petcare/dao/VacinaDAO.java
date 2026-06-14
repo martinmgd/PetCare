@@ -33,4 +33,8 @@ public interface VacinaDAO {
 
     @Query("DELETE FROM vacinas WHERE id = :id")
     void borrarPorId(int id);
+
+    // DELETE todas as vacinas
+    @Query("DELETE FROM vacinas")
+    void borrarTodo();
 }

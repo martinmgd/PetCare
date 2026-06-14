@@ -62,4 +62,8 @@ public interface EventoDAO {
     // DELETE por id
     @Query("DELETE FROM eventos WHERE id = :id")
     void borrarPorId(int id);
+
+    // DELETE todos os eventos
+    @Query("DELETE FROM eventos")
+    void borrarTodo();
 }

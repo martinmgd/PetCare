@@ -55,4 +55,8 @@ public interface UsuarioMascotaDAO {
     // DELETE por id
     @Query("DELETE FROM usuarios_mascotas WHERE id = :id")
     void borrarPorId(int id);
+
+    // DELETE todas as relacións usuario-mascota
+    @Query("DELETE FROM usuarios_mascotas")
+    void borrarTodo();
 }

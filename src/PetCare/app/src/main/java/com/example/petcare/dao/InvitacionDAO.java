@@ -63,4 +63,8 @@ public interface InvitacionDAO {
     // DELETE por id
     @Query("DELETE FROM invitaciones WHERE id = :id")
     void borrarPorId(int id);
+
+    // DELETE todas as invitacións
+    @Query("DELETE FROM invitaciones")
+    void borrarTodo();
 }

@@ -6,27 +6,27 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.util.Log;
 
-import com.example.petcare.dao.EventoDAO;
-import com.example.petcare.dao.MascotaDAO;
-import com.example.petcare.dao.UsuarioDAO;
-import com.example.petcare.data.PetCareDatabase;
-import com.example.petcare.dto.EventoDTO;
-import com.example.petcare.dto.MascotaDTO;
-import com.example.petcare.dto.UsuarioDTO;
-import com.example.petcare.dao.ComidaDAO;
-import com.example.petcare.dao.InvitacionDAO;
-import com.example.petcare.dao.UsuarioMascotaDAO;
-import com.example.petcare.dto.ComidaDTO;
-import com.example.petcare.dto.InvitacionDTO;
-import com.example.petcare.dto.UsuarioMascotaDTO;
-import com.example.petcare.dao.PesoDAO;
-import com.example.petcare.dto.PesoDTO;
-import com.example.petcare.dao.VacinaDAO;
-import com.example.petcare.dto.VacinaDTO;
-import com.example.petcare.dao.MedicacionDAO;
-import com.example.petcare.dto.MedicacionDTO;
 import com.example.petcare.dao.ActividadeDAO;
+import com.example.petcare.dao.ComidaDAO;
+import com.example.petcare.dao.EventoDAO;
+import com.example.petcare.dao.InvitacionDAO;
+import com.example.petcare.dao.MascotaDAO;
+import com.example.petcare.dao.MedicacionDAO;
+import com.example.petcare.dao.PesoDAO;
+import com.example.petcare.dao.UsuarioDAO;
+import com.example.petcare.dao.UsuarioMascotaDAO;
+import com.example.petcare.dao.VacinaDAO;
+import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.ActividadeDTO;
+import com.example.petcare.dto.ComidaDTO;
+import com.example.petcare.dto.EventoDTO;
+import com.example.petcare.dto.InvitacionDTO;
+import com.example.petcare.dto.MascotaDTO;
+import com.example.petcare.dto.MedicacionDTO;
+import com.example.petcare.dto.PesoDTO;
+import com.example.petcare.dto.UsuarioDTO;
+import com.example.petcare.dto.UsuarioMascotaDTO;
+import com.example.petcare.dto.VacinaDTO;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -76,7 +76,6 @@ public class SupabaseSyncManager {
                 sincronizarMedicaciones(context);
                 sincronizarActividades(context);
 
-
                 Log.d("SupabaseSync", "Sincronización finalizada.");
 
             } catch (Exception e) {
@@ -94,7 +93,6 @@ public class SupabaseSyncManager {
         }).start();
     }
 
-
     // USUARIOS
 
     // Sincronizar usuarios pendentes con Supabase
@@ -110,29 +108,17 @@ public class SupabaseSyncManager {
 
         for (UsuarioDTO usuario : usuariosPendientes) {
 
+            if (estaVacio(usuario.getSupabaseId())) {
+                throw new Exception("O usuario non ten supabaseId de Auth");
+            }
+
             String json =
                     crearJsonUsuario(usuario);
 
-            if (estaVacio(usuario.getSupabaseId())) {
-
-                String respuesta =
-                        insertar(
-                                "usuarios",
-                                json
-                        );
-
-                usuario.setSupabaseId(
-                        extraerIdSupabase(respuesta)
-                );
-
-            } else {
-
-                actualizarPorId(
-                        "usuarios",
-                        usuario.getSupabaseId(),
-                        json
-                );
-            }
+            upsertPorId(
+                    "usuarios",
+                    json
+            );
 
             usuario.setPendienteSync(false);
             usuario.setFechaActualizacion(System.currentTimeMillis());
@@ -147,6 +133,9 @@ public class SupabaseSyncManager {
         JSONObject json =
                 new JSONObject();
 
+        // O id da táboa usuarios será o mesmo id de Supabase Auth
+        json.put("id", usuario.getSupabaseId());
+
         json.put("nombre", textoSeguro(usuario.getNombre()));
         json.put("email", textoSeguro(usuario.getEmail()));
         json.put("foto", textoSeguro(usuario.getFoto()));
@@ -155,7 +144,6 @@ public class SupabaseSyncManager {
 
         return json.toString();
     }
-
 
     // MASCOTAS
 
@@ -240,7 +228,6 @@ public class SupabaseSyncManager {
         return json.toString();
     }
 
-
     // EVENTOS
 
     // Sincronizar eventos pendentes con Supabase
@@ -309,6 +296,7 @@ public class SupabaseSyncManager {
             eventoDAO.actualizar(evento);
         }
     }
+
     // Crear JSON para a táboa eventos de Supabase
     private static String crearJsonEvento(
             EventoDTO evento,
@@ -421,7 +409,6 @@ public class SupabaseSyncManager {
         return json.toString();
     }
 
-
     // INVITACIONES
 
     // Sincronizar invitacións pendentes con Supabase
@@ -517,7 +504,6 @@ public class SupabaseSyncManager {
 
         return json.toString();
     }
-
 
     // COMIDAS
 
@@ -745,9 +731,9 @@ public class SupabaseSyncManager {
                 new JSONObject();
 
         json.put("mascota_id", mascotaSupabaseId);
-        json.put("nombre", vacina.getNombre());
+        json.put("nombre", textoSeguro(vacina.getNombre()));
         json.put("fecha", convertirFechaSimple(vacina.getFecha()));
-        json.put("notas", vacina.getNotas());
+        json.put("notas", textoSeguro(vacina.getNotas()));
         json.put("fecha_creacion", convertirFechaIso(vacina.getFechaCreacion()));
         json.put("fecha_actualizacion", convertirFechaIso(vacina.getFechaActualizacion()));
 
@@ -938,8 +924,7 @@ public class SupabaseSyncManager {
         return json.toString();
     }
 
-
-    // Metodos para relacions
+    // MÉTODOS PARA RELACIÓNS
 
     // Obter UUID de Supabase dun usuario local
     private static String obtenerSupabaseIdUsuario(
@@ -1012,7 +997,55 @@ public class SupabaseSyncManager {
         );
     }
 
-    // Metodos de Supabase
+    // MÉTODOS DE SUPABASE
+
+    // Insertar ou actualizar rexistro en Supabase por id
+    public static String upsertPorId(
+            String tabla,
+            String json
+    ) throws Exception {
+
+        Request request =
+                SupabaseClient
+                        .crearRequest(
+                                "/rest/v1/"
+                                        + tabla
+                                        + "?on_conflict=id"
+                        )
+                        .header(
+                                "Prefer",
+                                "resolution=merge-duplicates,return=representation"
+                        )
+                        .post(
+                                SupabaseClient.crearBody(json)
+                        )
+                        .build();
+
+        Response response =
+                SupabaseClient
+                        .getClient()
+                        .newCall(request)
+                        .execute();
+
+        String body = "";
+
+        if (response.body() != null) {
+            body = response.body().string();
+        }
+
+        if (!response.isSuccessful()) {
+            throw new Exception(
+                    "Erro facendo upsert en "
+                            + tabla
+                            + ": "
+                            + response.code()
+                            + " "
+                            + body
+            );
+        }
+
+        return body;
+    }
 
     // Inserir rexistros en Supabase
     public static String insertar(
@@ -1116,6 +1149,8 @@ public class SupabaseSyncManager {
         return objeto.getString("id");
     }
 
+    // COMPROBACIÓN DE INTERNET
+
     // Comprobar se hai conexión a internet
     private static boolean hayInternet(Context context) {
 
@@ -1148,10 +1183,7 @@ public class SupabaseSyncManager {
         );
     }
 
-
-
-
-    // Metodos auxiliares
+    // MÉTODOS AUXILIARES
 
     // Comprobar se un texto está baleiro
     private static boolean estaVacio(String texto) {

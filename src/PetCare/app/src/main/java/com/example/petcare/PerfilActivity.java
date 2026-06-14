@@ -56,6 +56,8 @@ public class PerfilActivity extends AppCompatActivity {
 
     private SwipeNavigationHelper swipeNavigationHelper;
 
+    private MaterialButton btnBackups;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -87,6 +89,7 @@ public class PerfilActivity extends AppCompatActivity {
 
         btnCopiarId = findViewById(R.id.btnCopiarId);
         btnEditarPerfil = findViewById(R.id.btnEditarPerfil);
+        btnBackups = findViewById(R.id.btnBackups);
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
 
         // Cargar datos reais do usuario
@@ -106,6 +109,18 @@ public class PerfilActivity extends AppCompatActivity {
                     "Edición de perfil pendente",
                     Toast.LENGTH_SHORT
             ).show();
+        });
+
+        // Abrir copias de seguridade
+        btnBackups.setOnClickListener(v -> {
+
+            Intent intent =
+                    new Intent(
+                            PerfilActivity.this,
+                            BackupsActivity.class
+                    );
+
+            startActivity(intent);
         });
 
         // Pechar sesión

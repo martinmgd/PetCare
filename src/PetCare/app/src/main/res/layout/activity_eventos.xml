@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="52dp"
-        android:text="Eventos"
+        android:text="@string/eventos"
         android:textColor="#222222"
         android:textSize="26sp"
         android:textStyle="bold"

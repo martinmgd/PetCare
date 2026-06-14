@@ -33,4 +33,8 @@ public interface ActividadeDAO {
 
     @Query("DELETE FROM actividades WHERE id = :id")
     void borrarPorId(int id);
+
+    // DELETE todas as actividades
+    @Query("DELETE FROM actividades")
+    void borrarTodo();
 }

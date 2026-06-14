@@ -39,4 +39,8 @@ public interface ComidaDAO {
 
     @Query("DELETE FROM comidas WHERE id = :id")
     void borrarPorId(int id);
+
+    // DELETE todos os rexistros de comidas
+    @Query("DELETE FROM comidas")
+    void borrarTodo();
 }

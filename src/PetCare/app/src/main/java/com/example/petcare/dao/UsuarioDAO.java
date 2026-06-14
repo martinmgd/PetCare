@@ -44,4 +44,8 @@ public interface UsuarioDAO {
     // DELETE
     @Delete
     void borrar(UsuarioDTO usuario);
+
+    // DELETE todos os usuarios
+    @Query("DELETE FROM usuarios")
+    void borrarTodo();
 }

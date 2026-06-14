@@ -44,4 +44,8 @@ public interface MascotaDAO {
     // DELETE por id
     @Query("DELETE FROM mascotas WHERE id = :id")
     void borrarPorId(int id);
+
+    // DELETE todas as mascotas
+    @Query("DELETE FROM mascotas")
+    void borrarTodo();
 }

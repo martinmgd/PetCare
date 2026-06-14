@@ -40,4 +40,8 @@ public interface PesoDAO {
     // DELETE
     @Delete
     void borrar(PesoDTO peso);
+
+    // DELETE todos os rexistros de peso
+    @Query("DELETE FROM pesos")
+    void borrarTodo();
 }

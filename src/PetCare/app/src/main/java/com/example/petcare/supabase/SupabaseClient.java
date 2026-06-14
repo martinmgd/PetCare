@@ -41,6 +41,24 @@ public class SupabaseClient {
                 );
     }
 
+    // Request para Supabase Auth
+    public static Request.Builder crearRequestAuth(String endpoint) {
+
+        return new Request.Builder()
+                .url(
+                        SupabaseConfig.SUPABASE_URL
+                                + endpoint
+                )
+                .addHeader(
+                        "apikey",
+                        SupabaseConfig.SUPABASE_API_KEY
+                )
+                .addHeader(
+                        "Content-Type",
+                        "application/json"
+                );
+    }
+
     public static RequestBody crearBody(String json) {
 
         return RequestBody.create(

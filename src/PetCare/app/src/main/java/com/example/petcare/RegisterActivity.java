@@ -11,9 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.petcare.dao.UsuarioDAO;
 import com.example.petcare.data.PetCareDatabase;
 import com.example.petcare.dto.UsuarioDTO;
+import com.example.petcare.supabase.SupabaseAuthManager;
+import com.example.petcare.supabase.SupabaseSyncManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.example.petcare.supabase.SupabaseSyncManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -140,12 +141,66 @@ public class RegisterActivity extends AppCompatActivity {
 
             Toast.makeText(
                     RegisterActivity.this,
-                    "Este correo xa está rexistrado",
+                    "Este correo xa está rexistrado neste dispositivo",
                     Toast.LENGTH_SHORT
             ).show();
 
             return;
         }
+
+        btnRegister.setEnabled(false);
+
+        SupabaseAuthManager.registrarUsuario(
+                email,
+                password,
+                new SupabaseAuthManager.AuthCallback() {
+
+                    @Override
+                    public void onSuccess(
+                            String supabaseUserId,
+                            String email,
+                            String accessToken
+                    ) {
+
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+
+                                guardarUsuarioLocal(
+                                        supabaseUserId,
+                                        email
+                                );
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String mensaje) {
+
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+
+                                btnRegister.setEnabled(true);
+
+                                Toast.makeText(
+                                        RegisterActivity.this,
+                                        mensaje,
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+                        });
+                    }
+                }
+        );
+    }
+
+    private void guardarUsuarioLocal(
+            String supabaseUserId,
+            String email
+    ) {
 
         String nombre =
                 email.split("@")[0];
@@ -156,26 +211,36 @@ public class RegisterActivity extends AppCompatActivity {
                         email
                 );
 
+        usuario.setSupabaseId(supabaseUserId);
         usuario.setFechaCreacion(System.currentTimeMillis());
         usuario.setFechaActualizacion(System.currentTimeMillis());
         usuario.setPendienteSync(true);
 
         usuarioDAO.insertar(usuario);
 
-        // Intentar sincronizar con Supabase
-        SupabaseSyncManager.sincronizar(this);
+        // Intentar sincronizar perfil coa táboa usuarios
+        SupabaseSyncManager.sincronizar(
+                RegisterActivity.this
+        );
 
         Toast.makeText(
                 RegisterActivity.this,
-                "Rexistro correcto",
-                Toast.LENGTH_SHORT
+                "Rexistro correcto. Revisa o teu correo para verificar a conta.",
+                Toast.LENGTH_LONG
         ).show();
+
+        btnRegister.setEnabled(true);
 
         Intent intent =
                 new Intent(
                         RegisterActivity.this,
                         LoginActivity.class
                 );
+
+        intent.addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_NEW_TASK
+        );
 
         startActivity(intent);
 
