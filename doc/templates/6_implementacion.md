@@ -31,10 +31,13 @@ A aplicación organízase en diferentes paquetes segundo a súa funcionalidade:
 
 * **activities**: pantallas principais da aplicación.
 * **adapters**: adaptadores utilizados polos RecyclerView.
-* **dto**: clases que representan as entidades da aplicación.
+* **backup**: creación e restauración das copias de seguridade da aplicación.
 * **dao**: acceso e xestión dos datos da aplicación.
 * **data**: configuración da base de datos e sesión de usuario.
+* **dto**: clases que representan as entidades da aplicación.
+* **supabase**: configuración da conexión con Supabase, autenticación e sincronización coa nube.
 * **util**: clases auxiliares empregadas por diferentes módulos da aplicación.
+* **view**: vistas personalizadas empregadas na aplicación, como o gráfico de evolución do peso.
 
 Esta organización permite manter o código estruturado e facilitar o mantemento da aplicación durante o seu desenvolvemento.
 
@@ -189,24 +192,91 @@ Esta configuración permite crear automaticamente a base de datos local da aplic
 
 ---
 
-### Comunicación entre Activities
+### Autenticación de usuarios mediante Supabase
 
-Para transferir información entre pantallas empregouse o mecanismo de resultados proporcionado por Android. Unha vez creado o evento, este envíase á Activity anterior mediante un Intent.
+Para garantir que cada usuario dispoña dunha conta propia, implementouse un sistema de autenticación mediante Supabase Auth.
+
+O rexistro realízase mediante correo electrónico e contrasinal, xerándose automaticamente un identificador único para cada usuario. Ademais, o sistema incorpora verificación de correo electrónico para validar a identidade do usuario antes de permitir o acceso á aplicación.
 
 ```java
-Intent intent = new Intent();
-
-intent.putExtra("evento", evento);
-
-setResult(RESULT_OK, intent);
-
-finish();
+supabase.auth.signUp(
+        email,
+        password
+);
 ```
 
-Este sistema permite intercambiar información entre Activities de forma directa. Posteriormente, os datos poden almacenarse na base de datos local mediante Room para garantir a súa persistencia.
+Esta funcionalidade permite asociar toda a información almacenada a un usuario concreto e facilita o uso compartido das mascotas entre distintos propietarios.
 
 ---
 
+### Recuperación de contrasinal
+
+Co fin de mellorar a experiencia de usuario, incorporouse un sistema de recuperación de contrasinal mediante correo electrónico.
+
+No caso de esquecer o contrasinal, o usuario pode solicitar un enlace de recuperación que lle permitirá establecer un novo contrasinal de forma segura.
+
+```java
+supabase.auth.resetPasswordForEmail(
+        email
+);
+```
+
+---
+
+### Sistema de copias de seguridade
+
+Implementouse un sistema de copias de seguridade locais para protexer a información almacenada na aplicación.
+
+As copias gárdanse en formato JSON e inclúen os datos asociados ás mascotas, eventos, rexistros de saúde e relacións entre usuarios.
+
+```java
+File backupFile =
+        new File(
+                directorio,
+                nomeBackup
+        );
+```
+
+A aplicación conserva automaticamente as tres copias máis recentes, eliminando as máis antigas para evitar un uso excesivo do almacenamento.
+
+Tamén se incorporou unha pantalla específica que permite restaurar copias de seguridade previamente gardadas.
+
+---
+
+### Sincronización coa nube mediante Supabase
+
+PetCare emprega unha arquitectura híbrida baseada en almacenamento local mediante Room e sincronización remota mediante Supabase.
+
+Os datos permanecen dispoñibles incluso cando non existe conexión a internet. Unha vez recuperada a conexión, a aplicación sincroniza a información coa nube.
+
+```java
+supabase
+        .from("mascotas")
+        .insert(datos);
+```
+
+Esta aproximación combina a velocidade do almacenamento local coa seguridade e dispoñibilidade ofrecidas polos servizos na nube.
+
+Actualmente sincronízanse os seguintes elementos:
+
+* Usuarios
+* Mascotas
+* Eventos
+* Alimentación
+* Actividade
+* Peso
+* Vacinas
+* Medicación
+* Invitacións
+* Relacións entre usuarios e mascotas compartidas
+
+A sincronización realízase empregando identificadores únicos para cada rexistro, permitindo manter a consistencia da información entre a base de datos local e a almacenada en Supabase.
+
+Deste xeito, os cambios realizados nun dispositivo poden ser recuperados posteriormente desde outro dispositivo asociado á mesma conta de usuario.
+
+As copias almacenadas localmente permiten a recuperación inmediata dos datos por parte do usuario. As copias almacenadas en Supabase consérvanse como medida adicional de seguridade e para futuras ampliacións do sistema.
+
+---
 ## Compilación e execución
 
 Para executar o proxecto é necesario dispoñer de:
@@ -229,4 +299,3 @@ Shift + F10
 ```
 
 Unha vez compilada, a aplicación instálase automaticamente no dispositivo seleccionado.
-

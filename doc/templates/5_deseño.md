@@ -66,47 +66,59 @@ Esta estrutura servirá como base para a implementación das entidades e o almac
 classDiagram
 direction TB
 
-class Mascota{
-+int id
-+String nome
-+String especie
-+String raza
-+String sexo
-+LocalDate nacemento
-+double peso
-+String foto
-}
-
 class Usuario{
 +int id
++String supabaseId
 +String nome
 +String email
 +String foto
 }
 
+class Mascota{
++int id
++String supabaseId
++String propietarioId
++String nome
++String especie
++String raza
++int idade
++double pesoActual
++String fechaNacemento
++String sexo
+}
+
 class UsuarioMascota{
 +int id
-+boolean propietario
++String usuarioId
++int mascotaId
++String rol
++String estado
 }
 
 class Invitacion{
 +int id
++int mascotaId
++String nomeMascota
++String usuarioOrixeId
++String usuarioDestinoId
 +String estado
-+LocalDateTime dataEnvio
 }
 
-class Alimentacion{
+class Comida{
 +int id
-+LocalDateTime dataHora
-+String tipoComida
-+double cantidade
-+String notas
++int mascotaId
++String fecha
++boolean almorzoComido
++boolean comidaComida
++boolean ceaComida
 }
 
 class Actividade{
 +int id
++int mascotaId
++String usuarioId
 +String tipo
-+int duracion
++int duracionMinutos
 +String fecha
 +String zona
 +String tempoResumo
@@ -114,39 +126,59 @@ class Actividade{
 
 class Peso{
 +int id
-+LocalDateTime dataHora
-+double valor
-+String notas
++int mascotaId
++String usuarioId
++double peso
++String fecha
++String hora
 }
 
 class Evento{
 +int id
++String usuarioId
++int mascotaId
 +String titulo
++String descripcion
++String fecha
++String hora
 +String tipo
-+LocalDateTime dataHora
++String mascota
+}
+
+class Vacina{
++int id
++int mascotaId
++String nome
++String fecha
 +String notas
 }
 
 class Medicacion{
 +int id
++int mascotaId
++String usuarioId
 +String nome
-+LocalDate dataInicio
-+LocalDate dataFin
-+boolean recordatorioActivo
++String dose
++String fechaInicio
++String fechaFin
 +String notas
 }
 
+Usuario "1" --> "*" Mascota
+Usuario "1" --> "*" UsuarioMascota
+Usuario "1" --> "*" Invitacion
+Usuario "1" --> "*" Actividade
+Usuario "1" --> "*" Peso
+Usuario "1" --> "*" Evento
+Usuario "1" --> "*" Medicacion
 
 Mascota "1" --> "*" UsuarioMascota
-Usuario "1" --> "*" UsuarioMascota
-
 Mascota "1" --> "*" Invitacion
-Usuario "1" --> "*" Invitacion
-
-Mascota "1" --> "*" Alimentacion
+Mascota "1" --> "*" Comida
 Mascota "1" --> "*" Actividade
 Mascota "1" --> "*" Peso
 Mascota "1" --> "*" Evento
+Mascota "1" --> "*" Vacina
 Mascota "1" --> "*" Medicacion
 ```
 
@@ -166,25 +198,23 @@ flowchart LR
 U[Usuario]
 P[Usuario propietario]
 
-P -. herda .-> U
+P -.->|herda| U
 
-subgraph Funcións xerais
+subgraph FX["Funcións xerais"]
 A([Rexistrarse])
 B([Iniciar sesión])
 C([Consultar mascota])
 D([Aceptar invitación])
 E([Rexeitar invitación])
-
 F([Rexistrar alimentación])
 G([Rexistrar actividade])
 H([Rexistrar peso])
 I([Rexistrar medicación])
-
 J([Crear eventos])
 K([Consultar historial])
 end
 
-subgraph Funcións propietario
+subgraph FP["Funcións propietario"]
 M([Crear mascota])
 N([Modificar ficha mascota])
 O([Eliminar mascota])
@@ -217,22 +247,73 @@ Todos os usuarios poden rexistrar e consultar información asociada ás mascotas
 
 ## Deseño de interfaces de usuario
 
-Debido a que a interface da aplicación poderá evolucionar durante o desenvolvemento do proxecto, nesta fase non se inclúen mockups definitivos.
+A continuación móstranse as principais pantallas implementadas na aplicación PetCare. Estas interfaces permiten realizar a xestión das mascotas, eventos, saúde, usuarios compartidos e copias de seguridade de forma sinxela e intuitiva.
 
-Inicialmente prevese a existencia das seguintes pantallas:
+### Autenticación
 
-* Inicio de sesión e rexistro
-* Pantalla principal de mascotas
-* Detalle da mascota
-* Alimentación
-* Actividade
-* Rexistro de peso
-* Medicación
-* Eventos e citas
-* Invitacións
-* Perfil de usuario
+| Inicio de sesión | Rexistro |
+|------------------|-----------|
+| <img src="../img/pantalla_login.png" width="180"> | <img src="../img/pantalla_register.png" width="180"> |
 
-As capturas reais da aplicación incorporaranse unha vez implementadas.
+O sistema incorpora pantallas independentes para o inicio de sesión e o rexistro de novos usuarios mediante autenticación xestionada por Supabase.
+
+---
+
+### Pantalla principal
+
+| Inicio |
+|---------|
+| <img src="../img/pantalla_home.png" width="180"> |
+
+A pantalla principal mostra un resumo das mascotas rexistradas e dos eventos pendentes, permitindo acceder rapidamente ás funcionalidades máis utilizadas da aplicación.
+
+---
+
+### Xestión de mascotas
+
+| Listado de mascotas | Nova mascota | Ficha da mascota | Xestión de usuarios |
+|---------------------|--------------|------------------|---------------------|
+| <img src="../img/pantalla_mascotas.png" width="185"> | <img src="../img/pantalla_addmascotas.png" width="180"> | <img src="../img/pantalla_datosmascota.png" width="185"> | <img src="../img/pantalla_gestionusuarios.png" width="185"> |
+
+Estas pantallas permiten crear novas mascotas, consultar a súa información detallada, modificar os seus datos e compartir o acceso con outros usuarios mediante invitacións.
+
+---
+
+### Xestión de eventos
+
+| Eventos | Novo evento | Detalle do evento |
+|----------|-------------|-------------------|
+| <img src="../img/pantalla_eventos.png" width="180"> | <img src="../img/pantalla_addeventos.png" width="180"> | <img src="../img/pantallas_datosevento.png" width="180"> |
+
+O módulo de eventos permite rexistrar citas veterinarias, vacinas, actividades ou calquera outro evento importante relacionado coa mascota.
+
+---
+
+### Módulo de saúde
+
+| Saúde | Actividade | Peso |
+|--------|------------|------|
+| <img src="../img/pantalla_saude.png" width="180"> | <img src="../img/pantalla_actividade.png" width="180"> | <img src="../img/pantalla_peso.png" width="180"> |
+
+| Vacinas | Medicación | Historial de saúde |
+|----------|------------|-------------------|
+| <img src="../img/pantalla_vacinas.png" width="180"> | <img src="../img/pantalla_medicacion.png" width="180"> | <img src="../img/pantalla_historialsaude.png" width="200"> |
+
+O apartado de saúde reúne toda a información relacionada coa actividade física, evolución do peso, vacinas administradas, tratamentos médicos e historial sanitario da mascota.
+
+---
+
+### Perfil e copias de seguridade
+
+| Perfil | Copias de seguridade |
+|---------|----------------------|
+| <img src="../img/pantalla_perfil.png" width="180"> | <img src="../img/pantalla_copiaseguridade.png" width="180"> |
+
+Desde o perfil o usuario pode consultar os seus datos persoais, copiar o seu identificador único, pechar sesión e acceder ao sistema de copias de seguridade locais para restaurar información previamente gardada.
+
+---
+
+As interfaces foron desenvolvidas seguindo criterios de simplicidade, accesibilidade e facilidade de uso, empregando compoñentes de Material Design e unha identidade visual común baseada en tons violetas, mantendo unha experiencia coherente en toda a aplicación.
 
 ---
 

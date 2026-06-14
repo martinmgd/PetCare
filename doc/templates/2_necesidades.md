@@ -34,7 +34,9 @@ O proxecto está pensado para ser desenvolvido por unha única persoa dentro do 
 
 Desde o punto de vista técnico, o proxecto é totalmente viable, xa que se empregan tecnoloxías accesibles e coñecementos adquiridos durante a formación. O uso de tecnoloxías como SQLite/Room e Supabase facilita tanto a persistencia local da información como a sincronización dos datos na nube.
 
-Ademais, o desenvolvemento realizarase mediante ferramentas amplamente utilizadas no ámbito profesional, como Android Studio, Java e sistemas de control de versións, o que garante a dispoñibilidade de documentación, recursos e soporte técnico durante todo o ciclo de vida do proxecto.
+A utilización de Room permite manter o funcionamento da aplicación incluso en situacións sen conexión a internet, garantindo a dispoñibilidade da información almacenada no dispositivo.
+
+Por outra banda, o desenvolvemento realizarase mediante ferramentas amplamente utilizadas no ámbito profesional, como Android Studio, Java e sistemas de control de versións, o que garante a dispoñibilidade de documentación, recursos e soporte técnico durante todo o ciclo de vida do proxecto.
 
 ### Viabilidade económica
 

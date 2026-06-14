@@ -269,7 +269,7 @@ Desenvolvedor do proxecto.
 ### Tarefa 2: Integración da aplicación con Supabase
 
 **Descrición:**
-Conexión das funcionalidades da aplicación coa base de datos na nube.
+Implementación da autenticación de usuarios, sincronización dos datos e comunicación coa base de datos na nube mediante Supabase.
 
 **Recursos hardware/software:**
 Android Studio, Java, Supabase.
@@ -376,20 +376,20 @@ gantt
     dateFormat YYYY-MM-DD
 
     section Abril
-    Idea do proxecto                     :done, a1, 2025-04-12, 7d
-    Documento de necesidades             :done, a2, 2025-04-19, 14d
+    Idea do proxecto                     :done, a1, 2026-04-12, 7d
+    Documento de necesidades             :done, a2, 2026-04-19, 14d
 
     section Maio
-    Análise do sistema                   :done, b1, 2025-05-03, 7d
-    Planificación do proxecto            :active, b2, 2025-05-08, 10d
-    Deseño da aplicación                 :b3, 2025-05-14, 18d
-    Deseño base de datos                 :b4, 2025-05-18, 10d
+    Análise do sistema                   :done, b1, 2026-05-03, 7d
+    Planificación do proxecto            :active, b2, 2026-05-08, 10d
+    Deseño da aplicación                 :b3, 2026-05-14, 18d
+    Deseño base de datos                 :b4, 2026-05-18, 10d
 
     section Xuño
-    Implementación inicial               :c1, 2025-05-24, 25d
-    Integración Supabase                 :c2, 2025-05-30, 15d
-    Probas e correccións                 :c3, 2025-06-08, 10d
-    Documentación final                  :c4, 2025-06-05, 10d
+    Implementación inicial               :c1, 2026-05-24, 25d
+    Integración Supabase                 :c2, 2026-05-30, 15d
+    Probas e correccións                 :c3, 2026-06-08, 10d
+    Documentación final                  :c4, 2026-06-05, 10d
 ```
 
 ---

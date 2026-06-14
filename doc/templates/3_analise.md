@@ -17,6 +17,7 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 * Rexistro de usuarios mediante correo electrónico e contrasinal
 * Inicio de sesión
 * Modificación dos datos persoais
+* Recuperación de contrasinal mediante correo electrónico
 
 ### Xestión de mascotas
 
@@ -51,8 +52,10 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 ### Control de saúde
 
 * Rexistro do peso da mascota
-* Seguimento da evolución física
-* Rexistro de tratamentos ou medicacións
+* Visualización gráfica da evolución do peso
+* Rexistro de vacinas
+* Rexistro de medicación
+* Historial sanitario unificado
 
 ---
 
@@ -81,6 +84,8 @@ Como característica destacada, o sistema permitirá a xestión compartida das m
 * Funcionamento estable sen perda de información
 * Sincronización da información entre usuarios asociados a unha mesma mascota
 * Posibilidade de realizar copias de seguridade dos datos e restauralos en caso necesario
+* Sistema de copias de seguridade locais
+* Restauración de datos desde copias de seguridade
 
 ### Compatibilidade
 

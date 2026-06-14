@@ -84,6 +84,10 @@ Si. Os datos sincronízanse mediante Supabase, permitindo acceder á mesma infor
 
 As funcións principais da aplicación poden utilizarse sen conexión grazas ao almacenamento local mediante Room. A conexión a internet será necesaria para a autenticación e sincronización dos datos coa nube.
 
+### Podo compartir unha mascota con outro usuario?
+
+Si. O propietario pode enviar unha invitación mediante o identificador único doutro usuario.
+
 # Protección de datos de carácter persoal
 
 PetCare almacena información relacionada cos usuarios e as súas mascotas, incluíndo datos identificativos, eventos e información de seguimento das mascotas.

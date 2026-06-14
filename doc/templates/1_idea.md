@@ -6,7 +6,7 @@ O proxecto consistirá no deseño, planificación e desenvolvemento dunha aplica
 
 ## Descrición do proxecto
 
-O proxecto consiste no desenvolvemento dunha aplicación denominada **PetCare**, orientada á xestión integral de mascotas desde dispositivos móbiles. A aplicación permitirá aos usuarios levar un control organizado da saúde e dos coidados das súas mascotas, incluíndo información básica, vacinas, medicación, citas veterinarias, seguimento do peso e recordatorios. A aplicación tamén permitirá a xestión compartida das mascotas entre varios usuarios, facilitando a sincronización da información e a colaboración no coidado diario.
+O proxecto consiste no desenvolvemento dunha aplicación denominada **PetCare**, orientada á xestión integral de mascotas desde dispositivos móbiles. A aplicación permitirá aos usuarios levar un control organizado da saúde e dos coidados das súas mascotas, incluíndo información básica, vacinas, medicación, citas veterinarias, seguimento do peso e recordatorios. A aplicación tamén permitirá a xestión compartida das mascotas entre varios usuarios, permitindo a sincronización da información entre dispositivos e a colaboración entre varios usuarios no coidado diario da mascota.
 
 A elección dunha aplicación móbil responde ao contexto real de uso, xa que os propietarios adoitan consultar este tipo de información desde o teléfono móbil, que resulta máis accesible e práctico no día a día.
 
